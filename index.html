@@ -4,12 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SquishIQ | Tactile Sensory Lab & ASMR Toys</title>
+    <!-- Resource Hints for High-Performance Loading -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js for YouTube-Style Analytics -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chart.js for Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+    
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+    
     <script>
         tailwind.config = {
             theme: {
@@ -317,7 +325,7 @@
                         </div>
                         <span class="text-xs font-bold bg-pink-100 text-brand-darkpink px-3 py-1 rounded-full">Live Analytics</span>
                     </div>
-                    <div class="h-64 sm:h-80 w-full">
+                    <div class="h-64 sm:h-80 w-full relative">
                         <canvas id="salesAnalyticsChart"></canvas>
                     </div>
                 </div>
@@ -515,7 +523,7 @@
         </div>
     </footer>
 
-    <!-- Application JavaScript Logic -->
+    <!-- Optimized Application Logic -->
     <script>
         // STRICT ADMIN CREDENTIALS CONFIGURATION
         const ADMIN_EMAIL = "sachiguinevereyongngo@gmail.com";
@@ -527,7 +535,7 @@
         let storeMode = 'LIVE';
         let targetDispatchDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 16);
 
-        // MASTER UNIFIED INVENTORY DATABASE (Starts at 0 pcs for blank slate testing)
+        // MASTER UNIFIED INVENTORY DATABASE
         let products = [
             { id: 1, name: "Crunchy Butter Squishy", price: 180, stock: 0, preorders: 0, icon: "🧈" },
             { id: 2, name: "Crunchy Pineapple Bun", price: 150, stock: 0, preorders: 0, icon: "🍍" },
@@ -545,7 +553,7 @@
         let countdownInterval = null;
         let analyticsChart = null;
 
-        // ASMR SOUND SYSTEM VARIABLES
+        // ASMR SOUND SYSTEM
         let asmrAudioFiles = []; 
         let currentPlayingAudio = null;
         let isPressingASMR = false;
@@ -553,7 +561,7 @@
         let synthOscillator = null;
         let synthGain = null;
 
-        // Main Navigation Switcher
+        // Optimized Main Navigation Switcher
         function switchTab(tabId) {
             ['shop', 'asmr', 'reviews', 'returns', 'admin'].forEach(t => {
                 const page = document.getElementById(`tab-${t}`);
@@ -565,6 +573,10 @@
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
             const activeBtn = document.getElementById(`nav-${tabId}`);
             if(activeBtn) activeBtn.classList.replace('text-gray-600', 'text-brand-darkpink');
+            
+            if (tabId === 'admin') {
+                renderAdmin();
+            }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -580,13 +592,20 @@
             document.getElementById(`admin-subtab-${subTabId}`).classList.remove('hidden');
             const activeSubBtn = document.getElementById(`subnav-${subTabId}`);
             if(activeSubBtn) activeSubBtn.className = "py-3 px-4 font-bold text-sm border-b-2 border-brand-darkpink text-brand-darkpink transition-colors";
+            
+            if(subTabId === 'analytics') {
+                updateAnalyticsChart();
+            }
         }
 
         // Render Online Store Catalog Grid
         function renderCatalog() {
             const grid = document.getElementById('product-grid');
+            if(!grid) return;
 
-            grid.innerHTML = products.map(p => {
+            let html = '';
+            for (let i = 0; i < products.length; i++) {
+                const p = products[i];
                 let buttonText = "Add to Cart";
                 let buttonDisabled = false;
 
@@ -600,7 +619,7 @@
                     buttonText = "⏳ Pre-Order Reserve";
                 }
 
-                return `
+                html += `
                 <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition-shadow">
                     <div>
                         <div class="w-full h-48 bg-brand-bg rounded-2xl flex items-center justify-center text-6xl mb-4 shadow-inner relative overflow-hidden">
@@ -620,8 +639,9 @@
                             ${buttonText}
                         </button>
                     </div>
-                </div>
-            `}).join('');
+                </div>`;
+            }
+            grid.innerHTML = html;
         }
 
         // Store Operating Mode Controller
@@ -722,7 +742,7 @@
             }
         }
 
-        // Render Admin Control Dashboard & Analytics Chart
+        // Render Admin Control Dashboard
         function renderAdmin() {
             const tbody = document.getElementById('admin-table-body');
             const grossSalesEl = document.getElementById('admin-gross-sales');
@@ -733,9 +753,14 @@
             const ordersTableBody = document.getElementById('admin-orders-table-body');
             const posGrid = document.getElementById('onsite-pos-grid');
 
-            // 1. Calculate Combined Revenue Totals
-            const onlineRevenue = salesLog.filter(o => o.channel === 'Online').reduce((sum, o) => sum + o.total, 0);
-            const onsiteRevenue = salesLog.filter(o => o.channel === 'Onsite POS').reduce((sum, o) => sum + o.total, 0);
+            if(!tbody) return;
+
+            let onlineRevenue = 0;
+            let onsiteRevenue = 0;
+            for(let i = 0; i < salesLog.length; i++) {
+                if(salesLog[i].channel === 'Online') onlineRevenue += salesLog[i].total;
+                else if(salesLog[i].channel === 'Onsite POS') onsiteRevenue += salesLog[i].total;
+            }
             const combinedGrossRevenue = onlineRevenue + onsiteRevenue;
 
             grossSalesEl.textContent = `₱${combinedGrossRevenue}`;
@@ -745,10 +770,8 @@
             const totalPhysicalStock = products.reduce((sum, p) => sum + Number(p.stock), 0);
             totalStockAnalyticsEl.textContent = `${totalPhysicalStock} pcs`;
 
-            // 2. Restock Form Options
             restockSelect.innerHTML = products.map(p => `<option value="${p.id}">${p.name} (Current Stock: ${p.stock} pcs)</option>`).join('');
 
-            // 3. Render Master SKU Inventory Table
             tbody.innerHTML = products.map(p => `
                 <tr>
                     <td class="p-4 font-bold flex items-center gap-2"><span>${p.icon}</span> ${p.name}</td>
@@ -762,7 +785,6 @@
                 </tr>
             `).join('');
 
-            // 4. Render Onsite POS Quick Checkout Cards
             posGrid.innerHTML = products.map(p => `
                 <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col justify-between space-y-4">
                     <div class="flex items-center gap-3">
@@ -781,7 +803,6 @@
                 </div>
             `).join('');
 
-            // 5. Render Master Sales Log Table
             if (salesLog.length === 0) {
                 ordersTableBody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-gray-400 text-xs font-medium">No sales logged yet. Perform an online or onsite checkout to test!</td></tr>`;
             } else {
@@ -796,7 +817,6 @@
                 `).join('');
             }
 
-            // 6. Update YouTube-Style Sales Analytics Chart
             updateAnalyticsChart();
         }
 
@@ -805,7 +825,6 @@
             const prod = products.find(p => p.id === productId);
             if (!prod || prod.stock <= 0) return alert('No stock left to sell onsite!');
 
-            // Deduct master stock directly
             prod.stock -= 1;
 
             const nowPH = new Date().toLocaleString("en-US", {
@@ -833,14 +852,17 @@
             alert(`✅ Onsite Sale Processed! 1x ${prod.name} sold for ₱${prod.price}. Master stock updated.`);
         }
 
-        // YouTube-Analytics-Style Chart Updater
+        // Chart.js Deferred Analytics Renderer
         function updateAnalyticsChart() {
-            const ctx = document.getElementById('salesAnalyticsChart').getContext('2d');
+            if (typeof Chart === 'undefined') return;
+            
+            const chartCanvas = document.getElementById('salesAnalyticsChart');
+            if(!chartCanvas) return;
+            const ctx = chartCanvas.getContext('2d');
 
-            // Aggregate Sales by Date
             const salesByDate = {};
             salesLog.forEach(order => {
-                const dateKey = order.timestampPH.split(',')[0]; // e.g. "Oct 20"
+                const dateKey = order.timestampPH.split(',')[0];
                 salesByDate[dateKey] = (salesByDate[dateKey] || 0) + order.total;
             });
 
@@ -906,7 +928,6 @@
             }
         }
 
-        // RESET WITH CONFIRMATION DIALOGS
         function resetInventoryWithConfirm() {
             if (window.confirm("⚠️ Are you sure you want to reset all inventory quantities to 0? This cannot be undone.")) {
                 products.forEach(p => {
@@ -935,7 +956,6 @@
             }
         }
 
-        // Audio Upload Handler
         function handleAudioUpload(e) {
             const files = e.target.files;
             if(!files || files.length === 0) return;
@@ -949,7 +969,6 @@
             alert(`Successfully loaded ${asmrAudioFiles.length} custom ASMR audio clips!`);
         }
 
-        // Universal Authentication Modal
         function openAuthModal() {
             document.getElementById('auth-modal').classList.remove('hidden');
         }
@@ -981,7 +1000,6 @@
             }
         }
 
-        // Cart Actions
         function toggleCart() {
             document.getElementById('cart-drawer').classList.toggle('hidden');
         }
@@ -1063,7 +1081,6 @@
             updateCartUI();
         }
 
-        // Online Web Checkout
         function checkout() {
             if(cart.length === 0) return alert('Your cart is empty!');
             if(storeMode === 'LOCKED') return alert('Store is currently locked.');
@@ -1117,7 +1134,6 @@
             toggleCart();
         }
 
-        // CONTINUOUS PRESS-AND-HOLD ASMR SOUND GENERATOR
         function startASMR(e) {
             if (e) e.preventDefault();
             isPressingASMR = true;
@@ -1167,7 +1183,6 @@
             }
         }
 
-        // Review Submission with Photo Upload
         function handleReviewSubmit(e) {
             e.preventDefault();
             const name = document.getElementById('rev-name').value.trim();
@@ -1190,6 +1205,8 @@
 
         function renderReviews() {
             const list = document.getElementById('reviews-list');
+            if(!list) return;
+            
             if(reviews.length === 0) {
                 list.innerHTML = `<div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center text-gray-400 font-medium text-sm">No customer reviews yet! Be the first to leave a review after receiving your order.</div>`;
                 return;
@@ -1215,7 +1232,6 @@
             document.getElementById('return-success').classList.remove('hidden');
         }
 
-        // AI Chatbot Logic
         function toggleChat() {
             document.getElementById('chat-window').classList.toggle('hidden');
         }
@@ -1239,17 +1255,17 @@
                 }
                 messages.innerHTML += `<div class="bg-gray-100 text-gray-700 p-3 rounded-2xl rounded-tl-none max-w-[80%]">${reply}</div>`;
                 messages.scrollTop = messages.scrollHeight;
-            }, 600);
+            }, 500);
         }
 
         // On Load Initializer
-        window.onload = function() {
-            document.getElementById('admin-target-date').value = targetDispatchDate;
+        window.addEventListener('DOMContentLoaded', function() {
+            const targetInput = document.getElementById('admin-target-date');
+            if(targetInput) targetInput.value = targetDispatchDate;
             renderCatalog();
-            renderAdmin();
             renderReviews();
             updateModeUI();
-        };
+        });
     </script>
 </body>
 </html>
