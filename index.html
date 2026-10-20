@@ -6,6 +6,8 @@
     <title>SquishIQ | Tactile Sensory Lab & ASMR Toys</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for YouTube-Style Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
     <script>
@@ -43,8 +45,8 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <!-- Brand Logo & Name (Crispy Toast & Sparkle Mascot) -->
             <a href="#" onclick="switchTab('shop')" class="flex items-center gap-3 group">
-                <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center border-2 border-brand-pink overflow-hidden group-hover:scale-105 transition-transform">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" class="w-10 h-10">
+                <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center border-2 border-brand-pink overflow-hidden group-hover:scale-105 transition-transform p-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" class="w-full h-full">
                         <rect x="50" y="10" width="400" height="320" rx="50" fill="#FFFFFF" />
                         <rect x="170" y="140" width="160" height="130" rx="60" fill="#C68B59" />
                         <ellipse cx="175" cy="150" rx="12" ry="16" fill="#6F4E37" />
@@ -73,14 +75,13 @@
                 <button onclick="switchTab('returns')" id="nav-returns" class="text-gray-600 hover:text-brand-darkpink transition-colors">Returns Portal</button>
                 <button onclick="switchTab('admin')" id="nav-admin" class="hidden text-gray-600 hover:text-brand-darkpink transition-colors flex items-center gap-1.5">
                     <span>📊 Admin Dashboard</span>
-                    <span class="bg-brand-darkpink text-white text-[9px] px-1.5 py-0.5 rounded-full font-bold">LOCKED</span>
                 </button>
             </nav>
 
-            <!-- Right Actions: Auth & Cart -->
+            <!-- Right Actions: Universal Auth & Cart -->
             <div class="flex items-center gap-3">
-                <button onclick="openAuthModal()" id="auth-btn" class="text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 px-3.5 py-2 rounded-full transition-colors">
-                    🔑 Admin Login
+                <button onclick="openAuthModal()" id="auth-btn" class="text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-full transition-colors flex items-center gap-1.5">
+                    <span>👤</span> <span id="auth-btn-text">Log In / Sign Up</span>
                 </button>
 
                 <button onclick="toggleCart()" class="relative bg-brand-pink/30 hover:bg-brand-pink/50 text-brand-darkpink font-semibold px-4 py-2 rounded-full flex items-center gap-2 transition-colors">
@@ -97,17 +98,17 @@
     <!-- Main Content Container -->
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
 
-        <!-- PRE-ORDER COUNTDOWN HERO BANNER (Visible in Pre-Order Mode) -->
+        <!-- PRE-ORDER COUNTDOWN HERO BANNER -->
         <div id="preorder-hero-banner" class="hidden mb-8 bg-gradient-to-r from-purple-600 via-pink-500 to-rose-400 text-white rounded-3xl p-8 shadow-xl relative overflow-hidden">
             <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="space-y-2 text-center md:text-left">
                     <span class="bg-white/20 backdrop-blur-md text-white text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">⏳ Pre-Order Reservations Open</span>
-                    <h2 class="text-3xl md:text-4xl font-extrabold font-display">Reserves Shipping Soon!</h2>
-                    <p class="text-pink-100 text-sm max-w-md">Lock in your favorite crunchy squishies now. Batch shipping begins officially on our launch date below!</p>
+                    <h2 id="countdown-title-text" class="text-3xl md:text-4xl font-extrabold font-display">Reserves Shipping Soon!</h2>
+                    <p id="countdown-sub-text" class="text-pink-100 text-sm max-w-md">Lock in your favorite crunchy squishies now. Batch shipping begins officially on our launch date below!</p>
                 </div>
                 
                 <!-- Countdown Display Grid -->
-                <div class="bg-white/10 backdrop-blur-lg border border-white/20 p-4 rounded-2xl flex items-center gap-3 sm:gap-4 text-center">
+                <div id="countdown-grid" class="bg-white/10 backdrop-blur-lg border border-white/20 p-4 rounded-2xl flex items-center gap-3 sm:gap-4 text-center">
                     <div class="bg-white/20 rounded-xl px-3 py-2 min-w-[60px]">
                         <span id="cd-days" class="block font-display text-2xl md:text-3xl font-extrabold">00</span>
                         <span class="text-[10px] font-bold uppercase tracking-widest text-pink-100">Days</span>
@@ -135,7 +136,6 @@
         <section id="tab-shop" class="space-y-8">
             <div class="bg-gradient-to-r from-brand-pink/40 to-blue-100 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="space-y-4 max-w-xl">
-                    <span id="mode-status-badge" class="bg-white text-brand-darkpink text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">🚀 Live Orders Mode</span>
                     <h1 class="text-4xl md:text-5xl font-extrabold font-display tracking-tight text-brand-text">Satisfying Crunches & Taba Squishies.</h1>
                     <p class="text-gray-600 font-medium">Sourced directly, tested for peak ASMR acoustics, and shipped instantly from our Metro Manila warehouse hub.</p>
                 </div>
@@ -162,12 +162,18 @@
             <div class="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-gray-100 text-center max-w-3xl mx-auto">
                 <span class="bg-brand-pink/40 text-brand-darkpink text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Interactive Sound Lab</span>
                 <h2 class="text-3xl font-bold font-display mt-4 mb-2">Virtual ASMR Squeeze Simulator</h2>
-                <p class="text-gray-500 mb-8">Tap or click the squishy below to test real acoustic crunch and gelatinous pop simulations!</p>
+                <p class="text-gray-500 mb-8">Press and hold the toast below for continuous ASMR crunching sounds!</p>
                 
-                <div class="relative w-64 h-64 mx-auto bg-gradient-to-br from-brand-pink to-blue-200 rounded-full flex items-center justify-center shadow-inner cursor-pointer select-none transition-transform active:scale-95 group" onclick="triggerASMR()">
+                <div id="asmr-press-pad" 
+                     onmousedown="startASMR()" 
+                     onmouseup="stopASMR()" 
+                     onmouseleave="stopASMR()" 
+                     ontouchstart="startASMR(event)" 
+                     ontouchend="stopASMR(event)"
+                     class="relative w-64 h-64 mx-auto bg-gradient-to-br from-brand-pink to-blue-200 rounded-full flex items-center justify-center shadow-inner cursor-pointer select-none transition-transform active:scale-95 group">
                     <div class="absolute inset-4 bg-white rounded-full flex flex-col items-center justify-center shadow-md group-hover:scale-95 transition-transform">
                         <span class="text-5xl mb-2">🍞✨</span>
-                        <span class="font-display font-bold text-lg text-brand-text">TAP TO SQUEEZE</span>
+                        <span class="font-display font-bold text-lg text-brand-text">HOLD TO SQUEEZE</span>
                         <span id="asmr-text" class="text-xs font-semibold text-brand-darkpink mt-1">Ready...</span>
                     </div>
                 </div>
@@ -181,15 +187,42 @@
                     <h2 class="text-3xl font-bold font-display">Customer Reviews</h2>
                     <p class="text-gray-500">Verified feedback from Metro Manila squishy collectors.</p>
                 </div>
-                <div class="bg-white px-4 py-2 rounded-xl shadow-sm border border-gray-100 text-center">
-                    <span class="text-2xl font-extrabold text-brand-darkpink">New Store</span>
-                    <span class="block text-xs text-gray-400 font-semibold">0 Reviews Yet</span>
-                </div>
+                <button onclick="document.getElementById('review-form-container').classList.toggle('hidden')" class="bg-brand-darkpink text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-sm hover:bg-brand-darkpink/90 transition-colors">
+                    + Write a Review
+                </button>
             </div>
+
+            <!-- Submit Review Form -->
+            <div id="review-form-container" class="hidden bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-4">
+                <h3 class="font-bold font-display text-lg">Leave Your Review</h3>
+                <form onsubmit="handleReviewSubmit(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <input type="text" id="rev-name" placeholder="Your Name" required class="px-4 py-2.5 rounded-xl border text-sm font-medium">
+                        <select id="rev-product" required class="px-4 py-2.5 rounded-xl border text-sm font-medium">
+                            <option value="">Select Item Purchased</option>
+                            <option>Crunchy Butter Squishy</option>
+                            <option>Crunchy Pineapple Bun</option>
+                            <option>Crunchy Pudding</option>
+                            <option>Crunchy Soap</option>
+                            <option>Crunchy Peanut Squishy</option>
+                            <option>Watermelon Slush</option>
+                            <option>Strawberry</option>
+                        </select>
+                    </div>
+                    <div>
+                        <textarea id="rev-comment" placeholder="Write your experience..." required rows="3" class="w-full px-4 py-2.5 rounded-xl border text-sm font-medium"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Upload Product Photo</label>
+                        <input type="file" id="rev-image-file" accept="image/*" class="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-pink-50 file:text-brand-darkpink hover:file:bg-pink-100">
+                    </div>
+                    <button type="submit" class="bg-brand-darkpink text-white font-bold px-6 py-2.5 rounded-xl text-sm shadow-sm">Submit Review</button>
+                </form>
+            </div>
+
+            <!-- Review Cards List -->
             <div id="reviews-list" class="space-y-4">
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center text-gray-400 font-medium text-sm">
-                    No customer reviews yet! Be the first to leave a review after receiving your order.
-                </div>
+                <!-- Injected by JavaScript -->
             </div>
         </section>
 
@@ -219,7 +252,7 @@
             </div>
         </section>
 
-        <!-- TAB 5: ADMIN DASHBOARD (Protected for sachiguinevereyongngo@gmail.com) -->
+        <!-- TAB 5: ADMIN DASHBOARD (Strictly Restricted to sachiguinevereyongngo@gmail.com) -->
         <section id="tab-admin" class="hidden space-y-8">
             <div class="bg-gradient-to-r from-slate-900 to-indigo-900 text-white p-8 rounded-3xl shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div>
@@ -245,80 +278,173 @@
                 </div>
             </div>
 
-            <!-- Admin Key Stats -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <span class="text-xs font-bold text-gray-400 uppercase">Gross Sales Today</span>
-                    <h3 class="text-3xl font-extrabold font-display mt-2 text-brand-text">₱0</h3>
-                    <span class="text-xs text-gray-400 font-semibold mt-1 inline-block">Store freshly reset</span>
+            <!-- ADMIN MULTI-TAB SUB-NAVIGATION -->
+            <div class="flex border-b border-gray-200 gap-4 overflow-x-auto">
+                <button onclick="switchAdminSubTab('analytics')" id="subnav-analytics" class="py-3 px-4 font-bold text-sm border-b-2 border-brand-darkpink text-brand-darkpink transition-colors">📈 Business Analytics</button>
+                <button onclick="switchAdminSubTab('inventory')" id="subnav-inventory" class="py-3 px-4 font-bold text-sm border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors">📦 Inventory Management</button>
+                <button onclick="switchAdminSubTab('onsite')" id="subnav-onsite" class="py-3 px-4 font-bold text-sm border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors">🏬 Onsite Event POS</button>
+                <button onclick="switchAdminSubTab('saleslog')" id="subnav-saleslog" class="py-3 px-4 font-bold text-sm border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors">📋 Master Sales Log</button>
+            </div>
+
+            <!-- ADMIN SUB-TAB 1: BUSINESS ANALYTICS & YOUTUBE-STYLE GRAPH -->
+            <div id="admin-subtab-analytics" class="space-y-6">
+                <!-- Summary Revenue Metrics -->
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <span class="text-xs font-bold text-gray-400 uppercase">Combined Total Revenue</span>
+                        <h3 id="admin-gross-sales" class="text-3xl font-extrabold font-display mt-2 text-brand-darkpink">₱0</h3>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <span class="text-xs font-bold text-gray-400 uppercase">Online Web Revenue</span>
+                        <h3 id="admin-online-sales" class="text-2xl font-bold font-display mt-2 text-blue-600">₱0</h3>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <span class="text-xs font-bold text-gray-400 uppercase">Onsite Event Revenue</span>
+                        <h3 id="admin-onsite-sales" class="text-2xl font-bold font-display mt-2 text-green-600">₱0</h3>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <span class="text-xs font-bold text-gray-400 uppercase">Total Master Physical Stock</span>
+                        <h3 id="admin-total-stock-analytics" class="text-2xl font-bold font-display mt-2 text-gray-700">0 pcs</h3>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <span class="text-xs font-bold text-gray-400 uppercase">Total Inventory Units</span>
-                    <h3 id="admin-total-stock" class="text-3xl font-extrabold font-display mt-2 text-brand-text">0 pcs</h3>
-                    <span class="text-xs text-blue-600 font-semibold mt-1 inline-block">Ready for batch upload</span>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <span class="text-xs font-bold text-gray-400 uppercase">Active Orders</span>
-                    <h3 class="text-3xl font-extrabold font-display mt-2 text-brand-text">0</h3>
-                    <span class="text-xs text-gray-400 font-semibold mt-1 inline-block">0 pending dispatches</span>
+
+                <!-- YouTube-Analytics-Style Sales Chart -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-bold font-display text-lg">Sales Performance & Revenue Trend</h3>
+                            <p class="text-xs text-gray-400">Daily gross sales over time (YouTube Studio style)</p>
+                        </div>
+                        <span class="text-xs font-bold bg-pink-100 text-brand-darkpink px-3 py-1 rounded-full">Live Analytics</span>
+                    </div>
+                    <div class="h-64 sm:h-80 w-full">
+                        <canvas id="salesAnalyticsChart"></canvas>
+                    </div>
                 </div>
             </div>
 
-            <!-- Add/Edit Product Manager -->
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-4">
-                <h3 class="font-bold font-display text-lg">Manage Store Inventory (SKUs)</h3>
-                <form onsubmit="handleAddProduct(event)" class="grid grid-cols-1 sm:grid-cols-4 gap-4">
-                    <input type="text" id="new-prod-name" placeholder="Item Name (e.g. Crunchy Butter)" required class="px-4 py-2.5 rounded-xl border text-sm font-medium">
-                    <input type="number" id="new-prod-price" placeholder="Price (PHP)" required class="px-4 py-2.5 rounded-xl border text-sm font-medium">
-                    <input type="number" id="new-prod-stock" placeholder="Initial Stock Qty" required class="px-4 py-2.5 rounded-xl border text-sm font-medium">
-                    <button type="submit" class="bg-brand-darkpink text-white font-bold rounded-xl text-sm py-2.5 hover:bg-brand-darkpink/90 transition-colors">+ Add SKU</button>
-                </form>
+            <!-- ADMIN SUB-TAB 2: INVENTORY MANAGEMENT -->
+            <div id="admin-subtab-inventory" class="hidden space-y-6">
+                <div class="flex justify-between items-center bg-white p-6 rounded-2xl border border-gray-100">
+                    <div>
+                        <h3 class="font-bold font-display text-lg">Master Inventory Control</h3>
+                        <p class="text-xs text-gray-400">Manage physical stock quantities shared across both online and onsite channels.</p>
+                    </div>
+                    <button onclick="resetInventoryWithConfirm()" class="text-xs font-bold text-red-500 hover:text-red-700 underline">
+                        🔄 Reset Inventory to 0 (Blank Slate)
+                    </button>
+                </div>
+
+                <!-- Restock SKU Form & Sound Uploader -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
+                    <div>
+                        <h3 class="font-bold font-display text-base mb-3">Add or Restock Physical Stock</h3>
+                        <form onsubmit="handleRestockProduct(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <select id="restock-prod-id" required class="px-4 py-2.5 rounded-xl border text-sm font-medium">
+                                <!-- Injected by JS -->
+                            </select>
+                            <input type="number" id="restock-prod-qty" placeholder="Quantity to Add (e.g. 12)" required min="1" class="px-4 py-2.5 rounded-xl border text-sm font-medium">
+                            <button type="submit" class="bg-brand-darkpink text-white font-bold rounded-xl text-sm py-2.5 hover:bg-brand-darkpink/90 transition-colors">+ Add Physical Stock</button>
+                        </form>
+                    </div>
+
+                    <div class="border-t pt-6">
+                        <h3 class="font-bold font-display text-base mb-1">Upload ASMR Sound Clips</h3>
+                        <p class="text-xs text-gray-500 mb-3">Upload custom MP3/WAV recordings of squishy crunches for randomized audio in the ASMR lab!</p>
+                        <input type="file" id="asmr-file-input" multiple accept="audio/*" onchange="handleAudioUpload(event)" class="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
+                        <span id="audio-count-badge" class="text-xs font-bold text-purple-600 ml-2">0 custom clips loaded</span>
+                    </div>
+                </div>
+
+                <!-- Active SKU Table -->
+                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-6 border-b border-gray-100">
+                        <h3 class="font-bold font-display text-lg">Active Catalog Items</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-gray-50 text-gray-400 text-xs uppercase font-bold">
+                                <tr>
+                                    <th class="p-4">SKU Item Name</th>
+                                    <th class="p-4">Retail Price</th>
+                                    <th class="p-4">Master Physical Stock</th>
+                                    <th class="p-4">Pre-Order Reserved</th>
+                                    <th class="p-4">Status</th>
+                                    <th class="p-4">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-table-body" class="divide-y divide-gray-100">
+                                <!-- Injected by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
-            <!-- SKU Management Table -->
-            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-6 border-b border-gray-100">
-                    <h3 class="font-bold font-display text-lg">Active Catalog Items</h3>
+            <!-- ADMIN SUB-TAB 3: ONSITE EVENT POS -->
+            <div id="admin-subtab-onsite" class="hidden space-y-6">
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-2">
+                    <h3 class="font-bold font-display text-lg">In-Person & School Event Point of Sale</h3>
+                    <p class="text-xs text-gray-500">Log cash or GCash sales completed on-site. Automatically deducts from master physical stock and updates sales analytics!</p>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-gray-50 text-gray-400 text-xs uppercase font-bold">
-                            <tr>
-                                <th class="p-4">SKU Item Name</th>
-                                <th class="p-4">Retail Price</th>
-                                <th class="p-4">Stock Qty</th>
-                                <th class="p-4">Status</th>
-                                <th class="p-4">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-table-body" class="divide-y divide-gray-100">
-                            <!-- Injected by JavaScript -->
-                        </tbody>
-                    </table>
+
+                <div id="onsite-pos-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Injected by JavaScript -->
+                </div>
+            </div>
+
+            <!-- ADMIN SUB-TAB 4: MASTER SALES LOG -->
+            <div id="admin-subtab-saleslog" class="hidden space-y-6">
+                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                        <h3 class="font-bold font-display text-lg">Master Sales & Orders Log</h3>
+                        <button onclick="clearSalesLogWithConfirm()" class="text-xs font-bold text-red-500 hover:text-red-700 underline">
+                            🗑️ Clear Sales & Orders Log
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-gray-50 text-gray-400 text-xs uppercase font-bold">
+                                <tr>
+                                    <th class="p-4">Order ID</th>
+                                    <th class="p-4">Date & Time (PH Time)</th>
+                                    <th class="p-4">Channel</th>
+                                    <th class="p-4">Items Purchased</th>
+                                    <th class="p-4">Total Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-orders-table-body" class="divide-y divide-gray-100">
+                                <!-- Injected by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <!-- AUTHENTICATION / ADMIN LOGIN MODAL -->
+    <!-- UNIVERSAL AUTHENTICATION MODAL -->
     <div id="auth-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm hidden">
         <div class="bg-white w-full max-w-md rounded-3xl p-8 shadow-2xl border border-gray-100 space-y-6 relative">
             <button onclick="closeAuthModal()" class="absolute top-6 right-6 text-gray-400 hover:text-gray-600 font-bold">✕</button>
             <div class="text-center space-y-2">
-                <div class="w-12 h-12 bg-brand-pink/30 rounded-full flex items-center justify-center mx-auto text-2xl">🔒</div>
-                <h3 class="text-2xl font-bold font-display">Admin Authentication</h3>
-                <p class="text-xs text-gray-500">Only authorized administrators can access the store dashboard.</p>
+                <div class="w-12 h-12 bg-brand-pink/30 rounded-full flex items-center justify-center mx-auto text-2xl">👋</div>
+                <h3 class="text-2xl font-bold font-display">Welcome to SquishIQ</h3>
+                <p class="text-xs text-gray-500">Sign in to your account or create a new profile.</p>
             </div>
 
             <form onsubmit="handleAuthLogin(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Email Address</label>
-                    <input type="email" id="auth-email-input" required placeholder="Enter your admin email" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-brand-darkpink font-medium text-sm">
+                    <input type="email" id="auth-email-input" required placeholder="name@example.com" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-brand-darkpink font-medium text-sm">
                 </div>
-                <button type="submit" class="w-full bg-brand-darkpink hover:bg-brand-darkpink/90 text-white font-bold py-3.5 rounded-xl shadow-md transition-colors text-sm">Sign In as Admin</button>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Password</label>
+                    <input type="password" id="auth-password-input" required placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-brand-darkpink font-medium text-sm">
+                </div>
+                <button type="submit" class="w-full bg-brand-darkpink hover:bg-brand-darkpink/90 text-white font-bold py-3.5 rounded-xl shadow-md transition-colors text-sm">Sign In / Register</button>
             </form>
-            <p class="text-[10px] text-center text-gray-400">Lock rule active for: sachiguinevereyongngo@gmail.com</p>
         </div>
     </div>
 
@@ -391,29 +517,43 @@
 
     <!-- Application JavaScript Logic -->
     <script>
-        // STRICT ADMIN EMAIL CONFIGURATION
+        // STRICT ADMIN CREDENTIALS CONFIGURATION
         const ADMIN_EMAIL = "sachiguinevereyongngo@gmail.com";
+        const ADMIN_PASS = "Bestsquishy101";
+        
         let currentUserEmail = null;
 
         // STORE OPERATING MODES: 'LOCKED', 'PREORDER', 'LIVE'
         let storeMode = 'LIVE';
-        let targetDispatchDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 16); // Default 7 days from now
+        let targetDispatchDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 16);
 
-        // INITIAL PRODUCT DATABASE (Clean Reset Items)
+        // MASTER UNIFIED INVENTORY DATABASE (Starts at 0 pcs for blank slate testing)
         let products = [
-            { id: 1, name: "Crunchy Butter Squishy", price: 180, stock: 12, icon: "🧈" },
-            { id: 2, name: "Crunchy Pineapple Bun", price: 150, stock: 12, icon: "🍍" },
-            { id: 3, name: "Crunchy Pudding", price: 130, stock: 12, icon: "🍮" },
-            { id: 4, name: "Crunchy Soap", price: 130, stock: 12, icon: "🧼" },
-            { id: 5, name: "Crunchy Peanut Squishy", price: 130, stock: 12, icon: "🥜" },
-            { id: 6, name: "Watermelon Slush", price: 120, stock: 12, icon: "🍉" },
-            { id: 7, name: "Strawberry", price: 100, stock: 12, icon: "🍓" }
+            { id: 1, name: "Crunchy Butter Squishy", price: 180, stock: 0, preorders: 0, icon: "🧈" },
+            { id: 2, name: "Crunchy Pineapple Bun", price: 150, stock: 0, preorders: 0, icon: "🍍" },
+            { id: 3, name: "Crunchy Pudding", price: 130, stock: 0, preorders: 0, icon: "🍮" },
+            { id: 4, name: "Crunchy Soap", price: 130, stock: 0, preorders: 0, icon: "🧼" },
+            { id: 5, name: "Crunchy Peanut Squishy", price: 130, stock: 0, preorders: 0, icon: "🥜" },
+            { id: 6, name: "Watermelon Slush", price: 120, stock: 0, preorders: 0, icon: "🍉" },
+            { id: 7, name: "Strawberry", price: 100, stock: 0, preorders: 0, icon: "🍓" }
         ];
 
+        let salesLog = [];
+        let reviews = [];
+        let orderCounter = 1001;
         let cart = [];
         let countdownInterval = null;
+        let analyticsChart = null;
 
-        // Tab Switcher
+        // ASMR SOUND SYSTEM VARIABLES
+        let asmrAudioFiles = []; 
+        let currentPlayingAudio = null;
+        let isPressingASMR = false;
+        let synthAudioCtx = null;
+        let synthOscillator = null;
+        let synthGain = null;
+
+        // Main Navigation Switcher
         function switchTab(tabId) {
             ['shop', 'asmr', 'reviews', 'returns', 'admin'].forEach(t => {
                 const page = document.getElementById(`tab-${t}`);
@@ -428,25 +568,46 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Render Catalog Grid
+        // Admin Sub-Tab Switcher
+        function switchAdminSubTab(subTabId) {
+            ['analytics', 'inventory', 'onsite', 'saleslog'].forEach(st => {
+                const subPage = document.getElementById(`admin-subtab-${st}`);
+                if(subPage) subPage.classList.add('hidden');
+                const subBtn = document.getElementById(`subnav-${st}`);
+                if(subBtn) subBtn.className = "py-3 px-4 font-bold text-sm border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors";
+            });
+
+            document.getElementById(`admin-subtab-${subTabId}`).classList.remove('hidden');
+            const activeSubBtn = document.getElementById(`subnav-${subTabId}`);
+            if(activeSubBtn) activeSubBtn.className = "py-3 px-4 font-bold text-sm border-b-2 border-brand-darkpink text-brand-darkpink transition-colors";
+        }
+
+        // Render Online Store Catalog Grid
         function renderCatalog() {
             const grid = document.getElementById('product-grid');
-            let buttonText = "Add to Cart";
-            let buttonDisabled = false;
 
-            if (storeMode === 'LOCKED') {
-                buttonText = "🔒 Store Locked (Browsing Only)";
-                buttonDisabled = true;
-            } else if (storeMode === 'PREORDER') {
-                buttonText = "⏳ Pre-Order Reserve";
-            }
+            grid.innerHTML = products.map(p => {
+                let buttonText = "Add to Cart";
+                let buttonDisabled = false;
 
-            grid.innerHTML = products.map(p => `
+                if (storeMode === 'LOCKED') {
+                    buttonText = "🔒 Store Locked";
+                    buttonDisabled = true;
+                } else if (storeMode === 'LIVE' && p.stock <= 0) {
+                    buttonText = "Out of Stock";
+                    buttonDisabled = true;
+                } else if (storeMode === 'PREORDER') {
+                    buttonText = "⏳ Pre-Order Reserve";
+                }
+
+                return `
                 <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition-shadow">
                     <div>
                         <div class="w-full h-48 bg-brand-bg rounded-2xl flex items-center justify-center text-6xl mb-4 shadow-inner relative overflow-hidden">
                             <span>${p.icon}</span>
-                            <span class="absolute bottom-2 right-2 bg-white/80 backdrop-blur-sm text-[10px] font-bold px-2 py-0.5 rounded-full text-gray-400">Media ready</span>
+                            <span class="absolute top-2 right-2 ${p.stock > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'} text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                                ${storeMode === 'PREORDER' ? `${p.preorders} pre-ordered` : (p.stock > 0 ? `${p.stock} in stock` : 'Out of stock')}
+                            </span>
                         </div>
                         <h3 class="font-display font-bold text-lg mt-2">${p.name}</h3>
                     </div>
@@ -460,10 +621,10 @@
                         </button>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
-        // Mode Controller
+        // Store Operating Mode Controller
         function setStoreMode(mode) {
             storeMode = mode;
             updateModeUI();
@@ -471,12 +632,10 @@
         }
 
         function updateModeUI() {
-            const statusBadge = document.getElementById('mode-status-badge');
             const announceText = document.getElementById('announcement-text');
             const preorderBanner = document.getElementById('preorder-hero-banner');
             const checkoutBtn = document.getElementById('checkout-btn');
 
-            // Highlight Active Admin Mode Button
             ['LOCKED', 'PREORDER', 'LIVE'].forEach(m => {
                 const btn = document.getElementById(`mode-btn-${m}`);
                 if(btn) {
@@ -489,8 +648,6 @@
             });
 
             if (storeMode === 'LOCKED') {
-                statusBadge.textContent = "🔒 Locked Mode (Browsing Only)";
-                statusBadge.className = "bg-amber-100 text-amber-800 text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm";
                 announceText.textContent = "🔒 Store is currently locked for browsing. Pre-orders opening soon!";
                 preorderBanner.classList.add('hidden');
                 if(checkoutBtn) {
@@ -500,8 +657,6 @@
                 }
                 clearInterval(countdownInterval);
             } else if (storeMode === 'PREORDER') {
-                statusBadge.textContent = "⏳ Pre-Order Reservations Active";
-                statusBadge.className = "bg-purple-100 text-purple-800 text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm";
                 announceText.textContent = `⏳ Pre-Order Mode: Dispatching orders on ${new Date(targetDispatchDate).toLocaleDateString()}`;
                 preorderBanner.classList.remove('hidden');
                 if(checkoutBtn) {
@@ -511,8 +666,6 @@
                 }
                 startCountdownTimer();
             } else {
-                statusBadge.textContent = "🚀 Live Orders Mode";
-                statusBadge.className = "bg-white text-brand-darkpink text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm";
                 announceText.textContent = "✨ Free Metro Manila Shipping on Orders Over ₱500 | Powered by Locad 3PL ✨";
                 preorderBanner.classList.add('hidden');
                 if(checkoutBtn) {
@@ -532,14 +685,21 @@
                 const now = new Date().getTime();
                 const diff = target - now;
 
+                const titleEl = document.getElementById('countdown-title-text');
+                const subEl = document.getElementById('countdown-sub-text');
+                const gridEl = document.getElementById('countdown-grid');
+
                 if (diff <= 0) {
-                    document.getElementById('cd-days').textContent = '00';
-                    document.getElementById('cd-hours').textContent = '00';
-                    document.getElementById('cd-mins').textContent = '00';
-                    document.getElementById('cd-secs').textContent = '00';
+                    titleEl.textContent = "🎉 YOUR ORDERS ARE SHIPPING!";
+                    subEl.textContent = "Pre-order dispatch is officially underway via our Locad Metro Manila 3PL hub!";
+                    gridEl.classList.add('hidden');
                     clearInterval(countdownInterval);
                     return;
                 }
+
+                gridEl.classList.remove('hidden');
+                titleEl.textContent = "Reserves Shipping Soon!";
+                subEl.textContent = "Lock in your favorite crunchy squishies now. Batch shipping begins officially on our launch date below!";
 
                 const days = Math.floor(diff / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -562,49 +722,234 @@
             }
         }
 
-        // Render Admin SKU Table
+        // Render Admin Control Dashboard & Analytics Chart
         function renderAdmin() {
             const tbody = document.getElementById('admin-table-body');
-            const totalStockEl = document.getElementById('admin-total-stock');
-            
-            const totalStock = products.reduce((sum, p) => sum + Number(p.stock), 0);
-            totalStockEl.textContent = `${totalStock} pcs`;
+            const grossSalesEl = document.getElementById('admin-gross-sales');
+            const onlineSalesEl = document.getElementById('admin-online-sales');
+            const onsiteSalesEl = document.getElementById('admin-onsite-sales');
+            const totalStockAnalyticsEl = document.getElementById('admin-total-stock-analytics');
+            const restockSelect = document.getElementById('restock-prod-id');
+            const ordersTableBody = document.getElementById('admin-orders-table-body');
+            const posGrid = document.getElementById('onsite-pos-grid');
 
+            // 1. Calculate Combined Revenue Totals
+            const onlineRevenue = salesLog.filter(o => o.channel === 'Online').reduce((sum, o) => sum + o.total, 0);
+            const onsiteRevenue = salesLog.filter(o => o.channel === 'Onsite POS').reduce((sum, o) => sum + o.total, 0);
+            const combinedGrossRevenue = onlineRevenue + onsiteRevenue;
+
+            grossSalesEl.textContent = `₱${combinedGrossRevenue}`;
+            onlineSalesEl.textContent = `₱${onlineRevenue}`;
+            onsiteSalesEl.textContent = `₱${onsiteRevenue}`;
+
+            const totalPhysicalStock = products.reduce((sum, p) => sum + Number(p.stock), 0);
+            totalStockAnalyticsEl.textContent = `${totalPhysicalStock} pcs`;
+
+            // 2. Restock Form Options
+            restockSelect.innerHTML = products.map(p => `<option value="${p.id}">${p.name} (Current Stock: ${p.stock} pcs)</option>`).join('');
+
+            // 3. Render Master SKU Inventory Table
             tbody.innerHTML = products.map(p => `
                 <tr>
                     <td class="p-4 font-bold flex items-center gap-2"><span>${p.icon}</span> ${p.name}</td>
                     <td class="p-4 font-semibold">₱${p.price}</td>
-                    <td class="p-4 font-bold text-brand-accent">${p.stock} pcs</td>
-                    <td class="p-4"><span class="bg-green-100 text-green-700 text-xs px-2.5 py-1 rounded-full font-bold">Active</span></td>
+                    <td class="p-4 font-bold ${p.stock > 0 ? 'text-brand-accent' : 'text-red-500'}">${p.stock} pcs</td>
+                    <td class="p-4 font-bold text-purple-600">${p.preorders || 0} pcs</td>
+                    <td class="p-4"><span class="${p.stock > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'} text-xs px-2.5 py-1 rounded-full font-bold">${p.stock > 0 ? 'In Stock' : 'Out of Stock'}</span></td>
                     <td class="p-4">
-                        <button onclick="deleteProduct(${p.id})" class="text-xs text-red-500 font-bold hover:underline">Delete</button>
+                        <button onclick="deleteProduct(${p.id})" class="text-xs text-red-500 font-bold hover:underline">Delete SKU</button>
                     </td>
                 </tr>
             `).join('');
+
+            // 4. Render Onsite POS Quick Checkout Cards
+            posGrid.innerHTML = products.map(p => `
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col justify-between space-y-4">
+                    <div class="flex items-center gap-3">
+                        <span class="text-4xl">${p.icon}</span>
+                        <div>
+                            <h4 class="font-bold text-base">${p.name}</h4>
+                            <span class="text-sm font-extrabold text-brand-darkpink">₱${p.price}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between border-t pt-3">
+                        <span class="text-xs font-bold ${p.stock > 0 ? 'text-gray-500' : 'text-red-500'}">Available: ${p.stock} pcs</span>
+                        <button onclick="sellOnsite(${p.id})" ${p.stock <= 0 ? 'disabled' : ''} class="${p.stock <= 0 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700 text-white'} font-bold px-4 py-2 rounded-xl text-xs transition-colors shadow-sm">
+                            + Sell 1 Unit Onsite
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            // 5. Render Master Sales Log Table
+            if (salesLog.length === 0) {
+                ordersTableBody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-gray-400 text-xs font-medium">No sales logged yet. Perform an online or onsite checkout to test!</td></tr>`;
+            } else {
+                ordersTableBody.innerHTML = salesLog.map(o => `
+                    <tr>
+                        <td class="p-4 font-bold font-display text-brand-darkpink">${o.id}</td>
+                        <td class="p-4 text-xs font-medium text-gray-500">${o.timestampPH}</td>
+                        <td class="p-4"><span class="${o.channel === 'Online' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'} text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">${o.channel}</span></td>
+                        <td class="p-4 text-xs font-semibold">${o.itemsSummary}</td>
+                        <td class="p-4 font-bold">₱${o.total}</td>
+                    </tr>
+                `).join('');
+            }
+
+            // 6. Update YouTube-Style Sales Analytics Chart
+            updateAnalyticsChart();
         }
 
-        function handleAddProduct(e) {
-            e.preventDefault();
-            const name = document.getElementById('new-prod-name').value;
-            const price = Number(document.getElementById('new-prod-price').value);
-            const stock = Number(document.getElementById('new-prod-stock').value);
+        // Onsite POS Sell Action
+        function sellOnsite(productId) {
+            const prod = products.find(p => p.id === productId);
+            if (!prod || prod.stock <= 0) return alert('No stock left to sell onsite!');
 
-            products.push({ id: Date.now(), name, price, stock, icon: "✨" });
+            // Deduct master stock directly
+            prod.stock -= 1;
+
+            const nowPH = new Date().toLocaleString("en-US", {
+                timeZone: "Asia/Manila",
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true
+            });
+
+            const newOrder = {
+                id: `POS-${orderCounter++}`,
+                timestampPH: nowPH,
+                itemsSummary: `${prod.name} (x1)`,
+                total: prod.price,
+                channel: 'Onsite POS'
+            };
+
+            salesLog.unshift(newOrder);
+
             renderCatalog();
             renderAdmin();
+            alert(`✅ Onsite Sale Processed! 1x ${prod.name} sold for ₱${prod.price}. Master stock updated.`);
+        }
 
-            document.getElementById('new-prod-name').value = '';
-            document.getElementById('new-prod-price').value = '';
-            document.getElementById('new-prod-stock').value = '';
+        // YouTube-Analytics-Style Chart Updater
+        function updateAnalyticsChart() {
+            const ctx = document.getElementById('salesAnalyticsChart').getContext('2d');
+
+            // Aggregate Sales by Date
+            const salesByDate = {};
+            salesLog.forEach(order => {
+                const dateKey = order.timestampPH.split(',')[0]; // e.g. "Oct 20"
+                salesByDate[dateKey] = (salesByDate[dateKey] || 0) + order.total;
+            });
+
+            const labels = Object.keys(salesByDate).reverse();
+            const data = Object.values(salesByDate).reverse();
+
+            if (labels.length === 0) {
+                labels.push("Today");
+                data.push(0);
+            }
+
+            if (analyticsChart) {
+                analyticsChart.destroy();
+            }
+
+            analyticsChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Gross Sales (₱)',
+                        data: data,
+                        borderColor: '#FF5C8A',
+                        backgroundColor: 'rgba(255, 92, 138, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3,
+                        pointBackgroundColor: '#FF5C8A',
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#F3F4F6' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        function handleRestockProduct(e) {
+            e.preventDefault();
+            const prodId = Number(document.getElementById('restock-prod-id').value);
+            const qty = Number(document.getElementById('restock-prod-qty').value);
+
+            const prod = products.find(p => p.id === prodId);
+            if(prod) {
+                prod.stock += qty;
+                renderCatalog();
+                renderAdmin();
+                alert(`Added ${qty} pcs to ${prod.name}! New master stock: ${prod.stock} pcs.`);
+                document.getElementById('restock-prod-qty').value = '';
+            }
+        }
+
+        // RESET WITH CONFIRMATION DIALOGS
+        function resetInventoryWithConfirm() {
+            if (window.confirm("⚠️ Are you sure you want to reset all inventory quantities to 0? This cannot be undone.")) {
+                products.forEach(p => {
+                    p.stock = 0;
+                    p.preorders = 0;
+                });
+                renderCatalog();
+                renderAdmin();
+                alert("Master Inventory & Pre-Order reserves successfully reset to 0 (Blank Slate).");
+            }
+        }
+
+        function clearSalesLogWithConfirm() {
+            if (window.confirm("⚠️ Are you sure you want to clear all sales and order history logs? This cannot be undone.")) {
+                salesLog = [];
+                renderAdmin();
+                alert("Sales & Order History logs cleared.");
+            }
         }
 
         function deleteProduct(id) {
-            products = products.filter(p => p.id !== id);
-            renderCatalog();
-            renderAdmin();
+            if (window.confirm("Are you sure you want to delete this SKU from your catalog?")) {
+                products = products.filter(p => p.id !== id);
+                renderCatalog();
+                renderAdmin();
+            }
         }
 
-        // Authentication Modal
+        // Audio Upload Handler
+        function handleAudioUpload(e) {
+            const files = e.target.files;
+            if(!files || files.length === 0) return;
+
+            asmrAudioFiles = [];
+            for (let i = 0; i < files.length; i++) {
+                const url = URL.createObjectURL(files[i]);
+                asmrAudioFiles.push(url);
+            }
+            document.getElementById('audio-count-badge').textContent = `${asmrAudioFiles.length} custom clip(s) loaded`;
+            alert(`Successfully loaded ${asmrAudioFiles.length} custom ASMR audio clips!`);
+        }
+
+        // Universal Authentication Modal
         function openAuthModal() {
             document.getElementById('auth-modal').classList.remove('hidden');
         }
@@ -616,17 +961,23 @@
         function handleAuthLogin(e) {
             e.preventDefault();
             const email = document.getElementById('auth-email-input').value.trim();
+            const password = document.getElementById('auth-password-input').value.trim();
 
-            if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
-                currentUserEmail = email;
+            currentUserEmail = email;
+
+            if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase() && password === ADMIN_PASS) {
                 document.getElementById('nav-admin').classList.remove('hidden');
-                document.getElementById('auth-btn').textContent = "✅ Admin Signed In";
-                document.getElementById('auth-btn').className = "text-xs font-bold bg-green-100 text-green-700 px-3.5 py-2 rounded-full";
+                document.getElementById('auth-btn-text').textContent = "My Account (Admin)";
+                document.getElementById('auth-btn').className = "text-xs font-bold bg-green-100 text-green-700 px-4 py-2 rounded-full";
                 closeAuthModal();
                 switchTab('admin');
-                alert('Welcome back, Admin! Full control center unlocked.');
+                alert('Welcome back, Admin! Control center unlocked.');
             } else {
-                alert('Access Denied. Only sachiguinevereyongngo@gmail.com can view the Admin Dashboard.');
+                document.getElementById('nav-admin').classList.add('hidden');
+                document.getElementById('auth-btn-text').textContent = "My Account";
+                document.getElementById('auth-btn').className = "text-xs font-bold bg-pink-100 text-brand-darkpink px-4 py-2 rounded-full";
+                closeAuthModal();
+                alert(`Welcome back! Logged in as ${email}.`);
             }
         }
 
@@ -639,8 +990,17 @@
             if (storeMode === 'LOCKED') return;
 
             const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            if (storeMode === 'LIVE' && product.stock <= 0) {
+                return alert('Sorry, this item is out of stock!');
+            }
+
             const existing = cart.find(item => item.id === productId);
             if(existing) {
+                if(storeMode === 'LIVE' && existing.qty >= product.stock) {
+                    return alert(`Cannot add more. Only ${product.stock} pcs available in physical stock!`);
+                }
                 existing.qty++;
             } else {
                 cart.push({ ...product, qty: 1 });
@@ -689,7 +1049,12 @@
 
         function changeQty(productId, delta) {
             const item = cart.find(i => i.id === productId);
+            const product = products.find(p => p.id === productId);
+
             if(item) {
+                if (delta > 0 && storeMode === 'LIVE' && item.qty >= product.stock) {
+                    return alert(`Only ${product.stock} pcs available in physical stock!`);
+                }
                 item.qty += delta;
                 if(item.qty <= 0) {
                     cart = cart.filter(i => i.id !== productId);
@@ -698,39 +1063,151 @@
             updateCartUI();
         }
 
+        // Online Web Checkout
         function checkout() {
             if(cart.length === 0) return alert('Your cart is empty!');
             if(storeMode === 'LOCKED') return alert('Store is currently locked.');
 
+            cart.forEach(cartItem => {
+                const prod = products.find(p => p.id === cartItem.id);
+                if(prod) {
+                    if (storeMode === 'PREORDER') {
+                        prod.preorders = (prod.preorders || 0) + cartItem.qty;
+                    } else {
+                        prod.stock = Math.max(0, prod.stock - cartItem.qty);
+                    }
+                }
+            });
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const total = subtotal + 80;
+            const itemsSummary = cart.map(i => `${i.name} (x${i.qty})`).join(', ');
+
+            const nowPH = new Date().toLocaleString("en-US", {
+                timeZone: "Asia/Manila",
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true
+            });
+
+            const newOrder = {
+                id: `SQ-${orderCounter++}`,
+                timestampPH: nowPH,
+                itemsSummary: itemsSummary,
+                total: total,
+                channel: 'Online'
+            };
+
+            salesLog.unshift(newOrder);
+
+            renderCatalog();
+            renderAdmin();
+
             if(storeMode === 'PREORDER') {
-                alert(`Pre-Order Reservation Received! Dispatching on ${new Date(targetDispatchDate).toLocaleDateString()}. Thank you for reserving with SquishIQ!`);
+                alert(`Pre-Order Reservation Received! Order ID: ${newOrder.id}. Scheduled dispatching on ${new Date(targetDispatchDate).toLocaleDateString()}. Thank you for reserving with SquishIQ!`);
             } else {
-                alert('Redirecting to secure PayMongo PH checkout (GCash, Maya, COD enabled)... Order will route automatically to Locad Metro Manila 3PL warehouse.');
+                alert(`Order Successfully Processed! Order ID: ${newOrder.id}. Total Amount: ₱${total}. Master stock updated and order logged in admin panel.`);
             }
+
             cart = [];
             updateCartUI();
             toggleCart();
         }
 
-        // Web Audio API ASMR Simulator
-        function triggerASMR() {
-            const textEl = document.getElementById('asmr-text');
-            textEl.textContent = "CRUNCH! ✨ Pop!";
-            try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(150, ctx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.1);
-                gain.gain.setValueAtTime(0.3, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.15);
-            } catch(e) {}
-            setTimeout(() => { textEl.textContent = "Ready..."; }, 600);
+        // CONTINUOUS PRESS-AND-HOLD ASMR SOUND GENERATOR
+        function startASMR(e) {
+            if (e) e.preventDefault();
+            isPressingASMR = true;
+            document.getElementById('asmr-text').textContent = "CRUNCHING... ✨";
+
+            if (asmrAudioFiles.length > 0) {
+                const randomUrl = asmrAudioFiles[Math.floor(Math.random() * asmrAudioFiles.length)];
+                currentPlayingAudio = new Audio(randomUrl);
+                currentPlayingAudio.loop = true;
+                currentPlayingAudio.play().catch(() => {});
+            } else {
+                try {
+                    synthAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    synthOscillator = synthAudioCtx.createOscillator();
+                    synthGain = synthAudioCtx.createGain();
+
+                    synthOscillator.type = 'sawtooth';
+                    synthOscillator.frequency.setValueAtTime(180, synthAudioCtx.currentTime);
+
+                    synthGain.gain.setValueAtTime(0.2, synthAudioCtx.currentTime);
+
+                    synthOscillator.connect(synthGain);
+                    synthGain.connect(synthAudioCtx.destination);
+                    synthOscillator.start();
+                } catch(err) {}
+            }
+        }
+
+        function stopASMR(e) {
+            if (!isPressingASMR) return;
+            isPressingASMR = false;
+            document.getElementById('asmr-text').textContent = "Ready...";
+
+            if (currentPlayingAudio) {
+                currentPlayingAudio.pause();
+                currentPlayingAudio.currentTime = 0;
+                currentPlayingAudio = null;
+            }
+
+            if (synthOscillator) {
+                try {
+                    synthOscillator.stop();
+                    synthAudioCtx.close();
+                } catch(err) {}
+                synthOscillator = null;
+                synthAudioCtx = null;
+            }
+        }
+
+        // Review Submission with Photo Upload
+        function handleReviewSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('rev-name').value.trim();
+            const product = document.getElementById('rev-product').value;
+            const comment = document.getElementById('rev-comment').value.trim();
+            const fileInput = document.getElementById('rev-image-file');
+
+            let imageUrl = null;
+            if(fileInput.files && fileInput.files[0]) {
+                imageUrl = URL.createObjectURL(fileInput.files[0]);
+            }
+
+            const newRev = { name, product, comment, imageUrl, date: "Just now" };
+            reviews.unshift(newRev);
+
+            renderReviews();
+            document.getElementById('review-form-container').classList.add('hidden');
+            alert('Thank you for submitting your review!');
+        }
+
+        function renderReviews() {
+            const list = document.getElementById('reviews-list');
+            if(reviews.length === 0) {
+                list.innerHTML = `<div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center text-gray-400 font-medium text-sm">No customer reviews yet! Be the first to leave a review after receiving your order.</div>`;
+                return;
+            }
+
+            list.innerHTML = reviews.map(r => `
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="font-bold text-sm">${r.name} <span class="text-xs text-green-600 font-normal">✔ Verified Buyer</span></h4>
+                            <span class="text-xs text-gray-400 font-semibold">${r.product}</span>
+                        </div>
+                        <span class="text-xs text-gray-400 font-medium">${r.date}</span>
+                    </div>
+                    <p class="text-gray-600 text-sm font-medium">${r.comment}</p>
+                    ${r.imageUrl ? `<img src="${r.imageUrl}" class="w-32 h-32 object-cover rounded-2xl shadow-sm border mt-2">` : ''}
+                </div>
+            `).join('');
         }
 
         function handleReturnSubmit(e) {
@@ -770,6 +1247,7 @@
             document.getElementById('admin-target-date').value = targetDispatchDate;
             renderCatalog();
             renderAdmin();
+            renderReviews();
             updateModeUI();
         };
     </script>
