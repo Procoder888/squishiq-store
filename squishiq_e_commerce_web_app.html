@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SquishIQ | Crunch & ASMR Toys | Tactile Sensory Lab</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            pink: '#FFD6E8',
+                            rose: '#FF80A0',
+                            blue: '#D2F1FF',
+                            amber: '#FFDE93',
+                            toast: '#D97706',
+                            toastLight: '#FEF3C7',
+                            dark: '#1F2937'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .pastel-bg {
+            background: linear-gradient(135deg, #FFF5F8 0%, #F0F9FF 50%, #FFFBEB 100%);
+        }
+        .squishy-press {
+            transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .squishy-press:active {
+            transform: scale(0.85) rotate(-3deg);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes pop-crumb {
+            0% { opacity: 1; transform: translate(0, 0) scale(1); }
+            100% { opacity: 0; transform: translate(var(--tw-translate-x), var(--tw-translate-y)) scale(0.2); }
+        }
+        .crumb {
+            position: absolute;
+            pointer-events: none;
+            animation: pop-crumb 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="pastel-bg text-gray-800 min-h-screen flex flex-col justify-between selection:bg-pink-300 selection:text-pink-900">
+
+    <!-- Announcement Banner -->
+    <div class="bg-gradient-to-r from-pink-400 via-purple-300 to-amber-300 text-gray-900 text-xs md:text-sm font-semibold py-2 px-4 text-center shadow-sm flex items-center justify-center gap-2">
+        <i class="fa-solid fa-sparkles text-amber-600 animate-pulse"></i>
+        <span>✨ Free Metro Manila Shipping on Orders Over ₱500 | Powered by Locad 3PL Hub ✨</span>
+        <i class="fa-solid fa-truck-fast text-blue-600"></i>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-pink-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('catalog')">
+                <div class="relative w-12 h-12 bg-amber-100 rounded-2xl flex items-center justify-center border-2 border-amber-300 shadow-sm group">
+                    <!-- Toast Mascot Graphic -->
+                    <span class="text-2xl group-hover:scale-110 transition-transform">🍞</span>
+                    <span class="absolute -top-1 -right-1 text-xs">✨</span>
+                    <span class="absolute -bottom-1 -left-1 text-[10px] text-amber-600 font-bold">🔊</span>
+                </div>
+                <div>
+                    <div class="flex items-center gap-1">
+                        <span class="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-pink-500 via-purple-600 to-amber-600 bg-clip-text text-transparent">SquishIQ</span>
+                        <span class="bg-pink-100 text-pink-700 text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-pink-200">MNL</span>
+                    </div>
+                    <p class="text-[11px] font-medium text-gray-500 hidden sm:block">Crunch & ASMR Toys | Tactile Sensory Lab</p>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="hidden lg:flex items-center gap-1 bg-gray-50/80 p-1.5 rounded-full border border-gray-200/60">
+                <button onclick="switchTab('catalog')" id="nav-catalog" class="nav-btn px-4 py-2 rounded-full text-sm font-bold transition-all text-pink-600 bg-white shadow-sm">
+                    <i class="fa-solid fa-store mr-1.5"></i> Catalog
+                </button>
+                <button onclick="switchTab('asmr')" id="nav-asmr" class="nav-btn px-4 py-2 rounded-full text-sm font-medium transition-all text-gray-600 hover:text-pink-600">
+                    <i class="fa-solid fa-headphones mr-1.5 text-purple-500"></i> 🎧 ASMR Lab
+                </button>
+                <button onclick="switchTab('reviews')" id="nav-reviews" class="nav-btn px-4 py-2 rounded-full text-sm font-medium transition-all text-gray-600 hover:text-pink-600">
+                    <i class="fa-solid fa-star mr-1.5 text-amber-500"></i> Reviews
+                </button>
+                <button onclick="switchTab('returns')" id="nav-returns" class="nav-btn px-4 py-2 rounded-full text-sm font-medium transition-all text-gray-600 hover:text-pink-600">
+                    <i class="fa-solid fa-rotate-left mr-1.5 text-blue-500"></i> Returns Portal
+                </button>
+                <button onclick="switchTab('admin')" id="nav-admin" class="nav-btn px-4 py-2 rounded-full text-sm font-medium transition-all text-gray-600 hover:text-pink-600">
+                    <i class="fa-solid fa-chart-pie mr-1.5 text-emerald-500"></i> 📊 Admin Dashboard
+                </button>
+            </nav>
+
+            <!-- Cart Toggle Button -->
+            <div class="flex items-center gap-3">
+                <button onclick="toggleCartDrawer(true)" class="relative p-3 bg-pink-100 hover:bg-pink-200 text-pink-700 rounded-full transition-all flex items-center justify-center border border-pink-200 shadow-sm active:scale-95">
+                    <i class="fa-solid fa-bag-shopping text-lg"></i>
+                    <span id="cart-badge" class="absolute -top-1 -right-1 bg-rose-500 text-white text-xs font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-white scale-0 transition-transform">0</span>
+                </button>
+
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="lg:hidden p-2.5 text-gray-600 hover:text-gray-900 rounded-xl bg-gray-100">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Nav Dropdown -->
+        <div id="mobile-menu" class="hidden lg:hidden border-t border-gray-100 bg-white/95 px-4 pt-2 pb-4 space-y-1">
+            <button onclick="switchTab('catalog'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-bold text-pink-600 bg-pink-50"><i class="fa-solid fa-store w-6"></i> Catalog</button>
+            <button onclick="switchTab('asmr'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700"><i class="fa-solid fa-headphones w-6 text-purple-500"></i> 🎧 ASMR Lab</button>
+            <button onclick="switchTab('reviews'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700"><i class="fa-solid fa-star w-6 text-amber-500"></i> Reviews</button>
+            <button onclick="switchTab('returns'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700"><i class="fa-solid fa-rotate-left w-6 text-blue-500"></i> Returns Portal</button>
+            <button onclick="switchTab('admin'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700"><i class="fa-solid fa-chart-pie w-6 text-emerald-500"></i> 📊 Admin Dashboard</button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- TAB 1: CATALOG / SHOP -->
+        <section id="tab-catalog" class="tab-content block space-y-10">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-pink-200 via-purple-100 to-amber-100 p-8 sm:p-12 border border-white/60 shadow-lg">
+                <div class="relative z-10 max-w-2xl space-y-4">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/80 text-pink-700 text-xs font-extrabold uppercase tracking-wider backdrop-blur-sm shadow-xs border border-pink-200">
+                        <i class="fa-solid fa-bolt text-amber-500"></i> Same-Day Metro Manila Dispatch
+                    </span>
+                    <h1 class="text-3xl sm:text-5xl font-black text-gray-900 tracking-tight leading-tight">
+                        Satisfy Your Ears & Hands With <span class="bg-gradient-to-r from-pink-600 to-amber-600 bg-clip-text text-transparent">Ultra-Crispy</span> ASMR Squishies!
+                    </h1>
+                    <p class="text-sm sm:text-base text-gray-600 font-medium leading-relaxed">
+                        Precision-crafted tactile sensory toys made for maximum acoustic crackle and stress relief. Direct from our Locad 3PL Fulfillment Hub in Taguig to your doorstep!
+                    </p>
+                    <div class="flex flex-wrap gap-3 pt-2">
+                        <button onclick="switchTab('asmr')" class="px-6 py-3 rounded-2xl bg-gray-900 hover:bg-black text-white font-bold text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-headphones text-pink-400"></i> Test Sound in ASMR Lab
+                        </button>
+                        <a href="#product-grid" class="px-6 py-3 rounded-2xl bg-white hover:bg-gray-50 text-gray-800 font-bold text-sm shadow-sm border border-gray-200 transition-all">
+                            Browse Collection ↓
+                        </a>
+                    </div>
+                </div>
+                <!-- Hero Graphics floating -->
+                <div class="hidden md:block absolute -right-4 -bottom-10 w-80 h-80 opacity-90 animate-float pointer-events-none">
+                    <div class="w-full h-full rounded-full bg-gradient-to-tr from-amber-300 to-pink-300 blur-2xl absolute opacity-50"></div>
+                    <div class="relative w-full h-full flex items-center justify-center text-9xl">
+                        🍞✨
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Grid Section -->
+            <div id="product-grid-section" class="space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h2 class="text-2xl font-black text-gray-900 tracking-tight">Signature Tactile Collection</h2>
+                        <p class="text-sm text-gray-500">High-density ASMR layers, memory foam cores, & glaze finishes</p>
+                    </div>
+                    <!-- Filter Pills -->
+                    <div class="flex flex-wrap gap-2 text-xs font-bold">
+                        <button onclick="filterProducts('all')" class="filter-pill active bg-gray-900 text-white px-3 py-1.5 rounded-full border border-gray-900 transition-all">All Items</button>
+                        <button onclick="filterProducts('bakery')" class="filter-pill bg-white text-gray-600 hover:bg-gray-100 px-3 py-1.5 rounded-full border border-gray-200 transition-all">🥐 Bakery Series</button>
+                        <button onclick="filterProducts('fruit')" class="filter-pill bg-white text-gray-600 hover:bg-gray-100 px-3 py-1.5 rounded-full border border-gray-200 transition-all">🍉 Impulse Fruits</button>
+                    </div>
+                </div>
+
+                <!-- Products Grid -->
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Dynamic Insertion via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: ASMR LAB SIMULATOR -->
+        <section id="tab-asmr" class="tab-content hidden space-y-8">
+            <div class="text-center max-w-2xl mx-auto space-y-3">
+                <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-bold uppercase tracking-wider">Web Audio Synthesizer</span>
+                <h2 class="text-3xl font-black text-gray-900">Interactive ASMR Sound Simulator</h2>
+                <p class="text-sm text-gray-600">Click or tap the 3D squishy elements below to trigger real-time sound synthesized audio crunches, pops, and crackles!</p>
+            </div>
+
+            <!-- Simulator Card Container -->
+            <div class="max-w-3xl mx-auto bg-white rounded-3xl p-8 border border-pink-100 shadow-xl space-y-8 relative overflow-hidden">
+                <!-- Visual Sound Output FX Overlay -->
+                <div id="asmr-feedback-text" class="text-center h-12 flex items-center justify-center font-black text-2xl text-pink-500 tracking-wider transition-all opacity-0">
+                    CRUNCH! ✨ Pop!
+                </div>
+
+                <!-- Interactive Squishy Canvas/Element -->
+                <div class="flex flex-col items-center justify-center gap-6 py-6">
+                    <div id="asmr-interactive-element" onclick="triggerAsmrCrunch(event)" class="squishy-press cursor-pointer w-64 h-64 sm:w-72 sm:h-72 rounded-3xl bg-gradient-to-tr from-amber-200 via-amber-100 to-yellow-50 border-8 border-amber-300 shadow-2xl flex flex-col items-center justify-center relative group select-none transition-all">
+                        <span class="text-8xl sm:text-9xl filter drop-shadow-md group-hover:scale-105 transition-transform">🍞</span>
+                        <span class="mt-2 text-xs font-extrabold text-amber-800 bg-amber-200/80 px-3 py-1 rounded-full border border-amber-300">PRESS / CLICK ME!</span>
+                        
+                        <!-- Sound Wave Ripples -->
+                        <div class="absolute inset-0 rounded-2xl border-4 border-amber-400 opacity-0 group-active:animate-ping pointer-events-none"></div>
+                    </div>
+
+                    <p class="text-xs text-gray-400 font-medium">Tip: Turn up your device volume for best acoustics!</p>
+                </div>
+
+                <!-- Sound Preset Switches -->
+                <div class="grid grid-cols-3 gap-3 pt-4 border-t border-gray-100">
+                    <button onclick="setAsmrPreset('toast')" id="preset-toast" class="preset-btn p-3 rounded-2xl bg-amber-100 border-2 border-amber-400 text-amber-900 font-bold text-xs text-center">
+                        🍞 Toast Crackle
+                    </button>
+                    <button onclick="setAsmrPreset('pudding')" id="preset-pudding" class="preset-btn p-3 rounded-2xl bg-pink-50 border-2 border-transparent text-gray-600 font-bold text-xs text-center hover:bg-pink-100">
+                        🍮 Gelatin Pop
+                    </button>
+                    <button onclick="setAsmrPreset('fruit')" id="preset-fruit" class="preset-btn p-3 rounded-2xl bg-blue-50 border-2 border-transparent text-gray-600 font-bold text-xs text-center hover:bg-blue-100">
+                        🍉 Juicy Squeeze
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: VERIFIED REVIEWS -->
+        <section id="tab-reviews" class="tab-content hidden space-y-8">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <h2 class="text-3xl font-black text-gray-900">Verified Metro Manila Buyer Reviews</h2>
+                <p class="text-sm text-gray-600">See why squishy enthusiasts across Quezon City, Makati, BGC, & Pasig love SquishIQ!</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Review Card 1 -->
+                <div class="bg-white p-6 rounded-3xl border border-pink-100 shadow-sm space-y-4">
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-pink-200 font-bold text-pink-700 flex items-center justify-center">
+                                KC
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm text-gray-900">Katrina C.</h4>
+                                <p class="text-xs text-gray-400">BGC, Taguig • Verified Buyer</p>
+                            </div>
+                        </div>
+                        <span class="text-amber-400 text-xs">★★★★★</span>
+                    </div>
+                    <p class="text-sm text-gray-600 italic">"The Crunchy Butter Toast sounds incredible! Orders arrived in less than 24 hrs thanks to Locad hub! Packaging was super safe."</p>
+                    <div class="text-[11px] font-bold text-pink-600 bg-pink-50 px-2.5 py-1 rounded-lg w-fit">
+                        Purchased: Crunchy Butter Squishy
+                    </div>
+                </div>
+
+                <!-- Review Card 2 -->
+                <div class="bg-white p-6 rounded-3xl border border-pink-100 shadow-sm space-y-4">
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-blue-200 font-bold text-blue-700 flex items-center justify-center">
+                                JM
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm text-gray-900">John Mark R.</h4>
+                                <p class="text-xs text-gray-400">Quezon City • Verified Buyer</p>
+                            </div>
+                        </div>
+                        <span class="text-amber-400 text-xs">★★★★★</span>
+                    </div>
+                    <p class="text-sm text-gray-600 italic">"Got 2 individual pieces (Butter Toast & Pineapple Bun). The crunch coating on the pineapple bun is super realistic. Perfect desk fidget toy during long calls!"</p>
+                    <div class="text-[11px] font-bold text-pink-600 bg-pink-50 px-2.5 py-1 rounded-lg w-fit">
+                        Purchased: Crunchy Butter & Pineapple Bun
+                    </div>
+                </div>
+
+                <!-- Review Card 3 -->
+                <div class="bg-white p-6 rounded-3xl border border-pink-100 shadow-sm space-y-4">
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-amber-200 font-bold text-amber-700 flex items-center justify-center">
+                                SL
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm text-gray-900">Stephanie L.</h4>
+                                <p class="text-xs text-gray-400">Makati City • Verified Buyer</p>
+                            </div>
+                        </div>
+                        <span class="text-amber-400 text-xs">★★★★★</span>
+                    </div>
+                    <p class="text-sm text-gray-600 italic">"Fastest shipping ever in MM. Paid via GCash smoothly. The ASMR sound simulator on the site matches the real toy sound 100%!"</p>
+                    <div class="text-[11px] font-bold text-pink-600 bg-pink-50 px-2.5 py-1 rounded-lg w-fit">
+                        Purchased: Crunchy Pineapple Bun
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: RETURNS PORTAL -->
+        <section id="tab-returns" class="tab-content hidden space-y-8">
+            <div class="text-center max-w-xl mx-auto space-y-2">
+                <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold uppercase tracking-wider">Hassle-Free Self-Service</span>
+                <h2 class="text-3xl font-black text-gray-900">Locad 3PL Return Portal</h2>
+                <p class="text-sm text-gray-600">Need to exchange or return an item? Enter your order details below to generate a instant return waybill.</p>
+            </div>
+
+            <div class="max-w-lg mx-auto bg-white p-8 rounded-3xl border border-gray-200 shadow-lg space-y-6">
+                <form id="return-form" onsubmit="handleReturnSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-600 mb-1">Order Tracking ID</label>
+                        <input type="text" id="return-order-id" required placeholder="e.g. SQ-1048" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-sm focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-200">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-600 mb-1">Reason for Return</label>
+                        <select id="return-reason" required class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-sm focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-200">
+                            <option value="">Select a reason...</option>
+                            <option value="Damaged layer">Damaged crunch layer on arrival</option>
+                            <option value="Wrong item">Wrong item delivered</option>
+                            <option value="Courier issue">Courier parcel damage</option>
+                            <option value="Change of mind">Change of mind (Unopened)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-600 mb-1">Additional Remarks</label>
+                        <textarea id="return-notes" rows="3" placeholder="Briefly describe the issue..." class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-sm focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-200"></textarea>
+                    </div>
+                    <button type="submit" class="w-full py-3.5 rounded-2xl bg-pink-500 hover:bg-pink-600 text-white font-bold text-sm shadow-md transition-all">
+                        Submit Return Request
+                    </button>
+                </form>
+
+                <!-- Success Confirmation Box -->
+                <div id="return-success-box" class="hidden p-6 rounded-2xl bg-emerald-50 border border-emerald-200 text-center space-y-3">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-xl">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <h4 class="font-extrabold text-emerald-900 text-base">Return Authorized!</h4>
+                    <p class="text-xs text-emerald-700 leading-relaxed">
+                        Return Waybill <span id="return-waybill-id" class="font-mono font-bold">#R-99823</span> generated. Please drop off the parcel at any Locad / J&T partner branch in Metro Manila.
+                    </p>
+                    <button onclick="resetReturnForm()" class="text-xs font-bold text-emerald-800 underline hover:text-emerald-900">Submit another return</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: ADMIN DASHBOARD -->
+        <section id="tab-admin" class="tab-content hidden space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-3xl font-black text-gray-900">Operations Control Center</h2>
+                    <p class="text-sm text-gray-500">Live sales analytics, Locad 3PL inventory & COGS margins</p>
+                </div>
+                <div class="flex items-center gap-2 text-xs font-bold bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-full border border-emerald-200 w-fit">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> Live 3PL Sync Active
+                </div>
+            </div>
+
+            <!-- Key Metrics Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-2">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Today's Gross Sales</p>
+                    <div class="text-3xl font-black text-gray-900">₱<span id="admin-sales-val">4,590</span></div>
+                    <p class="text-xs text-emerald-600 font-semibold"><i class="fa-solid fa-arrow-trend-up"></i> +18.4% vs yesterday</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-2">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Locad 3PL Stock</p>
+                    <div class="text-3xl font-black text-purple-600"><span id="admin-stock-val">142</span> pcs</div>
+                    <p class="text-xs text-gray-500">Hub: Taguig Central Warehouse</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-2">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Pending Dispatches</p>
+                    <div class="text-3xl font-black text-amber-600">8 orders</div>
+                    <p class="text-xs text-amber-600 font-semibold">Ready for rider pickup</p>
+                </div>
+            </div>
+
+            <!-- Live Inventory & COGS Table -->
+            <div class="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden space-y-4 p-6">
+                <h3 class="font-extrabold text-lg text-gray-900">Inventory & Profitability Matrix</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead>
+                            <tr class="border-b border-gray-100 text-gray-400 uppercase tracking-wider font-bold">
+                                <th class="pb-3">Product Name</th>
+                                <th class="pb-3">SKU</th>
+                                <th class="pb-3">Retail Price</th>
+                                <th class="pb-3">COGS</th>
+                                <th class="pb-3">Est. Margin</th>
+                                <th class="pb-3">Stock (Locad)</th>
+                                <th class="pb-3">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-inventory-rows" class="divide-y divide-gray-100 font-medium">
+                            <!-- Dynamic Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-pink-100 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-3">
+            <div class="flex items-center justify-center gap-2 font-bold text-lg text-gray-800">
+                <span>🍞</span> SquishIQ Tactile Sensory Lab
+            </div>
+            <p class="text-xs text-gray-500">© 2026 SquishIQ Metro Manila. Fulfillment powered by Locad 3PL Logistics.</p>
+        </div>
+    </footer>
+
+    <!-- CART SLIDE-OVER DRAWER -->
+    <div id="cart-drawer-backdrop" onclick="toggleCartDrawer(false)" class="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    <aside id="cart-drawer" class="fixed top-0 right-0 bottom-0 w-full sm:w-96 bg-white z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col justify-between">
+        <!-- Cart Header -->
+        <div class="p-6 border-b border-gray-100 flex items-center justify-between bg-pink-50/50">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-bag-shopping text-pink-500"></i>
+                <h3 class="font-extrabold text-gray-900 text-lg">Your Cart</h3>
+            </div>
+            <button onclick="toggleCartDrawer(false)" class="p-2 text-gray-400 hover:text-gray-600 rounded-full">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Cart Items List -->
+        <div id="cart-items-container" class="p-6 overflow-y-auto flex-grow space-y-4">
+            <!-- Dynamic Items -->
+        </div>
+
+        <!-- Cart Summary & Checkout -->
+        <div class="p-6 border-t border-gray-100 space-y-4 bg-gray-50/50">
+            <div class="space-y-2 text-xs font-semibold text-gray-600">
+                <div class="flex justify-between">
+                    <span>Subtotal</span>
+                    <span id="cart-subtotal" class="font-bold text-gray-900">₱0</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Metro Manila Delivery (Flat Rate)</span>
+                    <span id="cart-shipping" class="font-bold text-gray-900">₱80</span>
+                </div>
+                <div id="free-shipping-promo" class="text-[11px] text-pink-600 font-bold hidden">
+                    🎉 Free Shipping Applied (Orders > ₱500)
+                </div>
+                <div class="flex justify-between text-base font-extrabold text-gray-900 pt-2 border-t border-gray-200">
+                    <span>Total</span>
+                    <span id="cart-total" class="text-pink-600">₱0</span>
+                </div>
+            </div>
+
+            <button onclick="openCheckoutModal()" id="checkout-btn" disabled class="w-full py-4 rounded-2xl bg-pink-500 disabled:bg-gray-300 hover:bg-pink-600 text-white font-bold text-sm shadow-md transition-all">
+                Proceed to Checkout
+            </button>
+        </div>
+    </aside>
+
+    <!-- PAYMONGO SIMULATED CHECKOUT MODAL -->
+    <div id="checkout-modal" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-6 border border-pink-100 animate-scaleUp">
+            <div class="flex justify-between items-center border-b border-gray-100 pb-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-xs bg-emerald-100 text-emerald-800 font-extrabold px-2 py-0.5 rounded">PayMongo Gateway</span>
+                    <h3 class="font-black text-gray-900 text-lg">Checkout Payment</h3>
+                </div>
+                <button onclick="closeCheckoutModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="space-y-4">
+                <div class="bg-gray-50 p-4 rounded-2xl space-y-1 text-xs">
+                    <p class="text-gray-500">Amount Due:</p>
+                    <p id="checkout-modal-total" class="text-2xl font-black text-pink-600">₱0</p>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase mb-2">Select Payment Method</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button type="button" onclick="selectPayment('gcash')" id="pay-gcash" class="pay-method-btn border-2 border-pink-500 bg-pink-50 p-3 rounded-2xl text-center text-xs font-bold">
+                            💙 GCash
+                        </button>
+                        <button type="button" onclick="selectPayment('maya')" id="pay-maya" class="pay-method-btn border-2 border-gray-200 p-3 rounded-2xl text-center text-xs font-bold">
+                            💚 Maya
+                        </button>
+                        <button type="button" onclick="selectPayment('cod')" id="pay-cod" class="pay-method-btn border-2 border-gray-200 p-3 rounded-2xl text-center text-xs font-bold">
+                            💵 COD
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Delivery Mobile Number</label>
+                    <input type="tel" value="0917 123 4567" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm">
+                </div>
+            </div>
+
+            <button onclick="processPayment()" class="w-full py-3.5 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm shadow-md transition-all">
+                Confirm & Pay Now
+            </button>
+        </div>
+    </div>
+
+    <!-- AI CHATBOT WIDGET -->
+    <div class="fixed bottom-6 right-6 z-40">
+        <!-- Floating Toggle Button -->
+        <button onclick="toggleChatbot()" class="p-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-full shadow-2xl hover:scale-105 transition-all flex items-center justify-center gap-2 group border-2 border-white">
+            <span class="text-xl">🍞</span>
+            <span class="text-xs font-bold max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 whitespace-nowrap">Chat Assistant</span>
+        </button>
+
+        <!-- Chat Box Drawer -->
+        <div id="chat-window" class="hidden absolute bottom-16 right-0 w-80 sm:w-96 bg-white rounded-3xl shadow-2xl border border-pink-100 overflow-hidden flex flex-col h-[420px] transition-all">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-pink-500 to-rose-500 text-white p-4 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🍞</span>
+                    <div>
+                        <h4 class="font-bold text-sm leading-tight">SquishIQ Assistant</h4>
+                        <p class="text-[10px] text-pink-100">Locad Fulfillment & Product Bot</p>
+                    </div>
+                </div>
+                <button onclick="toggleChatbot()" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Messages Stream -->
+            <div id="chat-messages" class="p-4 flex-grow overflow-y-auto space-y-3 text-xs">
+                <div class="bg-pink-50 p-3 rounded-2xl rounded-tl-none border border-pink-100 max-w-[85%]">
+                    Mabuhay! 🌸 I am your SquishIQ assistant. Ask me about shipping rates, payment options, or squishy textures!
+                </div>
+            </div>
+
+            <!-- Quick Suggestions -->
+            <div class="p-2 bg-gray-50 border-t border-gray-100 flex gap-1 overflow-x-auto text-[10px] font-bold">
+                <button onclick="sendQuickChat('How much is shipping?')" class="bg-white border border-gray-200 px-2 py-1 rounded-full whitespace-nowrap hover:bg-pink-50">🚚 Shipping Fee?</button>
+                <button onclick="sendQuickChat('Do you accept GCash?')" class="bg-white border border-gray-200 px-2 py-1 rounded-full whitespace-nowrap hover:bg-pink-50">💙 Payment Methods</button>
+            </div>
+
+            <!-- Input Bar -->
+            <div class="p-3 border-t border-gray-100 flex gap-2 bg-white">
+                <input type="text" id="chat-input" onkeypress="if(event.key === 'Enter') sendChatMessage()" placeholder="Type your message..." class="flex-grow px-3 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-pink-500">
+                <button onclick="sendChatMessage()" class="px-3 py-2 bg-pink-500 text-white rounded-xl font-bold text-xs"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        // --- 1. PRODUCT DATA & STATE ---
+        const products = [
+            { id: 'SQ-01', name: 'Crunchy Butter Squishy', price: 180, cogs: 65, category: 'bakery', icon: '🧈', badge: 'Best Seller', stock: 45, desc: 'High-density butter toast texture with crisp outer ASMR crackle finish.' },
+            { id: 'SQ-02', name: 'Crunchy Pineapple Bun', price: 150, cogs: 50, category: 'bakery', icon: '🍍', badge: 'Popular', stock: 38, desc: 'Classic golden pineapple bun crust texture with medium squish resistance.' },
+            { id: 'SQ-03', name: 'Crunchy Pudding / Soap', price: 130, cogs: 42, category: 'bakery', icon: '🍮', badge: 'New', stock: 24, desc: 'Gelatinous smooth outer shell with a crisp shattering sound core.' },
+            { id: 'SQ-04', name: 'Watermelon Slush / Strawberry', price: 100, cogs: 30, category: 'fruit', icon: '🍉', badge: 'Impulse Pick', stock: 20, desc: 'Compact pocket-sized fruit squishy designed for fast tactile relief.' }
+        ];
+
+        let cart = [];
+        let selectedPaymentMethod = 'gcash';
+        let currentAsmrPreset = 'toast';
+
+        // Web Audio Context initialization for sound simulation
+        let audioCtx = null;
+
+        // --- 2. INITIALIZATION & TAB NAVIGATION ---
+        window.onload = function() {
+            renderProductGrid('all');
+            renderAdminTable();
+            updateCartUI();
+        };
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-pink-600', 'bg-white', 'shadow-sm');
+                btn.classList.add('text-gray-600');
+            });
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.classList.add('text-pink-600', 'bg-white', 'shadow-sm');
+                activeNav.classList.remove('text-gray-600');
+            }
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        // --- 3. PRODUCT CATALOG FUNCTIONS ---
+        function renderProductGrid(filter) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+
+            const items = filter === 'all' ? products : products.filter(p => p.category === filter);
+
+            items.forEach(product => {
+                grid.innerHTML += `
+                    <div class="bg-white rounded-3xl p-6 border border-pink-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-4 group">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-start">
+                                <span class="bg-pink-100 text-pink-700 font-extrabold text-[10px] px-2.5 py-1 rounded-full uppercase tracking-wider">${product.badge}</span>
+                                <span class="text-xs font-mono font-semibold text-gray-400">${product.id}</span>
+                            </div>
+                            <div class="w-full h-40 bg-gradient-to-tr from-pink-50 to-amber-50 rounded-2xl flex items-center justify-center text-6xl group-hover:scale-105 transition-transform">
+                                ${product.icon}
+                            </div>
+                            <div>
+                                <h3 class="font-extrabold text-gray-900 text-base">${product.name}</h3>
+                                <p class="text-xs text-gray-500 mt-1 line-clamp-2">${product.desc}</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 border-t border-gray-100 flex items-center justify-between">
+                            <div>
+                                <span class="text-xl font-black text-gray-900">₱${product.price}</span>
+                                <span class="block text-[10px] text-emerald-600 font-bold">In Locad Hub: ${product.stock} pcs</span>
+                            </div>
+                            <button onclick="addToCart('${product.id}')" class="px-4 py-2.5 rounded-xl bg-pink-500 hover:bg-pink-600 text-white font-bold text-xs shadow-xs transition-all active:scale-95 flex items-center gap-1.5">
+                                <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function filterProducts(category) {
+            document.querySelectorAll('.filter-pill').forEach(btn => {
+                btn.classList.remove('bg-gray-900', 'text-white');
+                btn.classList.add('bg-white', 'text-gray-600');
+            });
+            event.target.classList.add('bg-gray-900', 'text-white');
+            event.target.classList.remove('bg-white', 'text-gray-600');
+            renderProductGrid(category);
+        }
+
+        // --- 4. CART & DRAWER MANAGEMENT ---
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existing = cart.find(item => item.id === productId);
+
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+
+            updateCartUI();
+            toggleCartDrawer(true);
+        }
+
+        function updateQuantity(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            if (!item) return;
+
+            item.qty += delta;
+            if (item.qty <= 0) {
+                cart = cart.filter(i => i.id !== productId);
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const badge = document.getElementById('cart-badge');
+            const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+
+            // Badge Update
+            badge.innerText = totalCount;
+            if (totalCount > 0) {
+                badge.classList.remove('scale-0');
+            } else {
+                badge.classList.add('scale-0');
+            }
+
+            // Items list update
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 space-y-3">
+                        <span class="text-5xl opacity-40">🛍️</span>
+                        <p class="text-xs text-gray-500 font-bold">Your cart is empty!</p>
+                        <button onclick="toggleCartDrawer(false); switchTab('catalog')" class="text-xs text-pink-600 font-bold underline">Explore Squishies</button>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = '';
+                cart.forEach(item => {
+                    container.innerHTML += `
+                        <div class="flex items-center justify-between bg-gray-50 p-3 rounded-2xl border border-gray-100">
+                            <div class="flex items-center gap-3">
+                                <span class="text-3xl">${item.icon}</span>
+                                <div>
+                                    <h4 class="font-bold text-xs text-gray-900 line-clamp-1">${item.name}</h4>
+                                    <span class="text-xs font-black text-pink-600">₱${item.price}</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 bg-white px-2 py-1 rounded-xl border border-gray-200">
+                                <button onclick="updateQuantity('${item.id}', -1)" class="text-xs font-bold text-gray-500 hover:text-gray-900 px-1.5">-</button>
+                                <span class="text-xs font-bold w-4 text-center">${item.qty}</span>
+                                <button onclick="updateQuantity('${item.id}', 1)" class="text-xs font-bold text-gray-500 hover:text-gray-900 px-1.5">+</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            // Calculations
+            const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+            const shipping = subtotal > 500 || subtotal === 0 ? 0 : 80;
+            const total = subtotal + (subtotal === 0 ? 0 : shipping);
+
+            document.getElementById('cart-subtotal').innerText = `₱${subtotal}`;
+            document.getElementById('cart-shipping').innerText = shipping === 0 && subtotal > 0 ? 'FREE' : `₱${shipping}`;
+            document.getElementById('cart-total').innerText = `₱${total}`;
+            
+            const promoNotice = document.getElementById('free-shipping-promo');
+            if (subtotal > 500) {
+                promoNotice.classList.remove('hidden');
+            } else {
+                promoNotice.classList.add('hidden');
+            }
+
+            document.getElementById('checkout-btn').disabled = cart.length === 0;
+        }
+
+        function toggleCartDrawer(open) {
+            const drawer = document.getElementById('cart-drawer');
+            const backdrop = document.getElementById('cart-drawer-backdrop');
+
+            if (open) {
+                drawer.classList.remove('translate-x-full');
+                backdrop.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                drawer.classList.add('translate-x-full');
+                backdrop.classList.add('opacity-0', 'pointer-events-none');
+            }
+        }
+
+        // --- 5. ASMR WEB AUDIO SYNTHESIZER SIMULATOR ---
+        function setAsmrPreset(preset) {
+            currentAsmrPreset = preset;
+            document.querySelectorAll('.preset-btn').forEach(b => {
+                b.classList.remove('border-amber-400', 'bg-amber-100', 'border-pink-400', 'bg-pink-100', 'border-blue-400', 'bg-blue-100');
+            });
+            event.target.classList.add('border-2', 'border-amber-400', 'bg-amber-100');
+        }
+
+        function triggerAsmrCrunch(event) {
+            // Lazy init AudioContext
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            // Synthesize ASMR Noise Burst
+            const bufferSize = audioCtx.sampleRate * 0.15; // 150ms crunch sound
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1; // White noise
+            }
+
+            const noise = audioCtx.createBufferSource();
+            noise.buffer = buffer;
+
+            const filter = audioCtx.createBiquadFilter();
+            
+            if (currentAsmrPreset === 'toast') {
+                filter.type = 'highpass';
+                filter.frequency.value = 1800; // Crisp crackle
+            } else if (currentAsmrPreset === 'pudding') {
+                filter.type = 'bandpass';
+                filter.frequency.value = 800; // Popping gelatin sound
+            } else {
+                filter.type = 'lowpass';
+                filter.frequency.value = 1200; // Squeezy squish
+            }
+
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            noise.start();
+
+            // UI Visual Feedback Text
+            const fbText = document.getElementById('asmr-feedback-text');
+            const sounds = ['CRUNCH! ✨', 'CRACKLE! ⚡', 'POP! 🍮', 'SQUISH! 🌸'];
+            fbText.innerText = sounds[Math.floor(Math.random() * sounds.length)];
+            fbText.classList.remove('opacity-0');
+            setTimeout(() => fbText.classList.add('opacity-0'), 400);
+
+            // Spawn Crumbs Effect
+            const rect = event.currentTarget.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            for (let i = 0; i < 6; i++) {
+                const crumb = document.createElement('div');
+                crumb.className = 'crumb w-3 h-3 rounded-full bg-amber-400';
+                crumb.style.left = `${x}px`;
+                crumb.style.top = `${y}px`;
+                crumb.style.setProperty('--tw-translate-x', `${(Math.random() - 0.5) * 120}px`);
+                crumb.style.setProperty('--tw-translate-y', `${(Math.random() - 0.5) * 120}px`);
+                event.currentTarget.appendChild(crumb);
+                setTimeout(() => crumb.remove(), 600);
+            }
+        }
+
+        // --- 6. CHECKOUT MODAL & PAYMONGO SIMULATION ---
+        function openCheckoutModal() {
+            toggleCartDrawer(false);
+            const total = document.getElementById('cart-total').innerText;
+            document.getElementById('checkout-modal-total').innerText = total;
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        function selectPayment(method) {
+            selectedPaymentMethod = method;
+            document.querySelectorAll('.pay-method-btn').forEach(btn => {
+                btn.classList.remove('border-pink-500', 'bg-pink-50');
+            });
+            document.getElementById(`pay-${method}`).classList.add('border-pink-500', 'bg-pink-50');
+        }
+
+        function processPayment() {
+            const total = document.getElementById('cart-total').innerText;
+            alert(`✨ Payment Successful via ${selectedPaymentMethod.toUpperCase()}!\n\nOrder Total: ${total}\nYour order has been transmitted to Locad Hub Taguig for immediate packing.`);
+            
+            // Deduct stock in admin view
+            cart.forEach(c => {
+                const p = products.find(prod => prod.id === c.id);
+                if (p) p.stock = Math.max(0, p.stock - c.qty);
+            });
+
+            cart = [];
+            updateCartUI();
+            renderAdminTable();
+            closeCheckoutModal();
+        }
+
+        // --- 7. RETURNS PORTAL SUBMISSION ---
+        function handleReturnSubmit(e) {
+            e.preventDefault();
+            const orderId = document.getElementById('return-order-id').value;
+            document.getElementById('return-form').classList.add('hidden');
+            document.getElementById('return-waybill-id').innerText = `#LOCAD-R-${Math.floor(1000 + Math.random() * 9000)}`;
+            document.getElementById('return-success-box').classList.remove('hidden');
+        }
+
+        function resetReturnForm() {
+            document.getElementById('return-form').reset();
+            document.getElementById('return-form').classList.remove('hidden');
+            document.getElementById('return-success-box').classList.add('hidden');
+        }
+
+        // --- 8. LIVE ADMIN OPERATIONS DASHBOARD ---
+        function renderAdminTable() {
+            const tbody = document.getElementById('admin-inventory-rows');
+            tbody.innerHTML = '';
+
+            let totalStock = 0;
+
+            products.forEach(p => {
+                totalStock += p.stock;
+                const margin = Math.round(((p.price - p.cogs) / p.price) * 100);
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="py-3 font-bold text-gray-900">${p.icon} ${p.name}</td>
+                        <td class="py-3 font-mono text-gray-500">${p.id}</td>
+                        <td class="py-3 font-bold">₱${p.price}</td>
+                        <td class="py-3 text-gray-500">₱${p.cogs}</td>
+                        <td class="py-3 text-emerald-600 font-bold">${margin}%</td>
+                        <td class="py-3 font-bold">${p.stock} pcs</td>
+                        <td class="py-3">
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${p.stock > 20 ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">
+                                ${p.stock > 20 ? 'Healthy Stock' : 'Low Stock Alert'}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('admin-stock-val').innerText = totalStock;
+        }
+
+        // --- 9. BUILT-IN AI CHATBOT WIDGET ---
+        function toggleChatbot() {
+            document.getElementById('chat-window').classList.toggle('hidden');
+        }
+
+        function sendQuickChat(text) {
+            document.getElementById('chat-input').value = text;
+            sendChatMessage();
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            const stream = document.getElementById('chat-messages');
+
+            // Add user bubble
+            stream.innerHTML += `
+                <div class="bg-gray-100 p-3 rounded-2xl rounded-tr-none text-gray-800 ml-auto max-w-[85%] font-medium">
+                    ${msg}
+                </div>
+            `;
+
+            input.value = '';
+            stream.scrollTop = stream.scrollHeight;
+
+            // Generate reply based on simple keywords
+            setTimeout(() => {
+                let botReply = "I'm here to help! You can ask me about our Locad same-day shipping, GCash payments, or ASMR squishy textures.";
+                
+                const lower = msg.toLowerCase();
+                if (lower.includes('ship') || lower.includes('fee') || lower.includes('delivery')) {
+                    botReply = "🚚 Metro Manila delivery is a flat ₱80 fee, or FREE for orders over ₱500! All items are fulfilled directly via Locad 3PL Hub.";
+                } else if (lower.includes('gcash') || lower.includes('pay') || lower.includes('maya') || lower.includes('cod')) {
+                    botReply = "💙 We accept GCash, Maya, and Cash-on-Delivery (COD) via our PayMongo checkout integration!";
+                } else if (lower.includes('texture') || lower.includes('sound') || lower.includes('crunch')) {
+                    botReply = "✨ Our squishies feature a proprietary high-density memory core with a crisp outer glaze shell for max ASMR crackle sound!";
+                }
+
+                stream.innerHTML += `
+                    <div class="bg-pink-50 p-3 rounded-2xl rounded-tl-none border border-pink-100 max-w-[85%] font-medium">
+                        ${botReply}
+                    </div>
+                `;
+                stream.scrollTop = stream.scrollHeight;
+            }, 500);
+        }
+    </script>
+</body>
+</html>
