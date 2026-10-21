@@ -19,7 +19,7 @@
 </head>
 <body class="theme-default bg-brand-bg text-brand-text font-sans antialiased min-h-screen flex flex-col transition-colors duration-300">
 
-    <!-- Toast Notification Banner (No Alerts) -->
+    <!-- Toast Notification Banner -->
     <div id="toast-notification" class="fixed top-5 right-5 z-50 bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2 transform translate-x-full opacity-0 transition-all duration-300 pointer-events-none">
         <span id="toast-icon">✨</span>
         <span id="toast-message">App refreshed successfully</span>
@@ -117,7 +117,7 @@
                 <h2 class="text-2xl sm:text-3xl font-bold font-display mt-4 mb-2">Virtual ASMR Squeeze Simulator</h2>
                 <p class="text-gray-500 text-xs sm:text-sm mb-8">Press and hold the toast below for continuous ASMR crunching sounds!</p>
                 
-                <div id="asmr-press-pad" onmousedown="startASMR()" onmouseup="stopASMR()" onmouseleave="stopASMR()" class="relative w-48 h-48 sm:w-64 sm:h-64 mx-auto bg-gradient-to-br from-brand-pink to-blue-200 rounded-full flex items-center justify-center shadow-inner cursor-pointer select-none transition-transform active:scale-95 group">
+                <div id="asmr-press-pad" onmousedown="startASMR()" onmouseup="stopASMR()" onmouseleave="stopASMR()" ontouchstart="startASMR()" ontouchend="stopASMR()" class="relative w-48 h-48 sm:w-64 sm:h-64 mx-auto bg-gradient-to-br from-brand-pink to-blue-200 rounded-full flex items-center justify-center shadow-inner cursor-pointer select-none transition-transform active:scale-95 group">
                     <div class="absolute inset-3 sm:inset-4 bg-white rounded-full flex flex-col items-center justify-center shadow-md">
                         <span class="text-4xl sm:text-5xl mb-2">🍞✨</span>
                         <span class="font-display font-bold text-base sm:text-lg text-brand-text">HOLD TO SQUEEZE</span>
@@ -135,6 +135,24 @@
                     <p class="text-gray-500 text-xs sm:text-sm">Verified feedback from Metro Manila squishy collectors.</p>
                 </div>
             </div>
+            
+            <!-- Submit Review Form -->
+            <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
+                <h3 class="font-bold font-display text-base">Write a Review</h3>
+                <form onsubmit="handleReviewSubmit(event)" class="space-y-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <input type="text" id="review-name" placeholder="Your Name" required class="px-4 py-2.5 rounded-xl border border-gray-200 text-xs font-medium">
+                        <select id="review-rating" class="px-4 py-2.5 rounded-xl border border-gray-200 text-xs font-medium">
+                            <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
+                            <option value="4">⭐⭐⭐⭐ (4/5)</option>
+                            <option value="3">⭐⭐⭐ (3/5)</option>
+                        </select>
+                    </div>
+                    <textarea id="review-comment" placeholder="Tell us what you think about your squishy!" required rows="3" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-xs font-medium"></textarea>
+                    <button type="submit" class="bg-brand-darkpink text-white font-bold px-6 py-2.5 rounded-xl text-xs hover:bg-brand-darkpink/90 transition-colors">Submit Review</button>
+                </form>
+            </div>
+
             <div id="reviews-list" class="space-y-4"></div>
         </section>
 
@@ -159,7 +177,6 @@
                     <p class="text-slate-300 text-xs mt-1">Logged in as: <strong class="text-white">sachiguinevereyongngo@gmail.com</strong></p>
                 </div>
 
-                <!-- SAVE ALL CHANGES MASTER BUTTON -->
                 <div>
                     <button onclick="saveAllAdminChanges()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-6 py-3 rounded-2xl shadow-lg transition-transform hover:scale-105 flex items-center gap-2 text-sm">
                         <span>💾</span>
@@ -243,11 +260,11 @@
         </div>
     </div>
 
-    <!-- CART DRAWER -->
-    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden hidden">
-        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
+    <!-- CART DRAWER (PROPERLY HIDDEN & NON-INTERACTIVE WHEN CLOSED) -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden hidden pointer-events-none">
+        <div id="cart-backdrop" class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity opacity-0 pointer-events-none" onclick="toggleCart()"></div>
         <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
-            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+            <div id="cart-panel" class="w-screen max-w-md bg-white shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300 pointer-events-auto">
                 <div class="p-5 sm:p-6 border-b border-gray-100 flex items-center justify-between">
                     <h2 class="text-lg sm:text-xl font-bold font-display">Your SquishIQ Cart</h2>
                     <button onclick="toggleCart()" class="text-gray-400 hover:text-gray-600 font-bold text-lg">✕</button>
@@ -278,19 +295,27 @@
         const ADMIN_PASS = "Bestsquishy101";
 
         let savedProducts = JSON.parse(localStorage.getItem('squishiq_products')) || [
-            { id: 1, name: "Crunchy Butter Squishy", price: 180, stock: 15, edition: "Standard", icon: "🧈" },
-            { id: 2, name: "Crunchy Pineapple Bun", price: 150, stock: 10, edition: "Standard", icon: "🍍" },
-            { id: 3, name: "Crunchy Pudding", price: 130, stock: 12, edition: "Standard", icon: "🍮" },
-            { id: 4, name: "Crunchy Soap", price: 130, stock: 8, edition: "Standard", icon: "🧼" },
-            { id: 5, name: "Crunchy Peanut Squishy", price: 130, stock: 14, edition: "Standard", icon: "🥜" },
-            { id: 6, name: "Watermelon Slush", price: 120, stock: 20, edition: "Standard", icon: "🍉" },
-            { id: 7, name: "Strawberry", price: 100, stock: 25, edition: "Standard", icon: "🍓" }
+            { id: 1, name: "Crunchy Butter Squishy", price: 180, stock: 15, edition: "Standard", icon: "🧈", sound: "assets/sounds/crunchybutter.m4a" },
+            { id: 2, name: "Crunchy Pineapple Bun", price: 150, stock: 10, edition: "Standard", icon: "🍍", sound: "assets/sounds/crunchybutter.m4a" },
+            { id: 3, name: "Crunchy Pudding", price: 130, stock: 12, edition: "Standard", icon: "🍮", sound: "assets/sounds/crunchybutter.m4a" },
+            { id: 4, name: "Crunchy Soap", price: 130, stock: 8, edition: "Standard", icon: "🧼", sound: "assets/sounds/crunchybutter.m4a" },
+            { id: 5, name: "Crunchy Peanut Squishy", price: 130, stock: 14, edition: "Standard", icon: "🥜", sound: "assets/sounds/crunchybutter.m4a" },
+            { id: 6, name: "Watermelon Slush", price: 120, stock: 20, edition: "Standard", icon: "🍉", sound: "assets/sounds/slush.m4a" },
+            { id: 7, name: "Strawberry", price: 100, stock: 25, edition: "Standard", icon: "🍓", sound: "assets/sounds/slush.m4a" }
+        ];
+
+        let reviews = JSON.parse(localStorage.getItem('squishiq_reviews')) || [
+            { id: 1, name: "Sachi N.", rating: 5, comment: "The crunchy butter sound is super realistic and satisfying! Shipping to Alabang was super fast too.", date: "2 days ago" },
+            { id: 2, name: "Bea M.", rating: 5, comment: "Watermelon slush is my favorite! So squishy and high quality.", date: "1 week ago" }
         ];
 
         let stagedProducts = JSON.parse(JSON.stringify(savedProducts));
         let activeTheme = localStorage.getItem('squishiq_theme') || 'default';
         let tempTheme = activeTheme;
         let cart = [];
+        let asmrAudio = null;
+        let audioContext = null;
+        let asmrInterval = null;
 
         function showNotification(msg, icon = "✨") {
             const toast = document.getElementById('toast-notification');
@@ -392,6 +417,42 @@
             `).join('');
         }
 
+        function renderReviews() {
+            const list = document.getElementById('reviews-list');
+            if (!list) return;
+
+            list.innerHTML = reviews.map(r => `
+                <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm space-y-1">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-sm">${r.name}</span>
+                        <span class="text-xs text-gray-400">${r.date}</span>
+                    </div>
+                    <div class="text-amber-400 text-xs">{"⭐".repeat(r.rating)}</div>
+                    <p class="text-xs text-gray-600 mt-2">${r.comment}</p>
+                </div>
+            `).join('');
+        }
+
+        function handleReviewSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('review-name').value.trim();
+            const rating = Number(document.getElementById('review-rating').value);
+            const comment = document.getElementById('review-comment').value.trim();
+
+            reviews.unshift({
+                id: Date.now(),
+                name,
+                rating,
+                comment,
+                date: "Just now"
+            });
+
+            localStorage.setItem('squishiq_reviews', JSON.stringify(reviews));
+            renderReviews();
+            e.target.reset();
+            showNotification("Thank you for your review!", "⭐");
+        }
+
         function renderAdmin() {
             const tbody = document.getElementById('admin-table-body');
             if(!tbody) return;
@@ -438,7 +499,8 @@
                 price,
                 stock,
                 icon,
-                edition
+                edition,
+                sound: "assets/sounds/crunchybutter.m4a"
             });
 
             renderAdmin();
@@ -491,11 +553,29 @@
             });
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
             if(tabId === 'admin') renderAdmin();
+            if(tabId === 'reviews') renderReviews();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        /* CART DRAWER DISPLAY FIX */
         function toggleCart() {
-            document.getElementById('cart-drawer').classList.toggle('hidden');
+            const drawer = document.getElementById('cart-drawer');
+            const backdrop = document.getElementById('cart-backdrop');
+            const panel = document.getElementById('cart-panel');
+
+            if (drawer.classList.contains('hidden')) {
+                drawer.classList.remove('hidden', 'pointer-events-none');
+                setTimeout(() => {
+                    backdrop.classList.remove('opacity-0', 'pointer-events-none');
+                    panel.classList.remove('translate-x-full');
+                }, 10);
+            } else {
+                backdrop.classList.add('opacity-0', 'pointer-events-none');
+                panel.classList.add('translate-x-full');
+                setTimeout(() => {
+                    drawer.classList.add('hidden', 'pointer-events-none');
+                }, 300);
+            }
         }
 
         function addToCart(productId) {
@@ -553,6 +633,67 @@
             showNotification("Order placed successfully! Thank you for ordering.", "🎉");
         }
 
+        /* ASMR AUDIO PLAYBACK ENGINE */
+        function startASMR() {
+            document.getElementById('asmr-text').textContent = "Squeezing... Crunching! 🎧";
+            
+            try {
+                if (!asmrAudio) {
+                    asmrAudio = new Audio('assets/sounds/crunchybutter.m4a');
+                    asmrAudio.loop = true;
+                }
+                asmrAudio.play().catch(() => playSyntheticCrunch());
+            } catch (err) {
+                playSyntheticCrunch();
+            }
+
+            if (!asmrInterval) {
+                asmrInterval = setInterval(playSyntheticCrunch, 200);
+            }
+        }
+
+        function stopASMR() {
+            document.getElementById('asmr-text').textContent = "Ready...";
+            if (asmrAudio) {
+                asmrAudio.pause();
+                asmrAudio.currentTime = 0;
+            }
+            if (asmrInterval) {
+                clearInterval(asmrInterval);
+                asmrInterval = null;
+            }
+        }
+
+        function playSyntheticCrunch() {
+            try {
+                if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const bufferSize = audioContext.sampleRate * 0.08;
+                const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+                const output = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    output[i] = Math.random() * 2 - 1;
+                }
+
+                const whiteNoise = audioContext.createBufferSource();
+                whiteNoise.buffer = buffer;
+
+                const filter = audioContext.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 800 + Math.random() * 2000;
+
+                whiteNoise.connect(filter);
+                filter.connect(audioContext.destination);
+
+                whiteNoise.start();
+            } catch (e) {}
+        }
+
+        function handleReturnSubmit(e) {
+            e.preventDefault();
+            showNotification("Return request logged! Our team will contact you via email.", "📦");
+            e.target.reset();
+        }
+
         function toggleMobileMenu() {
             document.getElementById('mobile-menu').classList.toggle('hidden');
         }
@@ -561,6 +702,7 @@
             applyTheme(activeTheme);
             checkUserSession();
             renderCatalog();
+            renderReviews();
         });
     </script>
 </body>
