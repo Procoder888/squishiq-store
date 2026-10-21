@@ -55,3 +55,14 @@ body.theme-sakura {
     letter-spacing: 0.05em;
     z-index: 10;
 }
+
+/* TAP SQUEEZE PULSE ANIMATION */
+@keyframes squeezePop {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.88) rotate(-2deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+
+.animate-squeeze {
+    animation: squeezePop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
