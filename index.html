@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SquishIQ | Tactile Sensory Lab & ASMR Toys</title>
-    <!-- Resource Hints for High-Performance Loading -->
+    <!-- Resource Hints for Mobile Performance -->
     <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +12,7 @@
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js for Analytics -->
+    <!-- Chart.js for Analytics (Deferred) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
     
     <!-- Google Fonts -->
@@ -44,16 +44,16 @@
 <body class="bg-brand-bg text-brand-text font-sans antialiased min-h-screen flex flex-col selection:bg-brand-pink selection:text-brand-darkpink">
 
     <!-- Top Announcement Bar -->
-    <div id="announcement-bar" class="bg-brand-darkpink text-white text-xs font-semibold py-2 px-4 text-center tracking-wide flex items-center justify-center gap-2">
+    <div id="announcement-bar" class="bg-brand-darkpink text-white text-[11px] sm:text-xs font-semibold py-2 px-4 text-center tracking-wide flex items-center justify-center gap-2">
         <span id="announcement-text">✨ Free Metro Manila Shipping on Orders Over ₱500 | Powered by Locad 3PL ✨</span>
     </div>
 
     <!-- Navigation Bar -->
-    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <!-- Brand Logo & Name (Crispy Toast & Sparkle Mascot) -->
-            <a href="#" onclick="switchTab('shop')" class="flex items-center gap-3 group">
-                <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center border-2 border-brand-pink overflow-hidden group-hover:scale-105 transition-transform p-1">
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+            <!-- Brand Logo & Name -->
+            <a href="#" onclick="switchTab('shop')" class="flex items-center gap-2 sm:gap-3 group">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-2xl shadow-md flex items-center justify-center border-2 border-brand-pink overflow-hidden group-hover:scale-105 transition-transform p-1">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" class="w-full h-full">
                         <rect x="50" y="10" width="400" height="320" rx="50" fill="#FFFFFF" />
                         <rect x="170" y="140" width="160" height="130" rx="60" fill="#C68B59" />
@@ -70,12 +70,12 @@
                     </svg>
                 </div>
                 <div>
-                    <span class="font-display text-2xl font-bold tracking-tight text-brand-text">Squish<span class="text-brand-darkpink">IQ</span></span>
-                    <span class="block text-[10px] font-bold text-gray-400 tracking-widest uppercase">Crunch & ASMR Toys</span>
+                    <span class="font-display text-xl sm:text-2xl font-bold tracking-tight text-brand-text">Squish<span class="text-brand-darkpink">IQ</span></span>
+                    <span class="block text-[9px] sm:text-[10px] font-bold text-gray-400 tracking-widest uppercase">Crunch & ASMR Toys</span>
                 </div>
             </a>
 
-            <!-- Navigation Links -->
+            <!-- Desktop Navigation Links -->
             <nav class="hidden md:flex items-center gap-8 font-semibold text-sm">
                 <button onclick="switchTab('shop')" id="nav-shop" class="text-brand-darkpink transition-colors">Catalog</button>
                 <button onclick="switchTab('asmr')" id="nav-asmr" class="text-gray-600 hover:text-brand-darkpink transition-colors">🎧 ASMR Lab</button>
@@ -86,91 +86,106 @@
                 </button>
             </nav>
 
-            <!-- Right Actions: Universal Auth & Cart -->
-            <div class="flex items-center gap-3">
-                <button onclick="openAuthModal()" id="auth-btn" class="text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-full transition-colors flex items-center gap-1.5">
-                    <span>👤</span> <span id="auth-btn-text">Log In / Sign Up</span>
+            <!-- Right Actions -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <button onclick="openAuthModal()" id="auth-btn" class="text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 sm:px-4 sm:py-2.5 rounded-full transition-colors flex items-center gap-1">
+                    <span>👤</span> <span id="auth-btn-text" class="hidden sm:inline">Log In / Sign Up</span>
                 </button>
 
-                <button onclick="toggleCart()" class="relative bg-brand-pink/30 hover:bg-brand-pink/50 text-brand-darkpink font-semibold px-4 py-2 rounded-full flex items-center gap-2 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <button onclick="toggleCart()" class="relative bg-brand-pink/30 hover:bg-brand-pink/50 text-brand-darkpink font-semibold px-3 py-2 sm:px-4 sm:py-2.5 rounded-full flex items-center gap-1.5 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                     </svg>
-                    <span>Cart</span>
-                    <span id="cart-badge" class="bg-brand-darkpink text-white text-xs px-2 py-0.5 rounded-full font-bold">0</span>
+                    <span class="text-xs sm:text-sm">Cart</span>
+                    <span id="cart-badge" class="bg-brand-darkpink text-white text-xs px-1.5 py-0.5 rounded-full font-bold">0</span>
+                </button>
+
+                <!-- Mobile Hamburger Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-gray-600 hover:text-brand-darkpink focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
                 </button>
             </div>
+        </div>
+
+        <!-- Mobile Drawer Navigation -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-100 px-4 py-3 space-y-2 text-sm font-semibold">
+            <button onclick="switchTab('shop'); toggleMobileMenu();" class="block w-full text-left py-2 text-brand-darkpink">Catalog</button>
+            <button onclick="switchTab('asmr'); toggleMobileMenu();" class="block w-full text-left py-2 text-gray-600">🎧 ASMR Lab</button>
+            <button onclick="switchTab('reviews'); toggleMobileMenu();" class="block w-full text-left py-2 text-gray-600">Reviews</button>
+            <button onclick="switchTab('returns'); toggleMobileMenu();" class="block w-full text-left py-2 text-gray-600">Returns Portal</button>
+            <button onclick="switchTab('admin'); toggleMobileMenu();" id="mobile-nav-admin" class="hidden block w-full text-left py-2 text-gray-600">📊 Admin Dashboard</button>
         </div>
     </header>
 
     <!-- Main Content Container -->
-    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 w-full">
 
         <!-- PRE-ORDER COUNTDOWN HERO BANNER -->
-        <div id="preorder-hero-banner" class="hidden mb-8 bg-gradient-to-r from-purple-600 via-pink-500 to-rose-400 text-white rounded-3xl p-8 shadow-xl relative overflow-hidden">
+        <div id="preorder-hero-banner" class="hidden mb-6 sm:mb-8 bg-gradient-to-r from-purple-600 via-pink-500 to-rose-400 text-white rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
             <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="space-y-2 text-center md:text-left">
                     <span class="bg-white/20 backdrop-blur-md text-white text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">⏳ Pre-Order Reservations Open</span>
-                    <h2 id="countdown-title-text" class="text-3xl md:text-4xl font-extrabold font-display">Reserves Shipping Soon!</h2>
-                    <p id="countdown-sub-text" class="text-pink-100 text-sm max-w-md">Lock in your favorite crunchy squishies now. Batch shipping begins officially on our launch date below!</p>
+                    <h2 id="countdown-title-text" class="text-2xl sm:text-4xl font-extrabold font-display">Reserves Shipping Soon!</h2>
+                    <p id="countdown-sub-text" class="text-pink-100 text-xs sm:text-sm max-w-md">Lock in your favorite crunchy squishies now. Batch shipping begins officially on our launch date below!</p>
                 </div>
                 
-                <!-- Countdown Display Grid -->
-                <div id="countdown-grid" class="bg-white/10 backdrop-blur-lg border border-white/20 p-4 rounded-2xl flex items-center gap-3 sm:gap-4 text-center">
-                    <div class="bg-white/20 rounded-xl px-3 py-2 min-w-[60px]">
-                        <span id="cd-days" class="block font-display text-2xl md:text-3xl font-extrabold">00</span>
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-pink-100">Days</span>
+                <div id="countdown-grid" class="bg-white/10 backdrop-blur-lg border border-white/20 p-3 sm:p-4 rounded-2xl flex items-center gap-2 sm:gap-4 text-center">
+                    <div class="bg-white/20 rounded-xl px-2.5 py-1.5 sm:px-3 sm:py-2 min-w-[50px] sm:min-w-[60px]">
+                        <span id="cd-days" class="block font-display text-xl sm:text-3xl font-extrabold">00</span>
+                        <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-pink-100">Days</span>
                     </div>
-                    <span class="text-xl font-bold">:</span>
-                    <div class="bg-white/20 rounded-xl px-3 py-2 min-w-[60px]">
-                        <span id="cd-hours" class="block font-display text-2xl md:text-3xl font-extrabold">00</span>
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-pink-100">Hours</span>
+                    <span class="text-lg sm:text-xl font-bold">:</span>
+                    <div class="bg-white/20 rounded-xl px-2.5 py-1.5 sm:px-3 sm:py-2 min-w-[50px] sm:min-w-[60px]">
+                        <span id="cd-hours" class="block font-display text-xl sm:text-3xl font-extrabold">00</span>
+                        <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-pink-100">Hours</span>
                     </div>
-                    <span class="text-xl font-bold">:</span>
-                    <div class="bg-white/20 rounded-xl px-3 py-2 min-w-[60px]">
-                        <span id="cd-mins" class="block font-display text-2xl md:text-3xl font-extrabold">00</span>
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-pink-100">Mins</span>
+                    <span class="text-lg sm:text-xl font-bold">:</span>
+                    <div class="bg-white/20 rounded-xl px-2.5 py-1.5 sm:px-3 sm:py-2 min-w-[50px] sm:min-w-[60px]">
+                        <span id="cd-mins" class="block font-display text-xl sm:text-3xl font-extrabold">00</span>
+                        <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-pink-100">Mins</span>
                     </div>
-                    <span class="text-xl font-bold">:</span>
-                    <div class="bg-white/20 rounded-xl px-3 py-2 min-w-[60px]">
-                        <span id="cd-secs" class="block font-display text-2xl md:text-3xl font-extrabold text-amber-300">00</span>
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-pink-100">Secs</span>
+                    <span class="text-lg sm:text-xl font-bold">:</span>
+                    <div class="bg-white/20 rounded-xl px-2.5 py-1.5 sm:px-3 sm:py-2 min-w-[50px] sm:min-w-[60px]">
+                        <span id="cd-secs" class="block font-display text-xl sm:text-3xl font-extrabold text-amber-300">00</span>
+                        <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-pink-100">Secs</span>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- TAB 1: SHOP CATALOG -->
-        <section id="tab-shop" class="space-y-8">
-            <div class="bg-gradient-to-r from-brand-pink/40 to-blue-100 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
-                <div class="space-y-4 max-w-xl">
-                    <h1 class="text-4xl md:text-5xl font-extrabold font-display tracking-tight text-brand-text">Satisfying Crunches & Taba Squishies.</h1>
-                    <p class="text-gray-600 font-medium">Sourced directly, tested for peak ASMR acoustics, and shipped instantly from our Metro Manila warehouse hub.</p>
+        <section id="tab-shop" class="space-y-6 sm:space-y-8">
+            <div class="bg-gradient-to-r from-brand-pink/40 to-blue-100 rounded-3xl p-6 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-3 sm:space-y-4 max-w-xl text-center md:text-left">
+                    <h1 class="text-3xl sm:text-5xl font-extrabold font-display tracking-tight text-brand-text">Satisfying Crunches & Taba Squishies.</h1>
+                    <p class="text-gray-600 text-xs sm:text-base font-medium">Sourced directly, tested for peak ASMR acoustics, and shipped instantly from our Metro Manila warehouse hub.</p>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100 flex flex-col gap-3 min-w-[240px]">
+                <div class="bg-white p-5 sm:p-6 rounded-2xl shadow-md border border-gray-100 flex flex-col gap-2 min-w-[220px] w-full md:w-auto">
                     <div class="flex items-center gap-3">
                         <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                        <span class="text-sm font-bold">Locad Manila 3PL Hub</span>
+                        <span class="text-xs sm:text-sm font-bold">Locad Manila 3PL Hub</span>
                     </div>
-                    <p class="text-xs text-gray-500">Same-day processing for orders placed before 2:00 PM in Metro Manila.</p>
+                    <p class="text-[11px] sm:text-xs text-gray-500">Same-day processing for orders placed before 2:00 PM in Metro Manila.</p>
                 </div>
             </div>
 
             <!-- Product Grid -->
             <div>
-                <h2 class="text-2xl font-extrabold font-display mb-6">Individual Squishy Collection</h2>
-                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <h2 class="text-xl sm:text-2xl font-extrabold font-display mb-4 sm:mb-6">Individual Squishy Collection</h2>
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     <!-- Injected by JavaScript -->
                 </div>
             </div>
         </section>
 
         <!-- TAB 2: ASMR SIMULATOR -->
-        <section id="tab-asmr" class="hidden space-y-8">
-            <div class="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-gray-100 text-center max-w-3xl mx-auto">
+        <section id="tab-asmr" class="hidden space-y-6 sm:space-y-8">
+            <div class="bg-white rounded-3xl p-6 sm:p-12 shadow-sm border border-gray-100 text-center max-w-3xl mx-auto">
                 <span class="bg-brand-pink/40 text-brand-darkpink text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Interactive Sound Lab</span>
-                <h2 class="text-3xl font-bold font-display mt-4 mb-2">Virtual ASMR Squeeze Simulator</h2>
-                <p class="text-gray-500 mb-8">Press and hold the toast below for continuous ASMR crunching sounds!</p>
+                <h2 class="text-2xl sm:text-3xl font-bold font-display mt-4 mb-2">Virtual ASMR Squeeze Simulator</h2>
+                <p class="text-gray-500 text-xs sm:text-sm mb-8">Press and hold the toast below for continuous ASMR crunching sounds!</p>
                 
                 <div id="asmr-press-pad" 
                      onmousedown="startASMR()" 
@@ -178,31 +193,31 @@
                      onmouseleave="stopASMR()" 
                      ontouchstart="startASMR(event)" 
                      ontouchend="stopASMR(event)"
-                     class="relative w-64 h-64 mx-auto bg-gradient-to-br from-brand-pink to-blue-200 rounded-full flex items-center justify-center shadow-inner cursor-pointer select-none transition-transform active:scale-95 group">
-                    <div class="absolute inset-4 bg-white rounded-full flex flex-col items-center justify-center shadow-md group-hover:scale-95 transition-transform">
-                        <span class="text-5xl mb-2">🍞✨</span>
-                        <span class="font-display font-bold text-lg text-brand-text">HOLD TO SQUEEZE</span>
-                        <span id="asmr-text" class="text-xs font-semibold text-brand-darkpink mt-1">Ready...</span>
+                     class="relative w-48 h-48 sm:w-64 sm:h-64 mx-auto bg-gradient-to-br from-brand-pink to-blue-200 rounded-full flex items-center justify-center shadow-inner cursor-pointer select-none transition-transform active:scale-95 group">
+                    <div class="absolute inset-3 sm:inset-4 bg-white rounded-full flex flex-col items-center justify-center shadow-md group-hover:scale-95 transition-transform">
+                        <span class="text-4xl sm:text-5xl mb-2">🍞✨</span>
+                        <span class="font-display font-bold text-base sm:text-lg text-brand-text">HOLD TO SQUEEZE</span>
+                        <span id="asmr-text" class="text-[10px] sm:text-xs font-semibold text-brand-darkpink mt-1">Ready...</span>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- TAB 3: CUSTOMER REVIEWS -->
-        <section id="tab-reviews" class="hidden space-y-8 max-w-4xl mx-auto">
+        <section id="tab-reviews" class="hidden space-y-6 sm:space-y-8 max-w-4xl mx-auto">
             <div class="flex items-center justify-between">
                 <div>
-                    <h2 class="text-3xl font-bold font-display">Customer Reviews</h2>
-                    <p class="text-gray-500">Verified feedback from Metro Manila squishy collectors.</p>
+                    <h2 class="text-2xl sm:text-3xl font-bold font-display">Customer Reviews</h2>
+                    <p class="text-gray-500 text-xs sm:text-sm">Verified feedback from Metro Manila squishy collectors.</p>
                 </div>
-                <button onclick="document.getElementById('review-form-container').classList.toggle('hidden')" class="bg-brand-darkpink text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-sm hover:bg-brand-darkpink/90 transition-colors">
+                <button onclick="document.getElementById('review-form-container').classList.toggle('hidden')" class="bg-brand-darkpink text-white font-bold text-xs px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl shadow-sm hover:bg-brand-darkpink/90 transition-colors">
                     + Write a Review
                 </button>
             </div>
 
             <!-- Submit Review Form -->
-            <div id="review-form-container" class="hidden bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-4">
-                <h3 class="font-bold font-display text-lg">Leave Your Review</h3>
+            <div id="review-form-container" class="hidden bg-white p-5 sm:p-6 rounded-3xl shadow-sm border border-gray-100 space-y-4">
+                <h3 class="font-bold font-display text-base sm:text-lg">Leave Your Review</h3>
                 <form onsubmit="handleReviewSubmit(event)" class="space-y-4">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <input type="text" id="rev-name" placeholder="Your Name" required class="px-4 py-2.5 rounded-xl border text-sm font-medium">
@@ -235,41 +250,40 @@
         </section>
 
         <!-- TAB 4: RETURNS PORTAL -->
-        <section id="tab-returns" class="hidden space-y-8 max-w-xl mx-auto bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+        <section id="tab-returns" class="hidden space-y-6 sm:space-y-8 max-w-xl mx-auto bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-gray-100">
             <div>
-                <h2 class="text-2xl font-bold font-display">Self-Service Returns Portal</h2>
-                <p class="text-gray-500 text-sm mt-1">Had an issue with a defective item or delivery? Enter your order ID below.</p>
+                <h2 class="text-xl sm:text-2xl font-bold font-display">Self-Service Returns Portal</h2>
+                <p class="text-gray-500 text-xs sm:text-sm mt-1">Had an issue with a defective item or delivery? Enter your order ID below.</p>
             </div>
             <form onsubmit="handleReturnSubmit(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Order ID</label>
-                    <input type="text" required placeholder="e.g. SQ-1001" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-brand-darkpink font-medium">
+                    <input type="text" required placeholder="e.g. SQ-1001" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-brand-darkpink font-medium text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Reason for Return</label>
-                    <select class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-brand-darkpink font-medium">
+                    <select class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-brand-darkpink font-medium text-sm">
                         <option>Damaged / Defective Crunch Layer</option>
                         <option>Wrong Item Received</option>
                         <option>Courier Delivery Issue</option>
                     </select>
                 </div>
-                <button type="submit" class="w-full bg-brand-darkpink hover:bg-brand-darkpink/90 text-white font-bold py-3.5 rounded-xl shadow-md transition-colors">Submit Return Request</button>
+                <button type="submit" class="w-full bg-brand-darkpink hover:bg-brand-darkpink/90 text-white font-bold py-3.5 rounded-xl shadow-md transition-colors text-sm">Submit Return Request</button>
             </form>
-            <div id="return-success" class="hidden bg-green-50 text-green-700 p-4 rounded-xl text-center font-medium text-sm">
+            <div id="return-success" class="hidden bg-green-50 text-green-700 p-4 rounded-xl text-center font-medium text-xs sm:text-sm">
                 ✅ Return request generated successfully! Our support team will coordinate pickup via J&T Express.
             </div>
         </section>
 
         <!-- TAB 5: ADMIN DASHBOARD (Strictly Restricted to sachiguinevereyongngo@gmail.com) -->
-        <section id="tab-admin" class="hidden space-y-8">
-            <div class="bg-gradient-to-r from-slate-900 to-indigo-900 text-white p-8 rounded-3xl shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <section id="tab-admin" class="hidden space-y-6 sm:space-y-8">
+            <div class="bg-gradient-to-r from-slate-900 to-indigo-900 text-white p-6 sm:p-8 rounded-3xl shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div>
                     <span class="bg-brand-darkpink text-white text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Authorized Admin Access</span>
-                    <h2 class="text-3xl font-bold font-display mt-2">SquishIQ Control Center</h2>
+                    <h2 class="text-2xl sm:text-3xl font-bold font-display mt-2">SquishIQ Control Center</h2>
                     <p class="text-slate-300 text-xs mt-1">Logged in as: <strong class="text-white">sachiguinevereyongngo@gmail.com</strong></p>
                 </div>
 
-                <!-- Mode Switcher Controls -->
                 <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 w-full md:w-auto space-y-3">
                     <label class="block text-xs font-bold uppercase tracking-wider text-slate-300">Store Operating Mode</label>
                     <div class="flex flex-wrap gap-2">
@@ -278,7 +292,6 @@
                         <button onclick="setStoreMode('LIVE')" id="mode-btn-LIVE" class="px-3 py-1.5 rounded-xl text-xs font-bold border transition-colors border-white/20 hover:bg-white/10">🚀 Live Orders</button>
                     </div>
 
-                    <!-- Pre-Order Target Date Input -->
                     <div id="preorder-date-picker-container" class="mt-2 pt-2 border-t border-white/10 space-y-1">
                         <label class="block text-[10px] font-bold uppercase tracking-wider text-pink-300">Target Launch/Dispatch Date & Time</label>
                         <input type="datetime-local" id="admin-target-date" class="w-full bg-slate-800 text-white text-xs px-3 py-1.5 rounded-lg border border-slate-600 focus:outline-none" onchange="updateTargetDate(this.value)">
@@ -286,68 +299,65 @@
                 </div>
             </div>
 
-            <!-- ADMIN MULTI-TAB SUB-NAVIGATION -->
-            <div class="flex border-b border-gray-200 gap-4 overflow-x-auto">
-                <button onclick="switchAdminSubTab('analytics')" id="subnav-analytics" class="py-3 px-4 font-bold text-sm border-b-2 border-brand-darkpink text-brand-darkpink transition-colors">📈 Business Analytics</button>
-                <button onclick="switchAdminSubTab('inventory')" id="subnav-inventory" class="py-3 px-4 font-bold text-sm border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors">📦 Inventory Management</button>
-                <button onclick="switchAdminSubTab('onsite')" id="subnav-onsite" class="py-3 px-4 font-bold text-sm border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors">🏬 Onsite Event POS</button>
-                <button onclick="switchAdminSubTab('saleslog')" id="subnav-saleslog" class="py-3 px-4 font-bold text-sm border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors">📋 Master Sales Log</button>
+            <!-- ADMIN SUB-NAV -->
+            <div class="flex border-b border-gray-200 gap-2 sm:gap-4 overflow-x-auto">
+                <button onclick="switchAdminSubTab('analytics')" id="subnav-analytics" class="py-2.5 px-3 sm:px-4 font-bold text-xs sm:text-sm border-b-2 border-brand-darkpink text-brand-darkpink transition-colors whitespace-nowrap">📈 Analytics</button>
+                <button onclick="switchAdminSubTab('inventory')" id="subnav-inventory" class="py-2.5 px-3 sm:px-4 font-bold text-xs sm:text-sm border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors whitespace-nowrap">📦 Inventory</button>
+                <button onclick="switchAdminSubTab('onsite')" id="subnav-onsite" class="py-2.5 px-3 sm:px-4 font-bold text-xs sm:text-sm border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors whitespace-nowrap">🏬 Onsite POS</button>
+                <button onclick="switchAdminSubTab('saleslog')" id="subnav-saleslog" class="py-2.5 px-3 sm:px-4 font-bold text-xs sm:text-sm border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors whitespace-nowrap">📋 Sales Log</button>
             </div>
 
-            <!-- ADMIN SUB-TAB 1: BUSINESS ANALYTICS & YOUTUBE-STYLE GRAPH -->
+            <!-- ADMIN SUB-TAB 1: ANALYTICS -->
             <div id="admin-subtab-analytics" class="space-y-6">
-                <!-- Summary Revenue Metrics -->
-                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <span class="text-xs font-bold text-gray-400 uppercase">Combined Total Revenue</span>
-                        <h3 id="admin-gross-sales" class="text-3xl font-extrabold font-display mt-2 text-brand-darkpink">₱0</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+                    <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <span class="text-[10px] sm:text-xs font-bold text-gray-400 uppercase">Combined Revenue</span>
+                        <h3 id="admin-gross-sales" class="text-xl sm:text-3xl font-extrabold font-display mt-1 sm:mt-2 text-brand-darkpink">₱0</h3>
                     </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <span class="text-xs font-bold text-gray-400 uppercase">Online Web Revenue</span>
-                        <h3 id="admin-online-sales" class="text-2xl font-bold font-display mt-2 text-blue-600">₱0</h3>
+                    <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <span class="text-[10px] sm:text-xs font-bold text-gray-400 uppercase">Online Web</span>
+                        <h3 id="admin-online-sales" class="text-lg sm:text-2xl font-bold font-display mt-1 sm:mt-2 text-blue-600">₱0</h3>
                     </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <span class="text-xs font-bold text-gray-400 uppercase">Onsite Event Revenue</span>
-                        <h3 id="admin-onsite-sales" class="text-2xl font-bold font-display mt-2 text-green-600">₱0</h3>
+                    <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <span class="text-[10px] sm:text-xs font-bold text-gray-400 uppercase">Onsite Event</span>
+                        <h3 id="admin-onsite-sales" class="text-lg sm:text-2xl font-bold font-display mt-1 sm:mt-2 text-green-600">₱0</h3>
                     </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <span class="text-xs font-bold text-gray-400 uppercase">Total Master Physical Stock</span>
-                        <h3 id="admin-total-stock-analytics" class="text-2xl font-bold font-display mt-2 text-gray-700">0 pcs</h3>
+                    <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <span class="text-[10px] sm:text-xs font-bold text-gray-400 uppercase">Master Physical Stock</span>
+                        <h3 id="admin-total-stock-analytics" class="text-lg sm:text-2xl font-bold font-display mt-1 sm:mt-2 text-gray-700">0 pcs</h3>
                     </div>
                 </div>
 
-                <!-- YouTube-Analytics-Style Sales Chart -->
-                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-4">
+                <div class="bg-white p-5 sm:p-6 rounded-3xl shadow-sm border border-gray-100 space-y-4">
                     <div class="flex items-center justify-between">
                         <div>
-                            <h3 class="font-bold font-display text-lg">Sales Performance & Revenue Trend</h3>
-                            <p class="text-xs text-gray-400">Daily gross sales over time (YouTube Studio style)</p>
+                            <h3 class="font-bold font-display text-base sm:text-lg">Sales Performance & Revenue Trend</h3>
+                            <p class="text-[11px] sm:text-xs text-gray-400">Daily gross sales over time (YouTube Studio style)</p>
                         </div>
-                        <span class="text-xs font-bold bg-pink-100 text-brand-darkpink px-3 py-1 rounded-full">Live Analytics</span>
+                        <span class="text-[10px] sm:text-xs font-bold bg-pink-100 text-brand-darkpink px-2.5 py-1 rounded-full">Live Analytics</span>
                     </div>
-                    <div class="h-64 sm:h-80 w-full relative">
+                    <div class="h-56 sm:h-80 w-full relative">
                         <canvas id="salesAnalyticsChart"></canvas>
                     </div>
                 </div>
             </div>
 
-            <!-- ADMIN SUB-TAB 2: INVENTORY MANAGEMENT -->
+            <!-- ADMIN SUB-TAB 2: INVENTORY -->
             <div id="admin-subtab-inventory" class="hidden space-y-6">
-                <div class="flex justify-between items-center bg-white p-6 rounded-2xl border border-gray-100">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white p-5 sm:p-6 rounded-2xl border border-gray-100">
                     <div>
-                        <h3 class="font-bold font-display text-lg">Master Inventory Control</h3>
+                        <h3 class="font-bold font-display text-base sm:text-lg">Master Inventory Control</h3>
                         <p class="text-xs text-gray-400">Manage physical stock quantities shared across both online and onsite channels.</p>
                     </div>
                     <button onclick="resetInventoryWithConfirm()" class="text-xs font-bold text-red-500 hover:text-red-700 underline">
-                        🔄 Reset Inventory to 0 (Blank Slate)
+                        🔄 Reset Inventory to 0
                     </button>
                 </div>
 
-                <!-- Restock SKU Form & Sound Uploader -->
-                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
+                <div class="bg-white p-5 sm:p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
                     <div>
                         <h3 class="font-bold font-display text-base mb-3">Add or Restock Physical Stock</h3>
-                        <form onsubmit="handleRestockProduct(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <form onsubmit="handleRestockProduct(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             <select id="restock-prod-id" required class="px-4 py-2.5 rounded-xl border text-sm font-medium">
                                 <!-- Injected by JS -->
                             </select>
@@ -364,21 +374,20 @@
                     </div>
                 </div>
 
-                <!-- Active SKU Table -->
                 <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-6 border-b border-gray-100">
-                        <h3 class="font-bold font-display text-lg">Active Catalog Items</h3>
+                    <div class="p-5 sm:p-6 border-b border-gray-100">
+                        <h3 class="font-bold font-display text-base sm:text-lg">Active Catalog Items</h3>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm">
-                            <thead class="bg-gray-50 text-gray-400 text-xs uppercase font-bold">
+                        <table class="w-full text-left text-xs sm:text-sm">
+                            <thead class="bg-gray-50 text-gray-400 text-[10px] sm:text-xs uppercase font-bold">
                                 <tr>
-                                    <th class="p-4">SKU Item Name</th>
-                                    <th class="p-4">Retail Price</th>
-                                    <th class="p-4">Master Physical Stock</th>
-                                    <th class="p-4">Pre-Order Reserved</th>
-                                    <th class="p-4">Status</th>
-                                    <th class="p-4">Actions</th>
+                                    <th class="p-3 sm:p-4">SKU Item Name</th>
+                                    <th class="p-3 sm:p-4">Price</th>
+                                    <th class="p-3 sm:p-4">Stock</th>
+                                    <th class="p-3 sm:p-4">Pre-Order</th>
+                                    <th class="p-3 sm:p-4">Status</th>
+                                    <th class="p-3 sm:p-4">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="admin-table-body" class="divide-y divide-gray-100">
@@ -389,36 +398,36 @@
                 </div>
             </div>
 
-            <!-- ADMIN SUB-TAB 3: ONSITE EVENT POS -->
+            <!-- ADMIN SUB-TAB 3: ONSITE POS -->
             <div id="admin-subtab-onsite" class="hidden space-y-6">
-                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-2">
-                    <h3 class="font-bold font-display text-lg">In-Person & School Event Point of Sale</h3>
-                    <p class="text-xs text-gray-500">Log cash or GCash sales completed on-site. Automatically deducts from master physical stock and updates sales analytics!</p>
+                <div class="bg-white p-5 sm:p-6 rounded-3xl shadow-sm border border-gray-100 space-y-1">
+                    <h3 class="font-bold font-display text-base sm:text-lg">In-Person & School Event Point of Sale</h3>
+                    <p class="text-xs text-gray-500">Log cash or GCash sales completed on-site. Automatically deducts from master physical stock!</p>
                 </div>
 
-                <div id="onsite-pos-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div id="onsite-pos-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     <!-- Injected by JavaScript -->
                 </div>
             </div>
 
-            <!-- ADMIN SUB-TAB 4: MASTER SALES LOG -->
+            <!-- ADMIN SUB-TAB 4: SALES LOG -->
             <div id="admin-subtab-saleslog" class="hidden space-y-6">
                 <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-                        <h3 class="font-bold font-display text-lg">Master Sales & Orders Log</h3>
+                    <div class="p-5 sm:p-6 border-b border-gray-100 flex justify-between items-center">
+                        <h3 class="font-bold font-display text-base sm:text-lg">Master Sales & Orders Log</h3>
                         <button onclick="clearSalesLogWithConfirm()" class="text-xs font-bold text-red-500 hover:text-red-700 underline">
-                            🗑️ Clear Sales & Orders Log
+                            🗑️ Clear Sales Log
                         </button>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm">
-                            <thead class="bg-gray-50 text-gray-400 text-xs uppercase font-bold">
+                        <table class="w-full text-left text-xs sm:text-sm">
+                            <thead class="bg-gray-50 text-gray-400 text-[10px] sm:text-xs uppercase font-bold">
                                 <tr>
-                                    <th class="p-4">Order ID</th>
-                                    <th class="p-4">Date & Time (PH Time)</th>
-                                    <th class="p-4">Channel</th>
-                                    <th class="p-4">Items Purchased</th>
-                                    <th class="p-4">Total Amount</th>
+                                    <th class="p-3 sm:p-4">Order ID</th>
+                                    <th class="p-3 sm:p-4">Date & Time</th>
+                                    <th class="p-3 sm:p-4">Channel</th>
+                                    <th class="p-3 sm:p-4">Items</th>
+                                    <th class="p-3 sm:p-4">Total</th>
                                 </tr>
                             </thead>
                             <tbody id="admin-orders-table-body" class="divide-y divide-gray-100">
@@ -432,26 +441,52 @@
 
     </main>
 
-    <!-- UNIVERSAL AUTHENTICATION MODAL -->
+    <!-- STEP 1: AUTHENTICATION MODAL (Email & Password First) -->
     <div id="auth-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm hidden">
-        <div class="bg-white w-full max-w-md rounded-3xl p-8 shadow-2xl border border-gray-100 space-y-6 relative">
-            <button onclick="closeAuthModal()" class="absolute top-6 right-6 text-gray-400 hover:text-gray-600 font-bold">✕</button>
-            <div class="text-center space-y-2">
-                <div class="w-12 h-12 bg-brand-pink/30 rounded-full flex items-center justify-center mx-auto text-2xl">👋</div>
-                <h3 class="text-2xl font-bold font-display">Welcome to SquishIQ</h3>
-                <p class="text-xs text-gray-500">Sign in to your account or create a new profile.</p>
+        <div class="bg-white w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-gray-100 space-y-5 relative">
+            <button onclick="closeAuthModal()" class="absolute top-5 right-5 text-gray-400 hover:text-gray-600 font-bold">✕</button>
+            <div class="text-center space-y-1">
+                <div class="w-10 h-10 bg-brand-pink/30 rounded-full flex items-center justify-center mx-auto text-xl">👋</div>
+                <h3 class="text-xl sm:text-2xl font-bold font-display">Welcome to SquishIQ</h3>
+                <p class="text-xs text-gray-500">Enter your email and password to begin sign in.</p>
             </div>
 
-            <form onsubmit="handleAuthLogin(event)" class="space-y-4">
+            <form onsubmit="handleAuthStep1(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Email Address</label>
-                    <input type="email" id="auth-email-input" required placeholder="name@example.com" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-brand-darkpink font-medium text-sm">
+                    <input type="email" id="auth-email-input" required placeholder="name@example.com" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-brand-darkpink font-medium text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Password</label>
-                    <input type="password" id="auth-password-input" required placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-brand-darkpink font-medium text-sm">
+                    <input type="password" id="auth-password-input" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-brand-darkpink font-medium text-sm">
                 </div>
-                <button type="submit" class="w-full bg-brand-darkpink hover:bg-brand-darkpink/90 text-white font-bold py-3.5 rounded-xl shadow-md transition-colors text-sm">Sign In / Register</button>
+                <button type="submit" class="w-full bg-brand-darkpink hover:bg-brand-darkpink/90 text-white font-bold py-3 rounded-xl shadow-md transition-colors text-sm">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- STEP 2: VERIFICATION CODE MODAL (Appears AFTER Sign-In Attempt) -->
+    <div id="verify-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm hidden">
+        <div class="bg-white w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-gray-100 space-y-5 relative">
+            <button onclick="closeVerifyModal()" class="absolute top-5 right-5 text-gray-400 hover:text-gray-600 font-bold">✕</button>
+            <div class="text-center space-y-1">
+                <div class="w-10 h-10 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto text-xl">📩</div>
+                <h3 class="text-xl sm:text-2xl font-bold font-display">Security Verification</h3>
+                <p class="text-xs text-gray-500">We generated a 6-digit verification code for <strong id="verify-email-display" class="text-brand-darkpink"></strong>.</p>
+            </div>
+
+            <!-- Simulated Email Alert Box -->
+            <div class="bg-amber-50 border border-amber-200 p-3.5 rounded-xl text-center space-y-1">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-amber-700">Simulated Email Inbox Notification</span>
+                <p class="text-xs text-amber-900">Your single-use 6-digit code is: <strong id="simulated-code-display" class="text-brand-darkpink font-extrabold text-sm tracking-widest">------</strong></p>
+            </div>
+
+            <form onsubmit="handleAuthStep2(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Enter 6-Digit Verification Code</label>
+                    <input type="text" id="verify-code-input" maxlength="6" required placeholder="123456" class="w-full px-4 py-3 text-center text-lg font-bold tracking-widest rounded-xl border border-gray-200 focus:outline-none focus:border-brand-darkpink">
+                </div>
+                <button type="submit" class="w-full bg-brand-darkpink hover:bg-brand-darkpink/90 text-white font-bold py-3 rounded-xl shadow-md transition-colors text-sm">Verify & Complete Login</button>
             </form>
         </div>
     </div>
@@ -461,14 +496,14 @@
         <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
         <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
             <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
-                <div class="p-6 border-b border-gray-100 flex items-center justify-between">
-                    <h2 class="text-xl font-bold font-display">Your SquishIQ Cart</h2>
+                <div class="p-5 sm:p-6 border-b border-gray-100 flex items-center justify-between">
+                    <h2 class="text-lg sm:text-xl font-bold font-display">Your SquishIQ Cart</h2>
                     <button onclick="toggleCart()" class="text-gray-400 hover:text-gray-600 font-bold text-lg">✕</button>
                 </div>
-                <div id="cart-items" class="flex-grow overflow-y-auto p-6 space-y-4">
+                <div id="cart-items" class="flex-grow overflow-y-auto p-5 sm:p-6 space-y-4">
                     <!-- Cart items injected here -->
                 </div>
-                <div class="p-6 border-t border-gray-100 bg-gray-50 space-y-4">
+                <div class="p-5 sm:p-6 border-t border-gray-100 bg-gray-50 space-y-3 sm:space-y-4">
                     <div class="flex justify-between text-sm font-medium">
                         <span class="text-gray-500">Subtotal</span>
                         <span id="cart-subtotal" class="font-bold">₱0</span>
@@ -477,19 +512,19 @@
                         <span class="text-gray-500">Manila Shipping (Flat)</span>
                         <span class="font-bold">₱80</span>
                     </div>
-                    <div class="border-t pt-3 flex justify-between text-lg font-extrabold">
+                    <div class="border-t pt-3 flex justify-between text-base sm:text-lg font-extrabold">
                         <span>Total</span>
                         <span id="cart-total" class="text-brand-darkpink">₱0</span>
                     </div>
-                    <button id="checkout-btn" onclick="checkout()" class="w-full bg-brand-darkpink hover:bg-brand-darkpink/90 text-white font-bold py-3.5 rounded-2xl shadow-md transition-colors">Proceed to Local Checkout</button>
+                    <button id="checkout-btn" onclick="checkout()" class="w-full bg-brand-darkpink hover:bg-brand-darkpink/90 text-white font-bold py-3 rounded-2xl shadow-md transition-colors text-sm sm:text-base">Proceed to Local Checkout</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- AI CHATBOT WIDGET -->
-    <div class="fixed bottom-6 right-6 z-40">
-        <div id="chat-window" class="hidden bg-white w-80 sm:w-96 rounded-3xl shadow-2xl border border-gray-100 flex flex-col h-[450px] mb-4">
+    <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40">
+        <div id="chat-window" class="hidden bg-white w-[calc(100vw-2rem)] sm:w-96 rounded-3xl shadow-2xl border border-gray-100 flex flex-col h-[400px] sm:h-[450px] mb-4">
             <div class="p-4 bg-brand-darkpink text-white rounded-t-3xl flex items-center justify-between">
                 <div class="flex items-center gap-2">
                     <span class="text-xl">🤖</span>
@@ -500,24 +535,24 @@
                 </div>
                 <button onclick="toggleChat()" class="text-white/80 hover:text-white font-bold">✕</button>
             </div>
-            <div id="chat-messages" class="flex-grow p-4 overflow-y-auto space-y-3 text-sm">
+            <div id="chat-messages" class="flex-grow p-4 overflow-y-auto space-y-3 text-xs sm:text-sm">
                 <div class="bg-gray-100 text-gray-700 p-3 rounded-2xl rounded-tl-none max-w-[80%]">
                     Hey there! Welcome to SquishIQ. How can I help you find the best crunchy squishy today? ✨
                 </div>
             </div>
             <div class="p-3 border-t border-gray-100 flex gap-2">
-                <input type="text" id="chat-input" placeholder="Type a message..." class="flex-grow px-4 py-2 text-sm rounded-xl border border-gray-200 focus:outline-none focus:border-brand-darkpink" onkeypress="if(event.key==='Enter') sendChatMessage()">
-                <button onclick="sendChatMessage()" class="bg-brand-darkpink text-white px-4 py-2 rounded-xl font-bold text-sm">Send</button>
+                <input type="text" id="chat-input" placeholder="Type a message..." class="flex-grow px-3 py-2 text-xs sm:text-sm rounded-xl border border-gray-200 focus:outline-none focus:border-brand-darkpink" onkeypress="if(event.key==='Enter') sendChatMessage()">
+                <button onclick="sendChatMessage()" class="bg-brand-darkpink text-white px-3 py-2 rounded-xl font-bold text-xs sm:text-sm">Send</button>
             </div>
         </div>
-        <button onclick="toggleChat()" class="w-14 h-14 bg-brand-darkpink hover:bg-brand-darkpink/90 text-white rounded-full shadow-2xl flex items-center justify-center text-2xl transition-transform hover:scale-105 ml-auto">
+        <button onclick="toggleChat()" class="w-12 h-12 sm:w-14 sm:h-14 bg-brand-darkpink hover:bg-brand-darkpink/90 text-white rounded-full shadow-2xl flex items-center justify-center text-xl sm:text-2xl transition-transform hover:scale-105 ml-auto">
             💬
         </button>
     </div>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-gray-100 mt-auto py-8">
-        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-gray-400 font-medium space-y-2">
+    <footer class="bg-white border-t border-gray-100 mt-auto py-6 sm:py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-[10px] sm:text-xs text-gray-400 font-medium space-y-1">
             <p>© 2026 SquishIQ Philippines. Automated e-commerce reselling powered by Metro Manila 3PL Hub (Locad).</p>
             <p class="text-brand-darkpink font-bold">Crispy Toast & Sparkle Visual Identity</p>
         </div>
@@ -525,17 +560,16 @@
 
     <!-- Optimized Application Logic -->
     <script>
-        // STRICT ADMIN CREDENTIALS CONFIGURATION
         const ADMIN_EMAIL = "sachiguinevereyongngo@gmail.com";
         const ADMIN_PASS = "Bestsquishy101";
         
+        let pendingUserEmail = null;
+        let generatedCode = null;
         let currentUserEmail = null;
 
-        // STORE OPERATING MODES: 'LOCKED', 'PREORDER', 'LIVE'
         let storeMode = 'LIVE';
         let targetDispatchDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 16);
 
-        // MASTER UNIFIED INVENTORY DATABASE
         let products = [
             { id: 1, name: "Crunchy Butter Squishy", price: 180, stock: 0, preorders: 0, icon: "🧈" },
             { id: 2, name: "Crunchy Pineapple Bun", price: 150, stock: 0, preorders: 0, icon: "🍍" },
@@ -553,7 +587,6 @@
         let countdownInterval = null;
         let analyticsChart = null;
 
-        // ASMR SOUND SYSTEM
         let asmrAudioFiles = []; 
         let currentPlayingAudio = null;
         let isPressingASMR = false;
@@ -561,7 +594,10 @@
         let synthOscillator = null;
         let synthGain = null;
 
-        // Optimized Main Navigation Switcher
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
         function switchTab(tabId) {
             ['shop', 'asmr', 'reviews', 'returns', 'admin'].forEach(t => {
                 const page = document.getElementById(`tab-${t}`);
@@ -580,25 +616,23 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Admin Sub-Tab Switcher
         function switchAdminSubTab(subTabId) {
             ['analytics', 'inventory', 'onsite', 'saleslog'].forEach(st => {
                 const subPage = document.getElementById(`admin-subtab-${st}`);
                 if(subPage) subPage.classList.add('hidden');
                 const subBtn = document.getElementById(`subnav-${st}`);
-                if(subBtn) subBtn.className = "py-3 px-4 font-bold text-sm border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors";
+                if(subBtn) subBtn.className = "py-2.5 px-3 sm:px-4 font-bold text-xs sm:text-sm border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors whitespace-nowrap";
             });
 
             document.getElementById(`admin-subtab-${subTabId}`).classList.remove('hidden');
             const activeSubBtn = document.getElementById(`subnav-${subTabId}`);
-            if(activeSubBtn) activeSubBtn.className = "py-3 px-4 font-bold text-sm border-b-2 border-brand-darkpink text-brand-darkpink transition-colors";
+            if(activeSubBtn) activeSubBtn.className = "py-2.5 px-3 sm:px-4 font-bold text-xs sm:text-sm border-b-2 border-brand-darkpink text-brand-darkpink transition-colors whitespace-nowrap";
             
             if(subTabId === 'analytics') {
                 updateAnalyticsChart();
             }
         }
 
-        // Render Online Store Catalog Grid
         function renderCatalog() {
             const grid = document.getElementById('product-grid');
             if(!grid) return;
@@ -620,22 +654,22 @@
                 }
 
                 html += `
-                <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition-shadow">
                     <div>
-                        <div class="w-full h-48 bg-brand-bg rounded-2xl flex items-center justify-center text-6xl mb-4 shadow-inner relative overflow-hidden">
+                        <div class="w-full h-40 sm:h-48 bg-brand-bg rounded-2xl flex items-center justify-center text-5xl sm:text-6xl mb-3 sm:mb-4 shadow-inner relative overflow-hidden">
                             <span>${p.icon}</span>
-                            <span class="absolute top-2 right-2 ${p.stock > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'} text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                            <span class="absolute top-2 right-2 ${p.stock > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'} text-[9px] sm:text-[10px] font-bold px-2.5 py-0.5 rounded-full">
                                 ${storeMode === 'PREORDER' ? `${p.preorders} pre-ordered` : (p.stock > 0 ? `${p.stock} in stock` : 'Out of stock')}
                             </span>
                         </div>
-                        <h3 class="font-display font-bold text-lg mt-2">${p.name}</h3>
+                        <h3 class="font-display font-bold text-base sm:text-lg mt-1">${p.name}</h3>
                     </div>
-                    <div class="mt-6 flex items-center justify-between gap-2">
+                    <div class="mt-4 sm:mt-6 flex items-center justify-between gap-2">
                         <div>
-                            <span class="text-xs text-gray-400 block font-semibold">Price</span>
-                            <span class="text-xl font-extrabold font-display text-brand-darkpink">₱${p.price}</span>
+                            <span class="text-[10px] sm:text-xs text-gray-400 block font-semibold">Price</span>
+                            <span class="text-lg sm:text-xl font-extrabold font-display text-brand-darkpink">₱${p.price}</span>
                         </div>
-                        <button onclick="addToCart(${p.id})" ${buttonDisabled ? 'disabled' : ''} class="${buttonDisabled ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-brand-text hover:bg-brand-darkpink text-white'} px-4 py-2.5 rounded-xl text-xs font-bold transition-colors shadow-sm">
+                        <button onclick="addToCart(${p.id})" ${buttonDisabled ? 'disabled' : ''} class="${buttonDisabled ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-brand-text hover:bg-brand-darkpink text-white'} px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl text-xs font-bold transition-colors shadow-sm">
                             ${buttonText}
                         </button>
                     </div>
@@ -644,7 +678,6 @@
             grid.innerHTML = html;
         }
 
-        // Store Operating Mode Controller
         function setStoreMode(mode) {
             storeMode = mode;
             updateModeUI();
@@ -673,7 +706,7 @@
                 if(checkoutBtn) {
                     checkoutBtn.disabled = true;
                     checkoutBtn.textContent = "🔒 Checkout Disabled (Store Locked)";
-                    checkoutBtn.className = "w-full bg-gray-300 text-gray-500 font-bold py-3.5 rounded-2xl cursor-not-allowed";
+                    checkoutBtn.className = "w-full bg-gray-300 text-gray-500 font-bold py-3.5 rounded-2xl cursor-not-allowed text-xs sm:text-base";
                 }
                 clearInterval(countdownInterval);
             } else if (storeMode === 'PREORDER') {
@@ -682,7 +715,7 @@
                 if(checkoutBtn) {
                     checkoutBtn.disabled = false;
                     checkoutBtn.textContent = "Place Pre-Order Reservation";
-                    checkoutBtn.className = "w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3.5 rounded-2xl shadow-md transition-colors";
+                    checkoutBtn.className = "w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3.5 rounded-2xl shadow-md transition-colors text-xs sm:text-base";
                 }
                 startCountdownTimer();
             } else {
@@ -691,13 +724,12 @@
                 if(checkoutBtn) {
                     checkoutBtn.disabled = false;
                     checkoutBtn.textContent = "Proceed to Local Checkout";
-                    checkoutBtn.className = "w-full bg-brand-darkpink hover:bg-brand-darkpink/90 text-white font-bold py-3.5 rounded-2xl shadow-md transition-colors";
+                    checkoutBtn.className = "w-full bg-brand-darkpink hover:bg-brand-darkpink/90 text-white font-bold py-3.5 rounded-2xl shadow-md transition-colors text-xs sm:text-base";
                 }
                 clearInterval(countdownInterval);
             }
         }
 
-        // Countdown Timer Logic
         function startCountdownTimer() {
             clearInterval(countdownInterval);
             function updateClock() {
@@ -742,7 +774,6 @@
             }
         }
 
-        // Render Admin Control Dashboard
         function renderAdmin() {
             const tbody = document.getElementById('admin-table-body');
             const grossSalesEl = document.getElementById('admin-gross-sales');
@@ -774,29 +805,29 @@
 
             tbody.innerHTML = products.map(p => `
                 <tr>
-                    <td class="p-4 font-bold flex items-center gap-2"><span>${p.icon}</span> ${p.name}</td>
-                    <td class="p-4 font-semibold">₱${p.price}</td>
-                    <td class="p-4 font-bold ${p.stock > 0 ? 'text-brand-accent' : 'text-red-500'}">${p.stock} pcs</td>
-                    <td class="p-4 font-bold text-purple-600">${p.preorders || 0} pcs</td>
-                    <td class="p-4"><span class="${p.stock > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'} text-xs px-2.5 py-1 rounded-full font-bold">${p.stock > 0 ? 'In Stock' : 'Out of Stock'}</span></td>
-                    <td class="p-4">
+                    <td class="p-3 sm:p-4 font-bold flex items-center gap-2"><span>${p.icon}</span> ${p.name}</td>
+                    <td class="p-3 sm:p-4 font-semibold">₱${p.price}</td>
+                    <td class="p-3 sm:p-4 font-bold ${p.stock > 0 ? 'text-brand-accent' : 'text-red-500'}">${p.stock} pcs</td>
+                    <td class="p-3 sm:p-4 font-bold text-purple-600">${p.preorders || 0} pcs</td>
+                    <td class="p-3 sm:p-4"><span class="${p.stock > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'} text-[10px] sm:text-xs px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full font-bold">${p.stock > 0 ? 'In Stock' : 'Out of Stock'}</span></td>
+                    <td class="p-3 sm:p-4">
                         <button onclick="deleteProduct(${p.id})" class="text-xs text-red-500 font-bold hover:underline">Delete SKU</button>
                     </td>
                 </tr>
             `).join('');
 
             posGrid.innerHTML = products.map(p => `
-                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col justify-between space-y-4">
+                <div class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 flex flex-col justify-between space-y-3">
                     <div class="flex items-center gap-3">
-                        <span class="text-4xl">${p.icon}</span>
+                        <span class="text-3xl">${p.icon}</span>
                         <div>
-                            <h4 class="font-bold text-base">${p.name}</h4>
-                            <span class="text-sm font-extrabold text-brand-darkpink">₱${p.price}</span>
+                            <h4 class="font-bold text-sm sm:text-base">${p.name}</h4>
+                            <span class="text-xs sm:text-sm font-extrabold text-brand-darkpink">₱${p.price}</span>
                         </div>
                     </div>
                     <div class="flex items-center justify-between border-t pt-3">
                         <span class="text-xs font-bold ${p.stock > 0 ? 'text-gray-500' : 'text-red-500'}">Available: ${p.stock} pcs</span>
-                        <button onclick="sellOnsite(${p.id})" ${p.stock <= 0 ? 'disabled' : ''} class="${p.stock <= 0 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700 text-white'} font-bold px-4 py-2 rounded-xl text-xs transition-colors shadow-sm">
+                        <button onclick="sellOnsite(${p.id})" ${p.stock <= 0 ? 'disabled' : ''} class="${p.stock <= 0 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700 text-white'} font-bold px-3 py-1.5 rounded-xl text-xs transition-colors shadow-sm">
                             + Sell 1 Unit Onsite
                         </button>
                     </div>
@@ -808,11 +839,11 @@
             } else {
                 ordersTableBody.innerHTML = salesLog.map(o => `
                     <tr>
-                        <td class="p-4 font-bold font-display text-brand-darkpink">${o.id}</td>
-                        <td class="p-4 text-xs font-medium text-gray-500">${o.timestampPH}</td>
-                        <td class="p-4"><span class="${o.channel === 'Online' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'} text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">${o.channel}</span></td>
-                        <td class="p-4 text-xs font-semibold">${o.itemsSummary}</td>
-                        <td class="p-4 font-bold">₱${o.total}</td>
+                        <td class="p-3 sm:p-4 font-bold font-display text-brand-darkpink">${o.id}</td>
+                        <td class="p-3 sm:p-4 text-xs font-medium text-gray-500">${o.timestampPH}</td>
+                        <td class="p-3 sm:p-4"><span class="${o.channel === 'Online' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'} text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">${o.channel}</span></td>
+                        <td class="p-3 sm:p-4 text-xs font-semibold">${o.itemsSummary}</td>
+                        <td class="p-3 sm:p-4 font-bold">₱${o.total}</td>
                     </tr>
                 `).join('');
             }
@@ -820,7 +851,6 @@
             updateAnalyticsChart();
         }
 
-        // Onsite POS Sell Action
         function sellOnsite(productId) {
             const prod = products.find(p => p.id === productId);
             if (!prod || prod.stock <= 0) return alert('No stock left to sell onsite!');
@@ -852,7 +882,6 @@
             alert(`✅ Onsite Sale Processed! 1x ${prod.name} sold for ₱${prod.price}. Master stock updated.`);
         }
 
-        // Chart.js Deferred Analytics Renderer
         function updateAnalyticsChart() {
             if (typeof Chart === 'undefined') return;
             
@@ -969,6 +998,7 @@
             alert(`Successfully loaded ${asmrAudioFiles.length} custom ASMR audio clips!`);
         }
 
+        // STEP 1: LOGIN FORM SUBMISSION
         function openAuthModal() {
             document.getElementById('auth-modal').classList.remove('hidden');
         }
@@ -977,27 +1007,65 @@
             document.getElementById('auth-modal').classList.add('hidden');
         }
 
-        function handleAuthLogin(e) {
+        function handleAuthStep1(e) {
             e.preventDefault();
             const email = document.getElementById('auth-email-input').value.trim();
             const password = document.getElementById('auth-password-input').value.trim();
 
-            currentUserEmail = email;
+            if (!email || !password) return alert('Please enter both email and password!');
 
-            if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase() && password === ADMIN_PASS) {
+            // If attempting admin login, check password first
+            if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase() && password !== ADMIN_PASS) {
+                return alert('Incorrect admin password!');
+            }
+
+            // Save pending credentials and generate 6-digit verification code
+            pendingUserEmail = email;
+            generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+            // Display verification modal (Step 2)
+            closeAuthModal();
+            document.getElementById('verify-email-display').textContent = email;
+            document.getElementById('simulated-code-display').textContent = generatedCode;
+            document.getElementById('verify-modal').classList.remove('hidden');
+        }
+
+        // STEP 2: CODE VERIFICATION FORM SUBMISSION
+        function closeVerifyModal() {
+            document.getElementById('verify-modal').classList.add('hidden');
+        }
+
+        function handleAuthStep2(e) {
+            e.preventDefault();
+            const inputCode = document.getElementById('verify-code-input').value.trim();
+
+            if (inputCode !== generatedCode) {
+                return alert('Incorrect verification code! Please check the 6-digit code shown in the simulation box.');
+            }
+
+            currentUserEmail = pendingUserEmail;
+
+            // Admin Login Validation
+            if (currentUserEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
                 document.getElementById('nav-admin').classList.remove('hidden');
+                document.getElementById('mobile-nav-admin').classList.remove('hidden');
                 document.getElementById('auth-btn-text').textContent = "My Account (Admin)";
-                document.getElementById('auth-btn').className = "text-xs font-bold bg-green-100 text-green-700 px-4 py-2 rounded-full";
-                closeAuthModal();
+                document.getElementById('auth-btn').className = "text-xs font-bold bg-green-100 text-green-700 px-3 py-2 sm:px-4 sm:py-2.5 rounded-full";
+                closeVerifyModal();
                 switchTab('admin');
-                alert('Welcome back, Admin! Control center unlocked.');
+                alert('✅ 2-Step Verification Successful! Welcome back, Admin.');
             } else {
                 document.getElementById('nav-admin').classList.add('hidden');
+                document.getElementById('mobile-nav-admin').classList.add('hidden');
                 document.getElementById('auth-btn-text').textContent = "My Account";
-                document.getElementById('auth-btn').className = "text-xs font-bold bg-pink-100 text-brand-darkpink px-4 py-2 rounded-full";
-                closeAuthModal();
-                alert(`Welcome back! Logged in as ${email}.`);
+                document.getElementById('auth-btn').className = "text-xs font-bold bg-pink-100 text-brand-darkpink px-3 py-2 sm:px-4 sm:py-2.5 rounded-full";
+                closeVerifyModal();
+                alert(`✅ Verification Successful! Welcome back, ${currentUserEmail}.`);
             }
+
+            // Reset pending code
+            document.getElementById('verify-code-input').value = '';
+            generatedCode = null;
         }
 
         function toggleCart() {
@@ -1046,10 +1114,10 @@
             container.innerHTML = cart.map(item => `
                 <div class="flex items-center justify-between bg-gray-50 p-4 rounded-2xl">
                     <div class="flex items-center gap-3">
-                        <span class="text-3xl">${item.icon}</span>
+                        <span class="text-2xl sm:text-3xl">${item.icon}</span>
                         <div>
-                            <h4 class="font-bold text-sm">${item.name}</h4>
-                            <span class="text-xs text-gray-500">₱${item.price} x ${item.qty}</span>
+                            <h4 class="font-bold text-xs sm:text-sm">${item.name}</h4>
+                            <span class="text-[11px] sm:text-xs text-gray-500">₱${item.price} x ${item.qty}</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
@@ -1208,21 +1276,21 @@
             if(!list) return;
             
             if(reviews.length === 0) {
-                list.innerHTML = `<div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center text-gray-400 font-medium text-sm">No customer reviews yet! Be the first to leave a review after receiving your order.</div>`;
+                list.innerHTML = `<div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-gray-100 text-center text-gray-400 font-medium text-xs sm:text-sm">No customer reviews yet! Be the first to leave a review after receiving your order.</div>`;
                 return;
             }
 
             list.innerHTML = reviews.map(r => `
-                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-3">
+                <div class="bg-white p-5 sm:p-6 rounded-3xl shadow-sm border border-gray-100 space-y-2.5">
                     <div class="flex items-center justify-between">
                         <div>
-                            <h4 class="font-bold text-sm">${r.name} <span class="text-xs text-green-600 font-normal">✔ Verified Buyer</span></h4>
-                            <span class="text-xs text-gray-400 font-semibold">${r.product}</span>
+                            <h4 class="font-bold text-xs sm:text-sm">${r.name} <span class="text-[10px] sm:text-xs text-green-600 font-normal">✔ Verified Buyer</span></h4>
+                            <span class="text-[10px] sm:text-xs text-gray-400 font-semibold">${r.product}</span>
                         </div>
-                        <span class="text-xs text-gray-400 font-medium">${r.date}</span>
+                        <span class="text-[10px] sm:text-xs text-gray-400 font-medium">${r.date}</span>
                     </div>
-                    <p class="text-gray-600 text-sm font-medium">${r.comment}</p>
-                    ${r.imageUrl ? `<img src="${r.imageUrl}" class="w-32 h-32 object-cover rounded-2xl shadow-sm border mt-2">` : ''}
+                    <p class="text-gray-600 text-xs sm:text-sm font-medium">${r.comment}</p>
+                    ${r.imageUrl ? `<img src="${r.imageUrl}" class="w-28 h-28 sm:w-32 sm:h-32 object-cover rounded-2xl shadow-sm border mt-2">` : ''}
                 </div>
             `).join('');
         }
@@ -1242,7 +1310,7 @@
             const text = input.value.trim();
             if(!text) return;
 
-            messages.innerHTML += `<div class="bg-brand-darkpink text-white p-3 rounded-2xl rounded-tr-none ml-auto max-w-[80%]">${text}</div>`;
+            messages.innerHTML += `<div class="bg-brand-darkpink text-white p-2.5 sm:p-3 rounded-2xl rounded-tr-none ml-auto max-w-[80%]">${text}</div>`;
             input.value = '';
             messages.scrollTop = messages.scrollHeight;
 
@@ -1253,12 +1321,11 @@
                 } else if(text.toLowerCase().includes('shipping') || text.toLowerCase().includes('delivery')) {
                     reply = "We offer flat ₱80 shipping across Metro Manila and FREE shipping for orders over ₱500!";
                 }
-                messages.innerHTML += `<div class="bg-gray-100 text-gray-700 p-3 rounded-2xl rounded-tl-none max-w-[80%]">${reply}</div>`;
+                messages.innerHTML += `<div class="bg-gray-100 text-gray-700 p-2.5 sm:p-3 rounded-2xl rounded-tl-none max-w-[80%]">${reply}</div>`;
                 messages.scrollTop = messages.scrollHeight;
             }, 500);
         }
 
-        // On Load Initializer
         window.addEventListener('DOMContentLoaded', function() {
             const targetInput = document.getElementById('admin-target-date');
             if(targetInput) targetInput.value = targetDispatchDate;
