@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SquishIQ | Tactile Sensory Lab & ASMR Toys</title>
+    
+    <!-- Resource Hints & Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS File Link -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-default bg-brand-bg text-brand-text font-sans antialiased min-h-screen flex flex-col transition-colors duration-300">
+
+    <!-- Toast Notification Banner (No Alerts) -->
+    <div id="toast-notification" class="fixed top-5 right-5 z-50 bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2 transform translate-x-full opacity-0 transition-all duration-300 pointer-events-none">
+        <span id="toast-icon">✨</span>
+        <span id="toast-message">App refreshed successfully</span>
+    </div>
+
+    <!-- Top Announcement Bar -->
+    <div id="announcement-bar" class="bg-brand-darkpink text-white text-[11px] sm:text-xs font-semibold py-2 px-4 text-center tracking-wide flex items-center justify-center gap-2 transition-colors duration-300">
+        <span id="announcement-text">✨ Free Metro Manila Shipping on Orders Over ₱500 | Powered by Locad 3PL ✨</span>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+            <a href="#" onclick="switchTab('shop')" class="flex items-center gap-2 sm:gap-3 group">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-2xl shadow-md flex items-center justify-center border-2 border-brand-pink overflow-hidden group-hover:scale-105 transition-transform p-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" class="w-full h-full">
+                        <rect x="50" y="10" width="400" height="320" rx="50" fill="#FFFFFF" />
+                        <rect x="170" y="140" width="160" height="130" rx="60" fill="#C68B59" />
+                        <circle cx="250" cy="120" r="22" fill="#FFB703" />
+                        <path d="M 210,185 Q 220,195 230,185" fill="none" stroke="#2B2D42" stroke-width="4" stroke-linecap="round" />
+                        <path d="M 270,185 Q 280,195 290,185" fill="none" stroke="#2B2D42" stroke-width="4" stroke-linecap="round" />
+                        <circle cx="195" cy="200" r="10" fill="#FF85A1" opacity="0.6" />
+                        <circle cx="305" cy="200" r="10" fill="#FF85A1" opacity="0.6" />
+                    </svg>
+                </div>
+                <div>
+                    <span class="font-display text-xl sm:text-2xl font-bold tracking-tight text-brand-text">Squish<span class="text-brand-darkpink">IQ</span></span>
+                    <span class="block text-[9px] sm:text-[10px] font-bold text-gray-400 tracking-widest uppercase">Crunch & ASMR Toys</span>
+                </div>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-8 font-semibold text-sm">
+                <button onclick="switchTab('shop')" id="nav-shop" class="text-brand-darkpink transition-colors">Catalog</button>
+                <button onclick="switchTab('asmr')" id="nav-asmr" class="text-gray-600 hover:text-brand-darkpink transition-colors">🎧 ASMR Lab</button>
+                <button onclick="switchTab('reviews')" id="nav-reviews" class="text-gray-600 hover:text-brand-darkpink transition-colors">Reviews</button>
+                <button onclick="switchTab('returns')" id="nav-returns" class="text-gray-600 hover:text-brand-darkpink transition-colors">Returns Portal</button>
+                <button onclick="switchTab('admin')" id="nav-admin" class="hidden text-gray-600 hover:text-brand-darkpink transition-colors flex items-center gap-1.5">
+                    <span>📊 Admin Dashboard</span>
+                </button>
+            </nav>
+
+            <div class="flex items-center gap-2 sm:gap-3">
+                <div id="user-session-container">
+                    <button onclick="openAuthModal()" id="auth-btn" class="text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 sm:px-4 sm:py-2.5 rounded-full transition-colors flex items-center gap-1">
+                        <span>👤</span> <span id="auth-btn-text" class="hidden sm:inline">Log In / Sign Up</span>
+                    </button>
+                </div>
+
+                <button onclick="toggleCart()" class="relative bg-brand-pink/30 hover:bg-brand-pink/50 text-brand-darkpink font-semibold px-3 py-2 sm:px-4 sm:py-2.5 rounded-full flex items-center gap-1.5 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                    <span class="text-xs sm:text-sm">Cart</span>
+                    <span id="cart-badge" class="bg-brand-darkpink text-white text-xs px-1.5 py-0.5 rounded-full font-bold">0</span>
+                </button>
+
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-gray-600 hover:text-brand-darkpink focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-100 px-4 py-3 space-y-2 text-sm font-semibold">
+            <button onclick="switchTab('shop'); toggleMobileMenu();" class="block w-full text-left py-2 text-brand-darkpink">Catalog</button>
+            <button onclick="switchTab('asmr'); toggleMobileMenu();" class="block w-full text-left py-2 text-gray-600">🎧 ASMR Lab</button>
+            <button onclick="switchTab('reviews'); toggleMobileMenu();" class="block w-full text-left py-2 text-gray-600">Reviews</button>
+            <button onclick="switchTab('returns'); toggleMobileMenu();" class="block w-full text-left py-2 text-gray-600">Returns Portal</button>
+            <button onclick="switchTab('admin'); toggleMobileMenu();" id="mobile-nav-admin" class="hidden block w-full text-left py-2 text-gray-600">📊 Admin Dashboard</button>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 w-full">
+
+        <!-- TAB 1: CATALOG -->
+        <section id="tab-shop" class="space-y-6 sm:space-y-8">
+            <div class="bg-gradient-to-r from-brand-pink/40 to-blue-100 rounded-3xl p-6 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-3 sm:space-y-4 max-w-xl text-center md:text-left">
+                    <h1 class="text-3xl sm:text-5xl font-extrabold font-display tracking-tight text-brand-text">Satisfying Crunches & Taba Squishies.</h1>
+                    <p class="text-gray-600 text-xs sm:text-base font-medium">Sourced directly, tested for peak ASMR acoustics, and shipped instantly from our Metro Manila warehouse hub.</p>
+                </div>
+            </div>
+
+            <div>
+                <h2 class="text-xl sm:text-2xl font-extrabold font-display mb-4 sm:mb-6">Individual Squishy Collection</h2>
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div>
+            </div>
+        </section>
+
+        <!-- TAB 2: ASMR SIMULATOR -->
+        <section id="tab-asmr" class="hidden space-y-6 sm:space-y-8">
+            <div class="bg-white rounded-3xl p-6 sm:p-12 shadow-sm border border-gray-100 text-center max-w-3xl mx-auto">
+                <span class="bg-brand-pink/40 text-brand-darkpink text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Interactive Sound Lab</span>
+                <h2 class="text-2xl sm:text-3xl font-bold font-display mt-4 mb-2">Virtual ASMR Squeeze Simulator</h2>
+                <p class="text-gray-500 text-xs sm:text-sm mb-8">Press and hold the toast below for continuous ASMR crunching sounds!</p>
+                
+                <div id="asmr-press-pad" onmousedown="startASMR()" onmouseup="stopASMR()" onmouseleave="stopASMR()" class="relative w-48 h-48 sm:w-64 sm:h-64 mx-auto bg-gradient-to-br from-brand-pink to-blue-200 rounded-full flex items-center justify-center shadow-inner cursor-pointer select-none transition-transform active:scale-95 group">
+                    <div class="absolute inset-3 sm:inset-4 bg-white rounded-full flex flex-col items-center justify-center shadow-md">
+                        <span class="text-4xl sm:text-5xl mb-2">🍞✨</span>
+                        <span class="font-display font-bold text-base sm:text-lg text-brand-text">HOLD TO SQUEEZE</span>
+                        <span id="asmr-text" class="text-[10px] sm:text-xs font-semibold text-brand-darkpink mt-1">Ready...</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: REVIEWS -->
+        <section id="tab-reviews" class="hidden space-y-6 sm:space-y-8 max-w-4xl mx-auto">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-bold font-display">Customer Reviews</h2>
+                    <p class="text-gray-500 text-xs sm:text-sm">Verified feedback from Metro Manila squishy collectors.</p>
+                </div>
+            </div>
+            <div id="reviews-list" class="space-y-4"></div>
+        </section>
+
+        <!-- TAB 4: RETURNS -->
+        <section id="tab-returns" class="hidden space-y-6 sm:space-y-8 max-w-xl mx-auto bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-gray-100">
+            <div>
+                <h2 class="text-xl sm:text-2xl font-bold font-display">Self-Service Returns Portal</h2>
+                <p class="text-gray-500 text-xs sm:text-sm mt-1">Enter your order ID below to request a defective return or courier pickup.</p>
+            </div>
+            <form onsubmit="handleReturnSubmit(event)" class="space-y-4">
+                <input type="text" required placeholder="e.g. SQ-1001" class="w-full px-4 py-3 rounded-xl border border-gray-200 font-medium text-sm">
+                <button type="submit" class="w-full bg-brand-darkpink text-white font-bold py-3.5 rounded-xl shadow-md text-sm">Submit Return Request</button>
+            </form>
+        </section>
+
+        <!-- TAB 5: ADMIN CONTROL DASHBOARD -->
+        <section id="tab-admin" class="hidden space-y-6 sm:space-y-8">
+            <div class="bg-gradient-to-r from-slate-900 to-indigo-900 text-white p-6 sm:p-8 rounded-3xl shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div>
+                    <span class="bg-brand-darkpink text-white text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Authorized Admin Access</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold font-display mt-2">SquishIQ Store Management</h2>
+                    <p class="text-slate-300 text-xs mt-1">Logged in as: <strong class="text-white">sachiguinevereyongngo@gmail.com</strong></p>
+                </div>
+
+                <!-- SAVE ALL CHANGES MASTER BUTTON -->
+                <div>
+                    <button onclick="saveAllAdminChanges()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-6 py-3 rounded-2xl shadow-lg transition-transform hover:scale-105 flex items-center gap-2 text-sm">
+                        <span>💾</span>
+                        <span>SAVE ALL CHANGES</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- THEME CUSTOMIZATION CONTROL -->
+            <div class="bg-white p-5 sm:p-6 rounded-3xl shadow-sm border border-gray-100 space-y-3">
+                <h3 class="font-bold font-display text-base">🎨 App Visual Theme Customizer</h3>
+                <p class="text-xs text-gray-500">Decorate your online storefront with custom seasonal themes!</p>
+                <div class="flex flex-wrap gap-3">
+                    <button onclick="setTempTheme('default')" id="theme-btn-default" class="px-4 py-2 rounded-xl text-xs font-bold border transition-colors border-gray-200">✨ Default Pastel</button>
+                    <button onclick="setTempTheme('christmas')" id="theme-btn-christmas" class="px-4 py-2 rounded-xl text-xs font-bold border transition-colors border-gray-200">🎄 Christmas Holiday</button>
+                    <button onclick="setTempTheme('halloween')" id="theme-btn-halloween" class="px-4 py-2 rounded-xl text-xs font-bold border transition-colors border-gray-200">🎃 Spooky Halloween</button>
+                    <button onclick="setTempTheme('sakura')" id="theme-btn-sakura" class="px-4 py-2 rounded-xl text-xs font-bold border transition-colors border-gray-200">🌸 Sakura Blossom</button>
+                </div>
+            </div>
+
+            <!-- ADD NEW PRODUCT FORM -->
+            <div class="bg-white p-5 sm:p-6 rounded-3xl shadow-sm border border-gray-100 space-y-4">
+                <h3 class="font-bold font-display text-base sm:text-lg">➕ Add New Item to Catalog</h3>
+                <form onsubmit="handleAddNewItem(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                    <input type="text" id="new-item-name" placeholder="Item Name" required class="px-3 py-2 border rounded-xl text-xs font-medium">
+                    <input type="number" id="new-item-price" placeholder="Price (₱)" required min="1" class="px-3 py-2 border rounded-xl text-xs font-medium">
+                    <input type="number" id="new-item-stock" placeholder="Initial Stock" required min="0" class="px-3 py-2 border rounded-xl text-xs font-medium">
+                    <input type="text" id="new-item-icon" placeholder="Emoji Icon (e.g. 🦄)" required class="px-3 py-2 border rounded-xl text-xs font-medium">
+                    <select id="new-item-edition" class="px-3 py-2 border rounded-xl text-xs font-medium">
+                        <option value="Standard">Standard Item</option>
+                        <option value="Limited Edition">⭐ Limited Edition</option>
+                    </select>
+                    <button type="submit" class="sm:col-span-2 lg:col-span-5 bg-brand-darkpink text-white font-bold py-2.5 rounded-xl text-xs hover:bg-brand-darkpink/90 transition-colors">+ Stage New SKU (Requires Save)</button>
+                </form>
+            </div>
+
+            <!-- INVENTORY TABLE -->
+            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="p-5 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="font-bold font-display text-base">Master Inventory & SKU Management</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs sm:text-sm">
+                        <thead class="bg-gray-50 text-gray-400 text-[10px] sm:text-xs uppercase font-bold">
+                            <tr>
+                                <th class="p-3 sm:p-4">SKU Name</th>
+                                <th class="p-3 sm:p-4">Edition</th>
+                                <th class="p-3 sm:p-4">Price (₱)</th>
+                                <th class="p-3 sm:p-4">Stock Qty</th>
+                                <th class="p-3 sm:p-4">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-table-body" class="divide-y divide-gray-100"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- AUTHENTICATION MODAL -->
+    <div id="auth-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm hidden">
+        <div class="bg-white w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-gray-100 space-y-4 relative">
+            <button onclick="closeAuthModal()" class="absolute top-5 right-5 text-gray-400 hover:text-gray-600 font-bold">✕</button>
+            <div class="text-center space-y-1">
+                <h3 class="text-xl font-bold font-display">Welcome to SquishIQ</h3>
+                <p class="text-xs text-gray-500">Sign in to your account</p>
+            </div>
+
+            <form onsubmit="handleAuthSubmit(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Email Address</label>
+                    <input type="email" id="auth-email-input" required placeholder="name@example.com" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 font-medium text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Password</label>
+                    <input type="password" id="auth-password-input" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 font-medium text-sm">
+                    <p id="password-error-msg" class="hidden text-xs text-red-500 font-bold mt-1">✕ Incorrect password. Please try again.</p>
+                </div>
+                <button type="submit" class="w-full bg-brand-darkpink hover:bg-brand-darkpink/90 text-white font-bold py-3 rounded-xl shadow-md transition-colors text-sm">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- CART DRAWER -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+                <div class="p-5 sm:p-6 border-b border-gray-100 flex items-center justify-between">
+                    <h2 class="text-lg sm:text-xl font-bold font-display">Your SquishIQ Cart</h2>
+                    <button onclick="toggleCart()" class="text-gray-400 hover:text-gray-600 font-bold text-lg">✕</button>
+                </div>
+                <div id="cart-items" class="flex-grow overflow-y-auto p-5 sm:p-6 space-y-4"></div>
+                <div class="p-5 sm:p-6 border-t border-gray-100 bg-gray-50 space-y-3">
+                    <div class="flex justify-between text-sm font-medium">
+                        <span class="text-gray-500">Subtotal</span>
+                        <span id="cart-subtotal" class="font-bold">₱0</span>
+                    </div>
+                    <div class="flex justify-between text-sm font-medium">
+                        <span class="text-gray-500">Manila Shipping (Flat)</span>
+                        <span class="font-bold">₱80</span>
+                    </div>
+                    <div class="border-t pt-3 flex justify-between text-base font-extrabold">
+                        <span>Total</span>
+                        <span id="cart-total" class="text-brand-darkpink">₱0</span>
+                    </div>
+                    <button onclick="checkout()" class="w-full bg-brand-darkpink hover:bg-brand-darkpink/90 text-white font-bold py-3 rounded-2xl shadow-md text-sm">Proceed to Local Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Script Logic -->
+    <script>
+        const ADMIN_EMAIL = "sachiguinevereyongngo@gmail.com";
+        const ADMIN_PASS = "Bestsquishy101";
+
+        let savedProducts = JSON.parse(localStorage.getItem('squishiq_products')) || [
+            { id: 1, name: "Crunchy Butter Squishy", price: 180, stock: 15, edition: "Standard", icon: "🧈" },
+            { id: 2, name: "Crunchy Pineapple Bun", price: 150, stock: 10, edition: "Standard", icon: "🍍" },
+            { id: 3, name: "Crunchy Pudding", price: 130, stock: 12, edition: "Standard", icon: "🍮" },
+            { id: 4, name: "Crunchy Soap", price: 130, stock: 8, edition: "Standard", icon: "🧼" },
+            { id: 5, name: "Crunchy Peanut Squishy", price: 130, stock: 14, edition: "Standard", icon: "🥜" },
+            { id: 6, name: "Watermelon Slush", price: 120, stock: 20, edition: "Standard", icon: "🍉" },
+            { id: 7, name: "Strawberry", price: 100, stock: 25, edition: "Standard", icon: "🍓" }
+        ];
+
+        let stagedProducts = JSON.parse(JSON.stringify(savedProducts));
+        let activeTheme = localStorage.getItem('squishiq_theme') || 'default';
+        let tempTheme = activeTheme;
+        let cart = [];
+
+        function showNotification(msg, icon = "✨") {
+            const toast = document.getElementById('toast-notification');
+            document.getElementById('toast-message').textContent = msg;
+            document.getElementById('toast-icon').textContent = icon;
+            
+            toast.classList.remove('translate-x-full', 'opacity-0');
+            toast.classList.add('translate-x-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-x-0', 'opacity-100');
+                toast.classList.add('translate-x-full', 'opacity-0');
+            }, 3000);
+        }
+
+        function checkUserSession() {
+            const sessionUser = localStorage.getItem('squishiq_user');
+            const container = document.getElementById('user-session-container');
+            const adminNav = document.getElementById('nav-admin');
+            const mobileAdminNav = document.getElementById('mobile-nav-admin');
+
+            if (sessionUser) {
+                if (sessionUser.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+                    adminNav.classList.remove('hidden');
+                    mobileAdminNav.classList.remove('hidden');
+                }
+                container.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold bg-pink-100 text-brand-darkpink px-3 py-2 rounded-full">👤 ${sessionUser.split('@')[0]}</span>
+                        <button onclick="handleLogout()" class="text-xs font-bold text-gray-500 hover:text-red-500 underline">Logout</button>
+                    </div>`;
+            } else {
+                adminNav.classList.add('hidden');
+                mobileAdminNav.classList.add('hidden');
+                container.innerHTML = `
+                    <button onclick="openAuthModal()" id="auth-btn" class="text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 sm:px-4 sm:py-2.5 rounded-full transition-colors flex items-center gap-1">
+                        <span>👤</span> <span class="hidden sm:inline">Log In / Sign Up</span>
+                    </button>`;
+            }
+        }
+
+        function applyTheme(themeName) {
+            document.body.className = `theme-${themeName} bg-brand-bg text-brand-text font-sans antialiased min-h-screen flex flex-col transition-colors duration-300`;
+        }
+
+        function setTempTheme(themeName) {
+            tempTheme = themeName;
+            ['default', 'christmas', 'halloween', 'sakura'].forEach(t => {
+                const btn = document.getElementById(`theme-btn-${t}`);
+                if (btn) {
+                    if (t === themeName) {
+                        btn.className = "px-4 py-2 rounded-xl text-xs font-bold border transition-colors bg-brand-darkpink text-white border-brand-darkpink";
+                    } else {
+                        btn.className = "px-4 py-2 rounded-xl text-xs font-bold border transition-colors border-gray-200 text-gray-600";
+                    }
+                }
+            });
+        }
+
+        function saveAllAdminChanges() {
+            savedProducts = JSON.parse(JSON.stringify(stagedProducts));
+            localStorage.setItem('squishiq_products', JSON.stringify(savedProducts));
+
+            activeTheme = tempTheme;
+            localStorage.setItem('squishiq_theme', activeTheme);
+
+            applyTheme(activeTheme);
+            renderCatalog();
+            renderAdmin();
+            showNotification("App changes saved & storefront refreshed!", "💾");
+        }
+
+        function renderCatalog() {
+            const grid = document.getElementById('product-grid');
+            if(!grid) return;
+
+            grid.innerHTML = savedProducts.map(p => `
+                <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden">
+                    ${p.edition === 'Limited Edition' ? '<div class="limited-edition-badge">⭐ LIMITED EDITION</div>' : ''}
+                    <div>
+                        <div class="w-full h-40 sm:h-48 bg-brand-bg rounded-2xl flex items-center justify-center text-5xl sm:text-6xl mb-3 shadow-inner relative">
+                            <span>${p.icon}</span>
+                            <span class="absolute top-2 right-2 ${p.stock > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'} text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                                ${p.stock > 0 ? `${p.stock} in stock` : 'Out of stock'}
+                            </span>
+                        </div>
+                        <h3 class="font-display font-bold text-base sm:text-lg mt-1">${p.name}</h3>
+                    </div>
+                    <div class="mt-4 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] text-gray-400 block font-semibold">Price</span>
+                            <span class="text-lg font-extrabold font-display text-brand-darkpink">₱${p.price}</span>
+                        </div>
+                        <button onclick="addToCart(${p.id})" ${p.stock <= 0 ? 'disabled' : ''} class="${p.stock <= 0 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-brand-text hover:bg-brand-darkpink text-white'} px-4 py-2 rounded-xl text-xs font-bold transition-colors shadow-sm">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderAdmin() {
+            const tbody = document.getElementById('admin-table-body');
+            if(!tbody) return;
+
+            tbody.innerHTML = stagedProducts.map((p, idx) => `
+                <tr>
+                    <td class="p-3 sm:p-4 font-bold flex items-center gap-2"><span>${p.icon}</span> ${p.name}</td>
+                    <td class="p-3 sm:p-4"><span class="${p.edition === 'Limited Edition' ? 'bg-amber-100 text-amber-800' : 'bg-gray-100 text-gray-600'} text-[10px] px-2 py-0.5 rounded-full font-bold">${p.edition}</span></td>
+                    <td class="p-3 sm:p-4 font-semibold">
+                        <input type="number" value="${p.price}" onchange="updateStagedItem(${idx}, 'price', this.value)" class="w-20 px-2 py-1 border rounded-lg text-xs">
+                    </td>
+                    <td class="p-3 sm:p-4 font-bold">
+                        <input type="number" value="${p.stock}" onchange="updateStagedItem(${idx}, 'stock', this.value)" class="w-20 px-2 py-1 border rounded-lg text-xs">
+                    </td>
+                    <td class="p-3 sm:p-4">
+                        <button onclick="removeStagedItem(${idx})" class="text-xs text-red-500 font-bold hover:underline">Remove</button>
+                    </td>
+                </tr>
+            `).join('');
+
+            setTempTheme(tempTheme);
+        }
+
+        function updateStagedItem(index, key, val) {
+            stagedProducts[index][key] = Number(val);
+        }
+
+        function removeStagedItem(index) {
+            stagedProducts.splice(index, 1);
+            renderAdmin();
+        }
+
+        function handleAddNewItem(e) {
+            e.preventDefault();
+            const name = document.getElementById('new-item-name').value.trim();
+            const price = Number(document.getElementById('new-item-price').value);
+            const stock = Number(document.getElementById('new-item-stock').value);
+            const icon = document.getElementById('new-item-icon').value.trim();
+            const edition = document.getElementById('new-item-edition').value;
+
+            stagedProducts.push({
+                id: Date.now(),
+                name,
+                price,
+                stock,
+                icon,
+                edition
+            });
+
+            renderAdmin();
+            e.target.reset();
+            showNotification("Item staged! Click 'SAVE ALL CHANGES' to make it live.", "📌");
+        }
+
+        function openAuthModal() {
+            document.getElementById('auth-modal').classList.remove('hidden');
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.add('hidden');
+            document.getElementById('password-error-msg').classList.add('hidden');
+        }
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('auth-email-input').value.trim();
+            const password = document.getElementById('auth-password-input').value.trim();
+            const errorMsg = document.getElementById('password-error-msg');
+
+            if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase() && password !== ADMIN_PASS) {
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+
+            errorMsg.classList.add('hidden');
+            localStorage.setItem('squishiq_user', email);
+            closeAuthModal();
+            checkUserSession();
+            showNotification(`Logged in as ${email}`, "👋");
+
+            if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+                switchTab('admin');
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('squishiq_user');
+            checkUserSession();
+            switchTab('shop');
+            showNotification("Logged out successfully.", "🔒");
+        }
+
+        function switchTab(tabId) {
+            ['shop', 'asmr', 'reviews', 'returns', 'admin'].forEach(t => {
+                const page = document.getElementById(`tab-${t}`);
+                if(page) page.classList.add('hidden');
+            });
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            if(tabId === 'admin') renderAdmin();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleCart() {
+            document.getElementById('cart-drawer').classList.toggle('hidden');
+        }
+
+        function addToCart(productId) {
+            const product = savedProducts.find(p => p.id === productId);
+            if (!product || product.stock <= 0) return;
+
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+            updateCartUI();
+            showNotification(`Added ${product.name} to cart!`, "🛒");
+        }
+
+        function updateCartUI() {
+            const badge = document.getElementById('cart-badge');
+            const container = document.getElementById('cart-items');
+            const subtotalEl = document.getElementById('cart-subtotal');
+            const totalEl = document.getElementById('cart-total');
+
+            const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+            badge.textContent = totalCount;
+
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-center text-gray-400 py-12 text-sm font-medium">Your cart is currently empty.</p>`;
+                subtotalEl.textContent = '₱0';
+                totalEl.textContent = '₱80';
+                return;
+            }
+
+            container.innerHTML = cart.map(item => `
+                <div class="flex items-center justify-between bg-gray-50 p-4 rounded-2xl">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">${item.icon}</span>
+                        <div>
+                            <h4 class="font-bold text-xs">${item.name}</h4>
+                            <span class="text-xs text-gray-500">₱${item.price} x ${item.qty}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            subtotalEl.textContent = `₱${subtotal}`;
+            totalEl.textContent = `₱${subtotal > 0 ? subtotal + 80 : 0}`;
+        }
+
+        function checkout() {
+            if (cart.length === 0) return;
+            cart = [];
+            updateCartUI();
+            toggleCart();
+            showNotification("Order placed successfully! Thank you for ordering.", "🎉");
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        window.addEventListener('DOMContentLoaded', function() {
+            applyTheme(activeTheme);
+            checkUserSession();
+            renderCatalog();
+        });
+    </script>
+</body>
+</html>

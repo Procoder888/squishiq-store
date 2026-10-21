@@ -1,0 +1,57 @@
+/* Custom CSS Styles & Theme Palettes for SquishIQ */
+
+/* 1. DEFAULT PASTEL THEME */
+body.theme-default {
+    --color-bg: #FDFBF7;
+    --color-text: #2B2D42;
+    --color-pink: #FFC2D1;
+    --color-darkpink: #FF5C8A;
+}
+
+/* 2. CHRISTMAS HOLIDAY THEME */
+body.theme-christmas {
+    --color-bg: #F4F9F4;
+    --color-text: #1B4332;
+    --color-pink: #C0D6E4;
+    --color-darkpink: #D80032;
+}
+
+/* 3. HALLOWEEN THEME */
+body.theme-halloween {
+    --color-bg: #18181B;
+    --color-text: #F4F4F5;
+    --color-pink: #A855F7;
+    --color-darkpink: #F97316;
+}
+
+/* 4. SAKURA BLOSSOM THEME */
+body.theme-sakura {
+    --color-bg: #FFF5F7;
+    --color-text: #4A1525;
+    --color-pink: #FBCFE8;
+    --color-darkpink: #EC4899;
+}
+
+/* Dynamic CSS Variables Applied across Tailwind utilities */
+.bg-brand-bg { background-color: var(--color-bg) !important; }
+.text-brand-text { color: var(--color-text) !important; }
+.bg-brand-pink { background-color: var(--color-pink) !important; }
+.text-brand-darkpink { color: var(--color-darkpink) !important; }
+.bg-brand-darkpink { background-color: var(--color-darkpink) !important; }
+.border-brand-pink { border-color: var(--color-pink) !important; }
+
+/* LIMITED EDITION BADGE RIBBON EFFECT */
+.limited-edition-badge {
+    position: absolute;
+    top: 12px;
+    left: -28px;
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+    color: #FFFFFF;
+    font-size: 8px;
+    font-weight: 800;
+    padding: 4px 28px;
+    transform: rotate(-45deg);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    letter-spacing: 0.05em;
+    z-index: 10;
+}
