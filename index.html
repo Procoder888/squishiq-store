@@ -35,15 +35,8 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
             <a href="#" onclick="switchTab('shop')" class="flex items-center gap-2 sm:gap-3 group">
                 <div class="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-2xl shadow-md flex items-center justify-center border-2 border-brand-pink overflow-hidden group-hover:scale-105 transition-transform p-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" class="w-full h-full">
-                        <rect x="50" y="10" width="400" height="320" rx="50" fill="#FFFFFF" />
-                        <rect x="170" y="140" width="160" height="130" rx="60" fill="#C68B59" />
-                        <circle cx="250" cy="120" r="22" fill="#FFB703" />
-                        <path d="M 210,185 Q 220,195 230,185" fill="none" stroke="#2B2D42" stroke-width="4" stroke-linecap="round" />
-                        <path d="M 270,185 Q 280,195 290,185" fill="none" stroke="#2B2D42" stroke-width="4" stroke-linecap="round" />
-                        <circle cx="195" cy="200" r="10" fill="#FF85A1" opacity="0.6" />
-                        <circle cx="305" cy="200" r="10" fill="#FF85A1" opacity="0.6" />
-                    </svg>
+                    <!-- Dynamic Logo Image with SVG Fallback -->
+                    <img src="images/logo.png" alt="SquishIQ Logo" class="w-full h-full object-contain" onerror="this.onerror=null; this.outerHTML='<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 500 500\' class=\'w-full h-full\'><rect x=\'50\' y=\'10\' width=\'400\' height=\'320\' rx=\'50\' fill=\'#FFFFFF\'/><rect x=\'170\' y=\'140\' width=\'160\' height=\'130\' rx=\'60\' fill=\'#C68B59\'/><circle cx=\'250\' cy=\'120\' r=\'22\' fill=\'#FFB703\'/><path d=\'M 210,185 Q 220,195 230,185\' fill=\'none\' stroke=\'#2B2D42\' stroke-width=\'4\' stroke-linecap=\'round\'/><path d=\'M 270,185 Q 280,195 290,185\' fill=\'none\' stroke=\'#2B2D42\' stroke-width=\'4\' stroke-linecap=\'round\'/><circle cx=\'195\' cy=\'200\' r=\'10\' fill=\'#FF85A1\' opacity=\'0.6\'/><circle cx=\'305\' cy=\'200\' r=\'10\' fill=\'#FF85A1\' opacity=\'0.6\'/></svg>';">
                 </div>
                 <div>
                     <span class="font-display text-xl sm:text-2xl font-bold tracking-tight text-brand-text">Squish<span class="text-brand-darkpink">IQ</span></span>
@@ -95,18 +88,45 @@
 
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 w-full">
 
-        <!-- TAB 1: CATALOG -->
-        <section id="tab-shop" class="space-y-6 sm:space-y-8">
-            <div class="bg-gradient-to-r from-brand-pink/40 to-blue-100 rounded-3xl p-6 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
-                <div class="space-y-3 sm:space-y-4 max-w-xl text-center md:text-left">
-                    <h1 class="text-3xl sm:text-5xl font-extrabold font-display tracking-tight text-brand-text">Satisfying Crunches & Taba Squishies.</h1>
-                    <p class="text-gray-600 text-xs sm:text-base font-medium">Sourced directly, tested for peak ASMR acoustics, and shipped instantly from our Metro Manila warehouse hub.</p>
+        <!-- TAB 1: CATALOG (HOMEPAGE DESIGN) -->
+        <section id="tab-shop" class="space-y-8">
+            <!-- Refined Homepage Hero Banner -->
+            <div class="relative overflow-hidden bg-gradient-to-br from-pink-100 via-rose-50 to-blue-50 rounded-3xl p-8 sm:p-14 border border-pink-100/60 shadow-sm flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="space-y-4 max-w-2xl text-center md:text-left z-10">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold bg-white/80 text-brand-darkpink shadow-xs border border-pink-200">
+                        <span>✨</span> Premium Tactile Sensory Collection
+                    </span>
+                    <h1 class="text-3xl sm:text-5xl font-black font-display tracking-tight text-brand-text leading-tight">
+                        Satisfying Crunches & <span class="text-brand-darkpink">Taba Squishies</span>.
+                    </h1>
+                    <p class="text-gray-600 text-sm sm:text-base font-medium leading-relaxed">
+                        Handcrafted & curated squishy toys engineered for peak acoustic ASMR response. Shipped straight from Metro Manila!
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3 justify-center md:justify-start">
+                        <button onclick="document.getElementById('product-grid').scrollIntoView({ behavior: 'smooth' })" class="bg-brand-darkpink hover:bg-brand-darkpink/90 text-white font-bold px-6 py-3 rounded-2xl shadow-md text-sm transition-transform hover:scale-105">
+                            Shop All Squishies
+                        </button>
+                        <button onclick="switchTab('asmr')" class="bg-white hover:bg-gray-50 text-brand-text font-bold px-6 py-3 rounded-2xl shadow-sm border border-gray-200 text-sm transition-all">
+                            🎧 Try ASMR Simulator
+                        </button>
+                    </div>
+                </div>
+
+                <div class="relative flex items-center justify-center z-10">
+                    <div class="w-44 h-44 sm:w-56 sm:h-56 bg-white/90 rounded-full shadow-xl flex items-center justify-center p-4 border-4 border-white animate-bounce-slow">
+                        <img src="images/logo.png" alt="SquishIQ Logo" class="w-full h-full object-contain" onerror="this.onerror=null; this.outerHTML='<span class=\'text-7xl sm:text-8xl\'>🍞✨</span>';">
+                    </div>
                 </div>
             </div>
 
             <div>
-                <h2 class="text-xl sm:text-2xl font-extrabold font-display mb-4 sm:mb-6">Individual Squishy Collection</h2>
-                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div>
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold font-display text-brand-text">Squishy Collection</h2>
+                        <p class="text-xs sm:text-sm text-gray-500 font-medium">Click any item to add to your cart</p>
+                    </div>
+                </div>
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"></div>
             </div>
         </section>
 
@@ -115,13 +135,14 @@
             <div class="bg-white rounded-3xl p-6 sm:p-12 shadow-sm border border-gray-100 text-center max-w-3xl mx-auto">
                 <span class="bg-brand-pink/40 text-brand-darkpink text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Interactive Sound Lab</span>
                 <h2 class="text-2xl sm:text-3xl font-bold font-display mt-4 mb-2">Virtual ASMR Squeeze Simulator</h2>
-                <p class="text-gray-500 text-xs sm:text-sm mb-8">Press and hold the toast below for continuous ASMR crunching sounds!</p>
+                <p class="text-gray-500 text-xs sm:text-sm mb-8">Tap or click the squishy below to hear continuous ASMR crunch sounds!</p>
                 
-                <div id="asmr-press-pad" onmousedown="startASMR()" onmouseup="stopASMR()" onmouseleave="stopASMR()" ontouchstart="startASMR()" ontouchend="stopASMR()" class="relative w-48 h-48 sm:w-64 sm:h-64 mx-auto bg-gradient-to-br from-brand-pink to-blue-200 rounded-full flex items-center justify-center shadow-inner cursor-pointer select-none transition-transform active:scale-95 group">
+                <!-- TAP BUTTON CONTROLLER -->
+                <div id="asmr-press-pad" onclick="triggerTapASMR()" class="relative w-48 h-48 sm:w-64 sm:h-64 mx-auto bg-gradient-to-br from-brand-pink to-blue-200 rounded-full flex items-center justify-center shadow-inner cursor-pointer select-none transition-transform hover:scale-105 active:scale-90 group">
                     <div class="absolute inset-3 sm:inset-4 bg-white rounded-full flex flex-col items-center justify-center shadow-md">
-                        <span class="text-4xl sm:text-5xl mb-2">🍞✨</span>
-                        <span class="font-display font-bold text-base sm:text-lg text-brand-text">HOLD TO SQUEEZE</span>
-                        <span id="asmr-text" class="text-[10px] sm:text-xs font-semibold text-brand-darkpink mt-1">Ready...</span>
+                        <span id="asmr-icon" class="text-5xl sm:text-6xl mb-2 transition-transform group-hover:scale-110">🍞✨</span>
+                        <span class="font-display font-bold text-base sm:text-lg text-brand-text">TAP TO SQUEEZE</span>
+                        <span id="asmr-text" class="text-[10px] sm:text-xs font-semibold text-brand-darkpink mt-1">Tap me!</span>
                     </div>
                 </div>
             </div>
@@ -136,7 +157,6 @@
                 </div>
             </div>
             
-            <!-- Submit Review Form -->
             <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
                 <h3 class="font-bold font-display text-base">Write a Review</h3>
                 <form onsubmit="handleReviewSubmit(event)" class="space-y-3">
@@ -260,7 +280,7 @@
         </div>
     </div>
 
-    <!-- CART DRAWER (PROPERLY HIDDEN & NON-INTERACTIVE WHEN CLOSED) -->
+    <!-- CART DRAWER -->
     <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden hidden pointer-events-none">
         <div id="cart-backdrop" class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity opacity-0 pointer-events-none" onclick="toggleCart()"></div>
         <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
@@ -313,9 +333,7 @@
         let activeTheme = localStorage.getItem('squishiq_theme') || 'default';
         let tempTheme = activeTheme;
         let cart = [];
-        let asmrAudio = null;
-        let audioContext = null;
-        let asmrInterval = null;
+        let audioCtx = null;
 
         function showNotification(msg, icon = "✨") {
             const toast = document.getElementById('toast-notification');
@@ -393,23 +411,23 @@
             if(!grid) return;
 
             grid.innerHTML = savedProducts.map(p => `
-                <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden">
+                <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-xs hover:shadow-md border border-gray-100 flex flex-col justify-between transition-all duration-200 relative overflow-hidden group">
                     ${p.edition === 'Limited Edition' ? '<div class="limited-edition-badge">⭐ LIMITED EDITION</div>' : ''}
                     <div>
-                        <div class="w-full h-40 sm:h-48 bg-brand-bg rounded-2xl flex items-center justify-center text-5xl sm:text-6xl mb-3 shadow-inner relative">
+                        <div class="w-full h-44 sm:h-52 bg-gradient-to-b from-brand-bg to-pink-50/30 rounded-2xl flex items-center justify-center text-6xl sm:text-7xl mb-4 shadow-inner relative group-hover:scale-[1.02] transition-transform">
                             <span>${p.icon}</span>
-                            <span class="absolute top-2 right-2 ${p.stock > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'} text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                            <span class="absolute top-3 right-3 ${p.stock > 0 ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-red-100 text-red-600 border border-red-200'} text-[10px] font-extrabold px-2.5 py-1 rounded-full">
                                 ${p.stock > 0 ? `${p.stock} in stock` : 'Out of stock'}
                             </span>
                         </div>
-                        <h3 class="font-display font-bold text-base sm:text-lg mt-1">${p.name}</h3>
+                        <h3 class="font-display font-bold text-base sm:text-lg text-brand-text group-hover:text-brand-darkpink transition-colors">${p.name}</h3>
                     </div>
-                    <div class="mt-4 flex items-center justify-between">
+                    <div class="mt-5 pt-3 border-t border-gray-50 flex items-center justify-between">
                         <div>
-                            <span class="text-[10px] text-gray-400 block font-semibold">Price</span>
-                            <span class="text-lg font-extrabold font-display text-brand-darkpink">₱${p.price}</span>
+                            <span class="text-[10px] text-gray-400 block font-bold uppercase tracking-wider">Price</span>
+                            <span class="text-xl font-black font-display text-brand-darkpink">₱${p.price}</span>
                         </div>
-                        <button onclick="addToCart(${p.id})" ${p.stock <= 0 ? 'disabled' : ''} class="${p.stock <= 0 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-brand-text hover:bg-brand-darkpink text-white'} px-4 py-2 rounded-xl text-xs font-bold transition-colors shadow-sm">
+                        <button onclick="addToCart(${p.id})" ${p.stock <= 0 ? 'disabled' : ''} class="${p.stock <= 0 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-brand-text hover:bg-brand-darkpink text-white shadow-sm hover:shadow-md'} px-5 py-2.5 rounded-xl text-xs font-bold transition-all transform active:scale-95">
                             Add to Cart
                         </button>
                     </div>
@@ -427,7 +445,7 @@
                         <span class="font-bold text-sm">${r.name}</span>
                         <span class="text-xs text-gray-400">${r.date}</span>
                     </div>
-                    <div class="text-amber-400 text-xs">{"⭐".repeat(r.rating)}</div>
+                    <div class="text-amber-400 text-xs">${"⭐".repeat(r.rating)}</div>
                     <p class="text-xs text-gray-600 mt-2">${r.comment}</p>
                 </div>
             `).join('');
@@ -557,7 +575,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        /* CART DRAWER DISPLAY FIX */
         function toggleCart() {
             const drawer = document.getElementById('cart-drawer');
             const backdrop = document.getElementById('cart-backdrop');
@@ -633,58 +650,67 @@
             showNotification("Order placed successfully! Thank you for ordering.", "🎉");
         }
 
-        /* ASMR AUDIO PLAYBACK ENGINE */
-        function startASMR() {
-            document.getElementById('asmr-text').textContent = "Squeezing... Crunching! 🎧";
-            
-            try {
-                if (!asmrAudio) {
-                    asmrAudio = new Audio('assets/sounds/crunchybutter.m4a');
-                    asmrAudio.loop = true;
-                }
-                asmrAudio.play().catch(() => playSyntheticCrunch());
-            } catch (err) {
-                playSyntheticCrunch();
-            }
+        /* REFINED TAP ASMR SQUEEZE SIMULATOR */
+        function triggerTapASMR() {
+            const pad = document.getElementById('asmr-press-pad');
+            const text = document.getElementById('asmr-text');
+            const icon = document.getElementById('asmr-icon');
 
-            if (!asmrInterval) {
-                asmrInterval = setInterval(playSyntheticCrunch, 200);
+            // Trigger Visual Animation
+            pad.classList.remove('animate-squeeze');
+            void pad.offsetWidth; // Force Reflow
+            pad.classList.add('animate-squeeze');
+
+            text.textContent = "CRUNCH! 💥";
+            icon.textContent = "✨🍞✨";
+
+            setTimeout(() => {
+                text.textContent = "Tap me!";
+                icon.textContent = "🍞✨";
+            }, 400);
+
+            // Play Audio Effect
+            playCrunchSound();
+        }
+
+        function playCrunchSound() {
+            // Attempt Playing Custom Audio File
+            const audio = new Audio('assets/sounds/crunchybutter.m4a');
+            audio.currentTime = 0;
+            const playPromise = audio.play();
+
+            if (playPromise !== undefined) {
+                playPromise.catch(() => {
+                    // Fallback to Web Audio Synthesizer if Audio file is blocked or unavailable
+                    generateSyntheticCrunch();
+                });
             }
         }
 
-        function stopASMR() {
-            document.getElementById('asmr-text').textContent = "Ready...";
-            if (asmrAudio) {
-                asmrAudio.pause();
-                asmrAudio.currentTime = 0;
-            }
-            if (asmrInterval) {
-                clearInterval(asmrInterval);
-                asmrInterval = null;
-            }
-        }
-
-        function playSyntheticCrunch() {
+        function generateSyntheticCrunch() {
             try {
-                if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const bufferSize = audioContext.sampleRate * 0.08;
-                const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
-                const output = buffer.getChannelData(0);
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+
+                const bufferSize = audioCtx.sampleRate * 0.12;
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+
                 for (let i = 0; i < bufferSize; i++) {
-                    output[i] = Math.random() * 2 - 1;
+                    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.3));
                 }
 
-                const whiteNoise = audioContext.createBufferSource();
-                whiteNoise.buffer = buffer;
+                const noise = audioCtx.createBufferSource();
+                noise.buffer = buffer;
 
-                const filter = audioContext.createBiquadFilter();
+                const filter = audioCtx.createBiquadFilter();
                 filter.type = 'bandpass';
-                filter.frequency.value = 800 + Math.random() * 2000;
+                filter.frequency.value = 1200 + Math.random() * 1500;
+                filter.Q.value = 3;
 
-                whiteNoise.connect(filter);
-                filter.connect(audioContext.destination);
-
-                whiteNoise.start();
+                noise.connect(filter);
+                filter.connect(audioCtx.destination);
+                noise.start();
             } catch (e) {}
         }
 
