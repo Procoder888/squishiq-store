@@ -35,7 +35,6 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
             <a href="#" onclick="switchTab('shop')" class="flex items-center gap-2 sm:gap-3 group">
                 <div class="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-2xl shadow-md flex items-center justify-center border-2 border-brand-pink overflow-hidden group-hover:scale-105 transition-transform p-1">
-                    <!-- Dynamic Logo Image with SVG Fallback -->
                     <img src="images/logo.png" alt="SquishIQ Logo" class="w-full h-full object-contain" onerror="this.onerror=null; this.outerHTML='<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 500 500\' class=\'w-full h-full\'><rect x=\'50\' y=\'10\' width=\'400\' height=\'320\' rx=\'50\' fill=\'#FFFFFF\'/><rect x=\'170\' y=\'140\' width=\'160\' height=\'130\' rx=\'60\' fill=\'#C68B59\'/><circle cx=\'250\' cy=\'120\' r=\'22\' fill=\'#FFB703\'/><path d=\'M 210,185 Q 220,195 230,185\' fill=\'none\' stroke=\'#2B2D42\' stroke-width=\'4\' stroke-linecap=\'round\'/><path d=\'M 270,185 Q 280,195 290,185\' fill=\'none\' stroke=\'#2B2D42\' stroke-width=\'4\' stroke-linecap=\'round\'/><circle cx=\'195\' cy=\'200\' r=\'10\' fill=\'#FF85A1\' opacity=\'0.6\'/><circle cx=\'305\' cy=\'200\' r=\'10\' fill=\'#FF85A1\' opacity=\'0.6\'/></svg>';">
                 </div>
                 <div>
@@ -88,9 +87,8 @@
 
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 w-full">
 
-        <!-- TAB 1: CATALOG (HOMEPAGE DESIGN) -->
+        <!-- TAB 1: CATALOG -->
         <section id="tab-shop" class="space-y-8">
-            <!-- Refined Homepage Hero Banner -->
             <div class="relative overflow-hidden bg-gradient-to-br from-pink-100 via-rose-50 to-blue-50 rounded-3xl p-8 sm:p-14 border border-pink-100/60 shadow-sm flex flex-col md:flex-row items-center justify-between gap-8">
                 <div class="space-y-4 max-w-2xl text-center md:text-left z-10">
                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold bg-white/80 text-brand-darkpink shadow-xs border border-pink-200">
@@ -113,7 +111,7 @@
                 </div>
 
                 <div class="relative flex items-center justify-center z-10">
-                    <div class="w-44 h-44 sm:w-56 sm:h-56 bg-white/90 rounded-full shadow-xl flex items-center justify-center p-4 border-4 border-white animate-bounce-slow">
+                    <div class="w-44 h-44 sm:w-56 sm:h-56 bg-white/90 rounded-full shadow-xl flex items-center justify-center p-4 border-4 border-white">
                         <img src="images/logo.png" alt="SquishIQ Logo" class="w-full h-full object-contain" onerror="this.onerror=null; this.outerHTML='<span class=\'text-7xl sm:text-8xl\'>🍞✨</span>';">
                     </div>
                 </div>
@@ -135,7 +133,17 @@
             <div class="bg-white rounded-3xl p-6 sm:p-12 shadow-sm border border-gray-100 text-center max-w-3xl mx-auto">
                 <span class="bg-brand-pink/40 text-brand-darkpink text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Interactive Sound Lab</span>
                 <h2 class="text-2xl sm:text-3xl font-bold font-display mt-4 mb-2">Virtual ASMR Squeeze Simulator</h2>
-                <p class="text-gray-500 text-xs sm:text-sm mb-8">Tap or click the squishy below to hear continuous ASMR crunch sounds!</p>
+                <p class="text-gray-500 text-xs sm:text-sm mb-6">Select a sound profile and tap the pad to test your audio!</p>
+
+                <!-- SOUND PROFILE SELECTOR -->
+                <div class="flex justify-center gap-3 mb-8">
+                    <button onclick="selectSoundProfile('crunchybutter')" id="sound-btn-butter" class="px-4 py-2 rounded-xl text-xs font-bold border border-brand-darkpink bg-brand-darkpink text-white transition-all">
+                        🧈 Crunchy Butter Sound
+                    </button>
+                    <button onclick="selectSoundProfile('slush')" id="sound-btn-slush" class="px-4 py-2 rounded-xl text-xs font-bold border border-gray-200 text-gray-600 hover:border-brand-darkpink transition-all">
+                        🍉 Watermelon Slush Sound
+                    </button>
+                </div>
                 
                 <!-- TAP BUTTON CONTROLLER -->
                 <div id="asmr-press-pad" onclick="triggerTapASMR()" class="relative w-48 h-48 sm:w-64 sm:h-64 mx-auto bg-gradient-to-br from-brand-pink to-blue-200 rounded-full flex items-center justify-center shadow-inner cursor-pointer select-none transition-transform hover:scale-105 active:scale-90 group">
@@ -215,22 +223,6 @@
                     <button onclick="setTempTheme('halloween')" id="theme-btn-halloween" class="px-4 py-2 rounded-xl text-xs font-bold border transition-colors border-gray-200">🎃 Spooky Halloween</button>
                     <button onclick="setTempTheme('sakura')" id="theme-btn-sakura" class="px-4 py-2 rounded-xl text-xs font-bold border transition-colors border-gray-200">🌸 Sakura Blossom</button>
                 </div>
-            </div>
-
-            <!-- ADD NEW PRODUCT FORM -->
-            <div class="bg-white p-5 sm:p-6 rounded-3xl shadow-sm border border-gray-100 space-y-4">
-                <h3 class="font-bold font-display text-base sm:text-lg">➕ Add New Item to Catalog</h3>
-                <form onsubmit="handleAddNewItem(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-                    <input type="text" id="new-item-name" placeholder="Item Name" required class="px-3 py-2 border rounded-xl text-xs font-medium">
-                    <input type="number" id="new-item-price" placeholder="Price (₱)" required min="1" class="px-3 py-2 border rounded-xl text-xs font-medium">
-                    <input type="number" id="new-item-stock" placeholder="Initial Stock" required min="0" class="px-3 py-2 border rounded-xl text-xs font-medium">
-                    <input type="text" id="new-item-icon" placeholder="Emoji Icon (e.g. 🦄)" required class="px-3 py-2 border rounded-xl text-xs font-medium">
-                    <select id="new-item-edition" class="px-3 py-2 border rounded-xl text-xs font-medium">
-                        <option value="Standard">Standard Item</option>
-                        <option value="Limited Edition">⭐ Limited Edition</option>
-                    </select>
-                    <button type="submit" class="sm:col-span-2 lg:col-span-5 bg-brand-darkpink text-white font-bold py-2.5 rounded-xl text-xs hover:bg-brand-darkpink/90 transition-colors">+ Stage New SKU (Requires Save)</button>
-                </form>
             </div>
 
             <!-- INVENTORY TABLE -->
@@ -315,13 +307,13 @@
         const ADMIN_PASS = "Bestsquishy101";
 
         let savedProducts = JSON.parse(localStorage.getItem('squishiq_products')) || [
-            { id: 1, name: "Crunchy Butter Squishy", price: 180, stock: 15, edition: "Standard", icon: "🧈", sound: "assets/sounds/crunchybutter.m4a" },
-            { id: 2, name: "Crunchy Pineapple Bun", price: 150, stock: 10, edition: "Standard", icon: "🍍", sound: "assets/sounds/crunchybutter.m4a" },
-            { id: 3, name: "Crunchy Pudding", price: 130, stock: 12, edition: "Standard", icon: "🍮", sound: "assets/sounds/crunchybutter.m4a" },
-            { id: 4, name: "Crunchy Soap", price: 130, stock: 8, edition: "Standard", icon: "🧼", sound: "assets/sounds/crunchybutter.m4a" },
-            { id: 5, name: "Crunchy Peanut Squishy", price: 130, stock: 14, edition: "Standard", icon: "🥜", sound: "assets/sounds/crunchybutter.m4a" },
-            { id: 6, name: "Watermelon Slush", price: 120, stock: 20, edition: "Standard", icon: "🍉", sound: "assets/sounds/slush.m4a" },
-            { id: 7, name: "Strawberry", price: 100, stock: 25, edition: "Standard", icon: "🍓", sound: "assets/sounds/slush.m4a" }
+            { id: 1, name: "Crunchy Butter Squishy", price: 180, stock: 15, edition: "Standard", icon: "🧈", sound: "crunchybutter" },
+            { id: 2, name: "Crunchy Pineapple Bun", price: 150, stock: 10, edition: "Standard", icon: "🍍", sound: "crunchybutter" },
+            { id: 3, name: "Crunchy Pudding", price: 130, stock: 12, edition: "Standard", icon: "🍮", sound: "crunchybutter" },
+            { id: 4, name: "Crunchy Soap", price: 130, stock: 8, edition: "Standard", icon: "🧼", sound: "crunchybutter" },
+            { id: 5, name: "Crunchy Peanut Squishy", price: 130, stock: 14, edition: "Standard", icon: "🥜", sound: "crunchybutter" },
+            { id: 6, name: "Watermelon Slush", price: 120, stock: 20, edition: "Standard", icon: "🍉", sound: "slush" },
+            { id: 7, name: "Strawberry", price: 100, stock: 25, edition: "Standard", icon: "🍓", sound: "slush" }
         ];
 
         let reviews = JSON.parse(localStorage.getItem('squishiq_reviews')) || [
@@ -332,8 +324,58 @@
         let stagedProducts = JSON.parse(JSON.stringify(savedProducts));
         let activeTheme = localStorage.getItem('squishiq_theme') || 'default';
         let tempTheme = activeTheme;
+        let selectedASMRProfile = 'crunchybutter';
         let cart = [];
-        let audioCtx = null;
+
+        // Preloaded Audio Objects for instant latency-free playback
+        const audioFiles = {
+            crunchybutter: new Audio('assets/sounds/crunchybutter.m4a'),
+            slush: new Audio('assets/sounds/slush.m4a')
+        };
+
+        function selectSoundProfile(profileKey) {
+            selectedASMRProfile = profileKey;
+            const butterBtn = document.getElementById('sound-btn-butter');
+            const slushBtn = document.getElementById('sound-btn-slush');
+
+            if (profileKey === 'crunchybutter') {
+                butterBtn.className = "px-4 py-2 rounded-xl text-xs font-bold border border-brand-darkpink bg-brand-darkpink text-white transition-all";
+                slushBtn.className = "px-4 py-2 rounded-xl text-xs font-bold border border-gray-200 text-gray-600 hover:border-brand-darkpink transition-all";
+            } else {
+                slushBtn.className = "px-4 py-2 rounded-xl text-xs font-bold border border-brand-darkpink bg-brand-darkpink text-white transition-all";
+                butterBtn.className = "px-4 py-2 rounded-xl text-xs font-bold border border-gray-200 text-gray-600 hover:border-brand-darkpink transition-all";
+            }
+        }
+
+        /* REFINED DIRECT TAP AUDIO CONTROLLER */
+        function triggerTapASMR() {
+            const pad = document.getElementById('asmr-press-pad');
+            const text = document.getElementById('asmr-text');
+            const icon = document.getElementById('asmr-icon');
+
+            pad.classList.remove('animate-squeeze');
+            void pad.offsetWidth;
+            pad.classList.add('animate-squeeze');
+
+            text.textContent = "CRUNCH! 🎧";
+            icon.textContent = "✨🍞✨";
+
+            setTimeout(() => {
+                text.textContent = "Tap me!";
+                icon.textContent = "🍞✨";
+            }, 350);
+
+            // Directly play selected M4A sound asset
+            const audioObj = audioFiles[selectedASMRProfile] || audioFiles['crunchybutter'];
+            audioObj.currentTime = 0;
+            
+            const promise = audioObj.play();
+            if (promise !== undefined) {
+                promise.catch(err => {
+                    console.warn("Audio playback failed. Verifying file path or user permission:", err);
+                });
+            }
+        }
 
         function showNotification(msg, icon = "✨") {
             const toast = document.getElementById('toast-notification');
@@ -503,29 +545,6 @@
             renderAdmin();
         }
 
-        function handleAddNewItem(e) {
-            e.preventDefault();
-            const name = document.getElementById('new-item-name').value.trim();
-            const price = Number(document.getElementById('new-item-price').value);
-            const stock = Number(document.getElementById('new-item-stock').value);
-            const icon = document.getElementById('new-item-icon').value.trim();
-            const edition = document.getElementById('new-item-edition').value;
-
-            stagedProducts.push({
-                id: Date.now(),
-                name,
-                price,
-                stock,
-                icon,
-                edition,
-                sound: "assets/sounds/crunchybutter.m4a"
-            });
-
-            renderAdmin();
-            e.target.reset();
-            showNotification("Item staged! Click 'SAVE ALL CHANGES' to make it live.", "📌");
-        }
-
         function openAuthModal() {
             document.getElementById('auth-modal').classList.remove('hidden');
         }
@@ -648,70 +667,6 @@
             updateCartUI();
             toggleCart();
             showNotification("Order placed successfully! Thank you for ordering.", "🎉");
-        }
-
-        /* REFINED TAP ASMR SQUEEZE SIMULATOR */
-        function triggerTapASMR() {
-            const pad = document.getElementById('asmr-press-pad');
-            const text = document.getElementById('asmr-text');
-            const icon = document.getElementById('asmr-icon');
-
-            // Trigger Visual Animation
-            pad.classList.remove('animate-squeeze');
-            void pad.offsetWidth; // Force Reflow
-            pad.classList.add('animate-squeeze');
-
-            text.textContent = "CRUNCH! 💥";
-            icon.textContent = "✨🍞✨";
-
-            setTimeout(() => {
-                text.textContent = "Tap me!";
-                icon.textContent = "🍞✨";
-            }, 400);
-
-            // Play Audio Effect
-            playCrunchSound();
-        }
-
-        function playCrunchSound() {
-            // Attempt Playing Custom Audio File
-            const audio = new Audio('assets/sounds/crunchybutter.m4a');
-            audio.currentTime = 0;
-            const playPromise = audio.play();
-
-            if (playPromise !== undefined) {
-                playPromise.catch(() => {
-                    // Fallback to Web Audio Synthesizer if Audio file is blocked or unavailable
-                    generateSyntheticCrunch();
-                });
-            }
-        }
-
-        function generateSyntheticCrunch() {
-            try {
-                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-
-                const bufferSize = audioCtx.sampleRate * 0.12;
-                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-                const data = buffer.getChannelData(0);
-
-                for (let i = 0; i < bufferSize; i++) {
-                    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.3));
-                }
-
-                const noise = audioCtx.createBufferSource();
-                noise.buffer = buffer;
-
-                const filter = audioCtx.createBiquadFilter();
-                filter.type = 'bandpass';
-                filter.frequency.value = 1200 + Math.random() * 1500;
-                filter.Q.value = 3;
-
-                noise.connect(filter);
-                filter.connect(audioCtx.destination);
-                noise.start();
-            } catch (e) {}
         }
 
         function handleReturnSubmit(e) {
